@@ -1,0 +1,26 @@
+--redefine-box-shadow: var(--shadow-color-2) 0px 6px 24px 0px,
+var(--shadow-color-1) 0px 0px 0px 1px;
+--redefine-box-shadow-hover: var(--shadow-color-2) 0px 6px 24px 0px,
+var(--shadow-color-1) 0px 0px 0px 1px,
+var(--shadow-color-1) 0px 0px 0px 1px inset;
+--redefine-box-shadow-flat: var(--shadow-color-2) 0px 1px 4px 0px,
+var(--shadow-color-1) 0px 0px 0px 1px;
+--redefine-box-shadow-flat-hover: var(--shadow-color-2) 0px 1px 4px 0px,
+var(--shadow-color-1) 0px 0px 0px 1px,
+var(--shadow-color-1) 0px 0px 0px 1px inset;
+
+.redefine-box-shadow {
+  box-shadow: var(--redefine-box-shadow);
+}
+
+.redefine-box-shadow-flat {
+  box-shadow: var(--redefine-box-shadow-flat);
+}
+
+.redefine-box-shadow:hover {
+  box-shadow: var(--redefine-box-shadow-hover);
+}
+
+.redefine-box-shadow-flat:hover {
+  box-shadow: var(--redefine-box-shadow);
+}
