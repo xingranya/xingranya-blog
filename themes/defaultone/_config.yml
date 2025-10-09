@@ -120,7 +120,7 @@ home_banner:
   title: 星苒鸭 · 博客
   # 横幅副标题
   subtitle:
-    text: ['Hi there 👋, I\'m xingranya / 星苒鸭', 'A passionate developer from China'] # 文案数组
+text: ["Hi there 👋, I'm xingranya / 星苒鸭", 'A passionate developer from China'] # 文案数组
     hitokoto:  # 一言配置
       enable: false # 是否启用一言
       show_author: true # 是否显示作者
