@@ -207,9 +207,9 @@ navbar:
     # Categories: 
     #   icon: fa-solid fa-tags #icon
     #   path: /tags/ #Link
-    Links: 
-      path: /links/
-      icon: fa-solid fa-link
+    Projects: 
+      path: /projects/
+      icon: fa-solid fa-folder-open
     About: 
       path: /about
       icon: fa-solid fa-circle-info
