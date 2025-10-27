@@ -40,20 +40,19 @@ global:
   # 自定义全局字体
   fonts:
     # 中文字体
-    chinese: 
-      enable: true # 是否启用自定义中文字体
+    chinese:
+      enable: true # 是否启用自定义标题字体
       family: "'Source Sans Pro', -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, 'Helvetica Neue', Arial, sans-serif" # 字体族
-      url: "https://fonts.googleapis.com/css2?family=Source+Sans+Pro:ital,wght@0,400;0,500;0,600;0,700;1,400;1,500;1,600;1,700&display=swap" # 字体 CSS 链接
+      url: "https://fonts.loli.net/css2?family=Source+Sans+Pro:ital,wght@0,400;0,500;0,600;0,700;1,400;1,500;1,600;1,700&display=swap" # 字体 CSS 链接
     # 英文字体
-    english: 
-      enable: true # 是否启用自定义英文字体
+    english:
+      enable: true # 是否启用自定义标题字体
       family: "'Source Sans Pro', -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, 'Helvetica Neue', Arial, sans-serif" # 字体族
-      url: "https://fonts.googleapis.com/css2?family=Source+Sans+Pro:ital,wght@0,400;0,500;0,600;0,700;1,400;1,500;1,600;1,700&display=swap" # 字体 CSS 链接
-    # 自定义标题字体（导航栏、侧边栏）
+      url: "https://fonts.loli.net/css2?family=Source+Sans+Pro:ital,wght@0,400;0,500;0,600;0,700;1,400;1,500;1,600;1,700&display=swap" # 字体 CSS 链接    # 自定义标题字体（导航栏、侧边栏）
     title:
       enable: true # 是否启用自定义标题字体
       family: "'Source Sans Pro', -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, 'Helvetica Neue', Arial, sans-serif" # 字体族
-      url: "https://fonts.googleapis.com/css2?family=Source+Sans+Pro:ital,wght@0,400;0,500;0,600;0,700;1,400;1,500;1,600;1,700&display=swap" # 字体 CSS 链接
+      url: "https://fonts.loli.net/css2?family=Source+Sans+Pro:ital,wght@0,400;0,500;0,600;0,700;1,400;1,500;1,600;1,700&display=swap" # 字体 CSS 链接
   # 内容最大宽度
   content_max_width: 1000px
   # 侧边栏宽度
@@ -123,7 +122,7 @@ home_banner:
     text: ["Hi there 👋, I'm xingranya / 星苒鸭", 'A passionate developer from China']# 文案数组
     hitokoto:  # 一言配置
       enable: true # 是否启用一言
-      show_author: true # 是否显示作者
+      show_author: false # 是否显示作者
       api: https://v1.hitokoto.cn # API 地址，可添加类型
     typing_speed: 100 # 打字速度 (ms)
     backing_speed: 80 # 回退速度 (ms)
@@ -162,7 +161,7 @@ home_banner:
       github:  https://github.com/xingranya # 你的 GitHub 链接
       instagram: # 你的 Instagram 链接
       zhihu:  # 你的知乎主页
-      # twitter:  https://x.com/TencentCloudEO # 你的 X(Twitter) 链接
+      # twitter:  https://x.com/xingranya # 你的 X(Twitter) 链接
       email:  mailto:xingranya@outlook.jp # 你的邮箱
       # ...... # 可继续添加
     # 带二维码抽屉的社交链接
@@ -394,7 +393,7 @@ footer:
   # 页脚图标（FontAwesome 代码）
   icon: '<i class="fa-solid fa-heart fa-beat" style="--fa-animation-duration: 0.5s; color: #f54545"></i>'
   # 网站开始时间，格式：YYYY/MM/DD HH:mm:ss
-  start: 2022/8/17 11:45:14
+  start: 2025/10/17 11:45:14
   # 站点统计
   statistics: true # 是否显示（文章总数、总字数）
   # 自定义页脚文案
@@ -431,13 +430,13 @@ plugins:
     enable: false # 是否启用
   # Aplayer 音乐播放器：https://github.com/DIYgod/APlayer
   aplayer:
-    enable: false # 是否启用
+    enable: true # 是否启用
     type: fixed # fixed, mini
     audios:
-      - name: # audio name
-        artist: # audio artist
-        url: # audio url
-        cover: # audio cover url
+      - name: 漆黑的月光 # audio name
+        artist: 封茗囧菌 # audio artist
+        url: https://music.163.com/song/media/outer/url?id=2107860834.mp3 # audio url
+        cover: https://p1.music.126.net/xgz1Z8jfXIY7M9JyHEVR5w==/109951169156480838.jpg?param=240y240 # audio cover url
         lrc: # audio cover lrc
 #      - name: # audio name
 #        artist: # audio artist
@@ -466,7 +465,7 @@ page_templates:
 # 文档: https://redefine-docs.ohevan.com/cdn
 cdn:
   # 是否启用 CDN
-  enable: false
+  enable: true
   # CDN 提供商
   provider: npmmirror # npmmirror, zstatic, cdnjs, jsdelivr, unpkg, custom
   # 自定义 CDN URL

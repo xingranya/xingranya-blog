@@ -6,7 +6,7 @@
 
 本网站是一个 **静态网站**，由 [Hexo](https://hexo.io/) 框架驱动。它的核心原理是“**源文件 → 生成 → 部署**”：
 
-1.  **编写源文件**：我们使用 Markdown (`.md`) 这种简洁的格式来撰写博客文章（位于 `source/_posts` 目录）和页面（如 `source/projects`）。
+1.  **编写源文件**：我使用 Markdown (`.md`) 这种简洁的格式来撰写博客文章（位于 `source/_posts` 目录）和页面（如 `source/projects`）。
 2.  **主题与模板**：网站的外观和布局由 `defaultone` 主题（位于 `themes/defaultone` 目录）定义。该主题使用 EJS 模板引擎来渲染页面结构。
 3.  **生成静态文件**：当运行 `npx hexo generate` 命令时，Hexo 会将 Markdown 源文件和主题模板结合，生成最终的、纯粹的 HTML、CSS 和 JavaScript 文件，并存放在 `public` 目录中。
 4.  **部署**：最后，只需将 `public` 目录下的所有文件部署到任何静态网站托管服务（如 GitHub Pages, Vercel, Netlify 等）上，用户就可以通过浏览器访问了。
