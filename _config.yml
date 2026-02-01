@@ -13,7 +13,7 @@ timezone: ''
 
 # URL
 ## 设置你的网站地址。例如使用 GitHub Pages 的项目页，设置为 'https://username.github.io/project'
-url: https://xingranya.asia
+url: https://xingranya.cn
 permalink: :title/
 permalink_defaults:
 pretty_urls:
@@ -117,6 +117,6 @@ live2d:
     width: 150
     height: 300
   mobile:
-    show: true
+    show: false
   react:
     opacity: 0.7

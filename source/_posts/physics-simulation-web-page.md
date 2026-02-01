@@ -2,7 +2,7 @@
 title: 物理模拟网页探索：xingranya-physics-simulation-web-page
 date: 2025-10-24 21:02:45
 banner: "探索物理世界的奥秘"
-cover: https://tc.alcy.cc/q/20250908/bfcef13747398bfa0eebc9bed9ea606e.webp
+cover: /images/main_bg.jpg
 tags:
   - HTML
   - JavaScript

@@ -465,7 +465,7 @@ page_templates:
 # 文档: https://redefine-docs.ohevan.com/cdn
 cdn:
   # 是否启用 CDN
-  enable: true
+  enable: false
   # CDN 提供商
   provider: npmmirror # npmmirror, zstatic, cdnjs, jsdelivr, unpkg, custom
   # 自定义 CDN URL

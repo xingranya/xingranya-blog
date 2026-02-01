@@ -22,12 +22,15 @@
       audio: audioList,
     });
   } else if (isFixed) {
+    const hasLrc = audioList.some((audio) => audio.lrc);
     const player = new APlayer({
       container: document.getElementById("aplayer"),
       fixed: true,
-      lrcType: 3,
+      lrcType: hasLrc ? 3 : 0,
       audio: audioList,
     });
-    document.querySelector(".aplayer-icon-lrc").click();
+    if (hasLrc) {
+      document.querySelector(".aplayer-icon-lrc").click();
+    }
   }
 })();

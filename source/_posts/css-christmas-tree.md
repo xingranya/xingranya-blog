@@ -2,7 +2,7 @@
 title: 纯 CSS 圣诞树项目：Christmas-tree 的创意实现
 date: 2025-10-24 21:05:36
 banner: "用代码点亮圣诞"
-cover: https://tc.alcy.cc/q/20250908/0ac129eaf8f0d04cb4a2064dcde4607c.webp
+cover: /images/main_bg.jpg
 tags:
   - CSS
   - 前端开发

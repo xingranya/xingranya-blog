@@ -1,7 +1,7 @@
 ---
 title: HTML 快速入门
 banner: "HTML 基础开发学习笔记"
-cover: https://tc.alcy.cc/q/20250908/7a153107806badd644f12b896313840f.webp
+cover: /images/main_bg.jpg
 ---
 
 HTML (HyperText Markup Language, 超文本标记语言) 是构建网页内容的骨架。无论多复杂的网站，其基础都是由 HTML 构成的。这篇笔记将带你快速了解 HTML 的基本结构和常用标签。
