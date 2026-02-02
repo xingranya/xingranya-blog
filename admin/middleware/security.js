@@ -9,12 +9,26 @@ const loginLimiter = rateLimit({
     message: { error: '登录尝试次数过多，请15分钟后再试' },
     standardHeaders: true,
     legacyHeaders: false,
+    // 信任一层 Nginx 代理
+    trustProxy: 1,
+    // 从 X-Forwarded-For 获取真实 IP（Nginx 反向代理场景）
+    keyGenerator: (req) => {
+        return req.headers['x-forwarded-for']?.split(',')[0]?.trim() || req.ip;
+    }
 });
 
 // General API rate limiting
 const apiLimiter = rateLimit({
     windowMs: config.rateLimit.apiWindowMs,
-    max: config.rateLimit.apiMaxRequests
+    max: config.rateLimit.apiMaxRequests,
+    standardHeaders: true,
+    legacyHeaders: false,
+    // 信任一层 Nginx 代理
+    trustProxy: 1,
+    // 从 X-Forwarded-For 获取真实 IP
+    keyGenerator: (req) => {
+        return req.headers['x-forwarded-for']?.split(',')[0]?.trim() || req.ip;
+    }
 });
 
 // Path traversal protection checks
