@@ -36,6 +36,11 @@ app.get('/admin/', (req, res) => {
     res.sendFile(path.join(__dirname, 'public', 'admin', 'index.html'));
 });
 
+// 后台登录页
+app.get('/login', (req, res) => {
+    res.sendFile(path.join(__dirname, 'public', 'index.html'));
+});
+
 // Redirect root to login or admin
 app.get('/', (req, res) => {
     res.redirect('/index.html');

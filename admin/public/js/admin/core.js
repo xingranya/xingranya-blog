@@ -342,13 +342,13 @@
             Store.auth = { isLoggedIn: false, token: null };
             // 退出登录后跳转到登录页
             if (location.pathname.includes('/admin/')) {
-                location.href = '/index.html';
+                location.href = '/login';
             }
         },
         requireAuth() {
             if (!this.check()) {
                 // 未登录跳转到登录页
-                location.href = '/index.html';
+                location.href = '/login';
                 return false;
             }
             return true;
