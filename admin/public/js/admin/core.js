@@ -340,13 +340,15 @@
         logout() {
             localStorage.removeItem('token');
             Store.auth = { isLoggedIn: false, token: null };
+            // 退出登录后跳转到登录页
             if (location.pathname.includes('/admin/')) {
-                location.href = '/';
+                location.href = '/index.html';
             }
         },
         requireAuth() {
             if (!this.check()) {
-                location.href = '/';
+                // 未登录跳转到登录页
+                location.href = '/index.html';
                 return false;
             }
             return true;
