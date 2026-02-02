@@ -13,19 +13,7 @@ router.use(auth);
 router.get('/', async (req, res) => {
   try {
     const files = await mediaService.list();
-    res.json(files); // Fixed: return array directly or wrapped? Frontend expects array or {files: []}?
-                     // Frontend media.js: renderGrid(res). If res is array.
-                     // Previous media.js: res.json({ files });
-                     // Frontend media.js: const res = await API.get('/media'); if (!res || res.length === 0)...
-                     // Let's check frontend media.js again.
-                     // It says: renderGrid(res).
-                     // So backend should return array.
-                     // But previous backend returned {files}.
-                     // Let's check frontend media.js logic I wrote.
-                     // "renderGrid(res)" -> implies res is the array.
-                     // "if (!res || res.length === 0)" -> implies res is the array.
-                     // So I should return array here or fix frontend.
-                     // I will return array here.
+    res.json(files); // 返回数组 { files: [...] }
   } catch (err) {
     console.error(err);
     res.status(500).json({ message: 'Server Error' });

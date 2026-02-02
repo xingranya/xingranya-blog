@@ -90,7 +90,7 @@
             <div class="media-item" onclick="showImage('${img.url}')">
                 <img src="${img.url}" loading="lazy">
                 <div class="overlay">
-                    <div class="filename">${Utils.escapeHtml(img.filename || 'Unknown')}</div>
+                    <div class="filename">${Utils.escapeHtml(img.name || 'Unknown')}</div>
                 </div>
             </div>
         `).join('');
