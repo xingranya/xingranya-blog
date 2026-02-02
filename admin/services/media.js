@@ -35,7 +35,7 @@ module.exports = {
 
     const form = new FormData();
     form.append('token', config.tucang.token);
-    form.append('folder_id', config.tucang.folderId);
+    form.append('folderId', config.tucang.folderId);
     form.append('file', fileBuffer, {
       filename: filename,
       contentType: mimetype
