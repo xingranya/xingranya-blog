@@ -6,6 +6,9 @@ const { helmet, apiLimiter, pathTraversalCheck } = require('./middleware/securit
 
 const app = express();
 
+// Trust proxy - 信任 Nginx 反向代理
+app.set('trust proxy', true);
+
 // Security Middleware
 app.use(helmet); // Secure HTTP headers
 app.use(cors()); // Enable CORS (configure stricter in prod if needed)
