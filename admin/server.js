@@ -27,9 +27,12 @@ app.use('/api/config', require('./routes/config'));
 app.use('/api/deploy', require('./routes/deploy'));
 app.use('/api/media', require('./routes/media'));
 
-// Admin catch-all (for SPA-like feel if needed, though we use distinct HTML files now)
-// But since we use distinct HTML files in /public/admin/, we might want to redirect /admin to /admin/index.html
+// Admin catch-all - 同时处理 /admin 和 /admin/
 app.get('/admin', (req, res) => {
+    res.sendFile(path.join(__dirname, 'public', 'admin', 'index.html'));
+});
+
+app.get('/admin/', (req, res) => {
     res.sendFile(path.join(__dirname, 'public', 'admin', 'index.html'));
 });
 
