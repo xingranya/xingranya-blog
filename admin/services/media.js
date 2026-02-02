@@ -1,6 +1,8 @@
 const fs = require('fs');
 const path = require('path');
 const config = require('../config');
+const https = require('https');
+const http = require('http');
 
 // Store uploaded media info locally for reference
 const mediaDbPath = path.resolve(__dirname, '..', 'media-db.json');
@@ -39,10 +41,16 @@ module.exports = {
       contentType: mimetype
     });
 
+    // 创建一个忽略 SSL 验证的 agent
+    const httpsAgent = new https.Agent({
+      rejectUnauthorized: false
+    });
+
     const response = await fetch(config.tucang.apiUrl, {
       method: 'POST',
       body: form,
-      headers: form.getHeaders()
+      headers: form.getHeaders(),
+      agent: (_parsedURL) => _parsedURL.protocol === 'https:' ? httpsAgent : undefined
     });
 
     const result = await response.json();
