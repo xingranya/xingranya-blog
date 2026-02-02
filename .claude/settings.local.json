@@ -1,0 +1,11 @@
+{
+  "permissions": {
+    "allow": [
+      "mcp__fetch__fetch",
+      "WebFetch(domain:raw.githubusercontent.com)",
+      "Bash(node:*)",
+      "Bash(curl:*)",
+      "mcp__playwright__browser_navigate"
+    ]
+  }
+}

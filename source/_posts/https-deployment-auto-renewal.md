@@ -2,12 +2,13 @@
 title: HTTPS 网站部署与证书自动续签
 date: 2026-02-02 16:00:00
 banner: "让你的网站更安全——从 HTTP 到 HTTPS"
-cover: /images/main_bg.jpg
 tags:
   - HTTPS
   - SSL
   - Let's Encrypt
   - 运维
+cover: >-
+  https://cdn-visitor-eo.7moor-fs2.com/im/1cf621c0-5c37-11e9-9460-658dbd81beae/2026-02-03-00:38:56/1770050336028/edede70e-c265-4388-9603-120b3dd46409.jpeg
 ---
 
 你是否注意到，现在的浏览器地址栏旁边都会有一个小锁图标？如果你的网站没有这个小锁，浏览器甚至会提示"不安全"？这是因为 HTTPS 已经成为现代网站的标准配置。
