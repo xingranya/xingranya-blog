@@ -1,0 +1,607 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>写文章 - 星苒鸭</title>
+    <link rel="stylesheet" href="/css/admin.css">
+    <link rel="stylesheet" href="https://unpkg.com/easymde/dist/easymde.min.css">
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&display=swap" rel="stylesheet">
+    <style>
+        body { font-family: 'Inter', system-ui, sans-serif; }
+
+        .editor-layout {
+            display: grid;
+            grid-template-columns: 1fr 320px;
+            gap: 1.5rem;
+            height: calc(100vh - 180px);
+        }
+
+        .editor-main {
+            display: flex;
+            flex-direction: column;
+            height: 100%;
+            overflow: hidden;
+        }
+
+        .editor-main .EasyMDEContainer {
+            flex: 1;
+            display: flex;
+            flex-direction: column;
+        }
+
+        .editor-main .EasyMDEContainer .CodeMirror {
+            flex: 1;
+            height: auto !important;
+        }
+
+        .editor-sidebar {
+            height: 100%;
+            overflow-y: auto;
+        }
+
+        .meta-card {
+            padding: 1.25rem;
+            display: flex;
+            flex-direction: column;
+            gap: 1.25rem;
+        }
+
+        .tag-input-wrapper {
+            display: flex;
+            flex-wrap: wrap;
+            gap: 0.5rem;
+            padding: 0.5rem;
+            border: 1px solid var(--a-border);
+            border-radius: var(--a-radius-sm);
+            background: rgba(255, 255, 255, 0.5);
+            min-height: 42px;
+        }
+
+        .dark .tag-input-wrapper {
+            background: rgba(15, 23, 42, 0.5);
+        }
+
+        .tag-input-wrapper input {
+            flex: 1;
+            min-width: 80px;
+            border: none;
+            background: transparent;
+            outline: none;
+            color: var(--a-text);
+            font-size: 0.875rem;
+        }
+
+        .tag-item {
+            display: inline-flex;
+            align-items: center;
+            gap: 0.25rem;
+            padding: 0.25rem 0.5rem;
+            background: var(--a-primary-light);
+            color: var(--a-primary);
+            border-radius: 0.375rem;
+            font-size: 0.75rem;
+        }
+
+        .tag-item button {
+            background: none;
+            border: none;
+            color: inherit;
+            cursor: pointer;
+            padding: 0;
+            line-height: 1;
+            opacity: 0.7;
+        }
+
+        .tag-item button:hover {
+            opacity: 1;
+        }
+
+        @media (max-width: 1024px) {
+            .editor-layout {
+                grid-template-columns: 1fr;
+                height: auto;
+            }
+            .editor-sidebar {
+                height: auto;
+                order: -1;
+            }
+        }
+
+        /* EasyMDE 全屏模式修复 */
+        .EasyMDEContainer.fullscreen {
+            position: fixed !important;
+            top: 0 !important;
+            left: 0 !important;
+            right: 0 !important;
+            bottom: 0 !important;
+            width: 100vw !important;
+            height: 100vh !important;
+            z-index: 9999 !important;
+            margin: 0 !important;
+        }
+
+        /* EasyMDE 对比模式修复 */
+        .EasyMDEContainer.side-by-side {
+            display: flex;
+            flex-direction: row;
+        }
+
+        .EasyMDEContainer.side-by-side .CodeMirror {
+            flex: 1;
+            height: auto !important;
+        }
+
+        .EasyMDEContainer.side-by-side .editor-preview {
+            flex: 1;
+            overflow-y: auto;
+        }
+
+        /* 全屏时隐藏侧边栏 */
+        .editor-layout:has(.EasyMDEContainer.fullscreen) .editor-sidebar {
+            display: none;
+        }
+
+        /* 对比模式下的编辑器高度 */
+        .editor-main .EasyMDEContainer.side-by-side .CodeMirror,
+        .editor-main .EasyMDEContainer.side-by-side .editor-preview {
+            height: 100% !important;
+        }
+    </style>
+</head>
+<body>
+    <!-- Sidebar Overlay -->
+    <div class="sidebar-overlay" id="sidebarOverlay"></div>
+
+    <!-- Sidebar -->
+    <aside class="glass-sidebar" id="sidebar">
+        <div class="sidebar-header">
+            <div class="sidebar-logo">星苒鸭</div>
+        </div>
+        <nav class="sidebar-nav">
+            <a href="/admin/" class="nav-item">
+                <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+                    <rect x="3" y="3" width="7" height="7"></rect>
+                    <rect x="14" y="3" width="7" height="7"></rect>
+                    <rect x="14" y="14" width="7" height="7"></rect>
+                    <rect x="3" y="14" width="7" height="7"></rect>
+                </svg>
+                控制台
+            </a>
+            <a href="/admin/posts.html" class="nav-item">
+                <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+                    <path d="M12 19l7-7 3 3-7 7-3-3z"></path>
+                    <path d="M18 13l-1.5-7.5L2 2l3.5 14.5L13 18l5-5z"></path>
+                    <circle cx="11" cy="11" r="2"></circle>
+                </svg>
+                文章管理
+            </a>
+            <a href="/admin/editor.html" class="nav-item active">
+                <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+                    <path d="M11 4H4a2 2 0 0 0-2 2v14a2 2 0 0 0 2 2h14a2 2 0 0 0 2-2v-7"></path>
+                    <path d="M18.5 2.5a2.121 2.121 0 0 1 3 3L12 15l-4 1 1-4 9.5-9.5z"></path>
+                </svg>
+                写文章
+            </a>
+            <a href="/admin/media.html" class="nav-item">
+                <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+                    <rect x="3" y="3" width="18" height="18" rx="2" ry="2"></rect>
+                    <circle cx="8.5" cy="8.5" r="1.5"></circle>
+                    <polyline points="21 15 16 10 5 21"></polyline>
+                </svg>
+                媒体库
+            </a>
+            <div class="nav-section-title">系统</div>
+            <a href="/admin/deploy.html" class="nav-item">
+                <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+                    <polygon points="13 2 3 14 12 14 11 22 21 10 12 10 13 2"></polygon>
+                </svg>
+                部署管理
+            </a>
+            <a href="/admin/settings.html" class="nav-item">
+                <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+                    <circle cx="12" cy="12" r="3"></circle>
+                    <path d="M19.4 15a1.65 1.65 0 0 0 .33 1.82l.06.06a2 2 0 0 1 0 2.83 2 2 0 0 1-2.83 0l-.06-.06a1.65 1.65 0 0 0-1.82-.33 1.65 1.65 0 0 0-1 1.51V21a2 2 0 0 1-2 2 2 2 0 0 1-2-2v-.09A1.65 1.65 0 0 0 9 19.4a1.65 1.65 0 0 0-1.82.33l-.06.06a2 2 0 0 1-2.83 0 2 2 0 0 1 0-2.83l.06-.06a1.65 1.65 0 0 0 .33-1.82 1.65 1.65 0 0 0-1.51-1H3a2 2 0 0 1-2-2 2 2 0 0 1 2-2h.09A1.65 1.65 0 0 0 4.6 9a1.65 1.65 0 0 0-.33-1.82l-.06-.06a2 2 0 0 1 0-2.83 2 2 0 0 1 2.83 0l.06.06a1.65 1.65 0 0 0 1.82.33H9a1.65 1.65 0 0 0 1-1.51V3a2 2 0 0 1 2-2 2 2 0 0 1 2 2v.09a1.65 1.65 0 0 0 1 1.51 1.65 1.65 0 0 0 1.82-.33l.06-.06a2 2 0 0 1 2.83 0 2 2 0 0 1 0 2.83l-.06.06a1.65 1.65 0 0 0-.33 1.82V9a1.65 1.65 0 0 0 1.51 1H21a2 2 0 0 1 2 2 2 2 0 0 1-2 2h-.09a1.65 1.65 0 0 0-1.51 1z"></path>
+                </svg>
+                站点设置
+            </a>
+        </nav>
+        <div class="sidebar-footer">
+            <a href="#" class="nav-item" id="logoutBtn">
+                <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+                    <path d="M9 21H5a2 2 0 0 1-2-2V5a2 2 0 0 1 2-2h4"></path>
+                    <polyline points="16 17 21 12 16 7"></polyline>
+                    <line x1="21" y1="12" x2="9" y2="12"></line>
+                </svg>
+                退出登录
+            </a>
+        </div>
+    </aside>
+
+    <!-- Main Content -->
+    <main class="main-content">
+        <!-- Header -->
+        <header style="display: flex; justify-content: space-between; align-items: center; margin-bottom: 1.5rem;">
+            <div style="display: flex; align-items: center; gap: 1rem;">
+                <button class="btn-icon" id="menuBtn" style="display: none;">
+                    <svg width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+                        <line x1="3" y1="12" x2="21" y2="12"></line>
+                        <line x1="3" y1="6" x2="21" y2="6"></line>
+                        <line x1="3" y1="18" x2="21" y2="18"></line>
+                    </svg>
+                </button>
+                <a href="/admin/posts.html" class="btn-icon">
+                    <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+                        <line x1="19" y1="12" x2="5" y2="12"></line>
+                        <polyline points="12 19 5 12 12 5"></polyline>
+                    </svg>
+                </a>
+                <input type="text" id="postTitle" class="form-input" placeholder="输入文章标题..." style="font-size: 1.25rem; font-weight: 600; border: none; background: transparent; padding: 0; max-width: 400px;">
+            </div>
+            <div style="display: flex; gap: 0.75rem; align-items: center;">
+                <span id="saveStatus" style="font-size: 0.75rem; color: var(--a-text-3);"></span>
+                <button class="btn-icon" id="themeToggle">
+                    <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" id="themeIcon">
+                        <path d="M21 12.79A9 9 0 1 1 11.21 3 7 7 0 0 0 21 12.79z"></path>
+                    </svg>
+                </button>
+                <button class="btn-primary" id="saveBtn">
+                    <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+                        <path d="M19 21H5a2 2 0 0 1-2-2V5a2 2 0 0 1 2-2h11l5 5v11a2 2 0 0 1-2 2z"></path>
+                        <polyline points="17 21 17 13 7 13 7 21"></polyline>
+                        <polyline points="7 3 7 8 15 8"></polyline>
+                    </svg>
+                    保存
+                </button>
+            </div>
+        </header>
+
+        <!-- Editor Layout -->
+        <div class="editor-layout">
+            <!-- Editor -->
+            <div class="editor-main">
+                <textarea id="editor"></textarea>
+            </div>
+
+            <!-- Sidebar -->
+            <div class="editor-sidebar">
+                <div class="glass-card meta-card">
+                    <!-- Filename -->
+                    <div class="form-group" style="margin-bottom: 0;">
+                        <label class="form-label">文件名</label>
+                        <input type="text" id="filename" class="form-input" placeholder="hello-world.md">
+                    </div>
+
+                    <!-- Date -->
+                    <div class="form-group" style="margin-bottom: 0;">
+                        <label class="form-label">发布时间</label>
+                        <input type="datetime-local" id="postDate" class="form-input">
+                    </div>
+
+                    <!-- Categories -->
+                    <div class="form-group" style="margin-bottom: 0;">
+                        <label class="form-label">分类</label>
+                        <div class="tag-input-wrapper" id="categoriesWrapper">
+                            <input type="text" id="categoryInput" placeholder="输入后按回车添加">
+                        </div>
+                    </div>
+
+                    <!-- Tags -->
+                    <div class="form-group" style="margin-bottom: 0;">
+                        <label class="form-label">标签</label>
+                        <div class="tag-input-wrapper" id="tagsWrapper">
+                            <input type="text" id="tagInput" placeholder="输入后按回车添加">
+                        </div>
+                    </div>
+
+                    <!-- Cover Image -->
+                    <div class="form-group" style="margin-bottom: 0;">
+                        <label class="form-label">封面图</label>
+                        <input type="text" id="coverImage" class="form-input" placeholder="图片 URL">
+                        <div id="coverPreview" style="margin-top: 0.75rem; border-radius: var(--a-radius-sm); overflow: hidden; display: none;">
+                            <img src="" style="width: 100%; height: auto;">
+                        </div>
+                    </div>
+
+                    <!-- Quick Actions -->
+                    <div style="display: flex; gap: 0.5rem; margin-top: 0.5rem;">
+                        <button class="btn-secondary btn-sm" style="flex: 1;" id="insertImageBtn">
+                            <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+                                <rect x="3" y="3" width="18" height="18" rx="2" ry="2"></rect>
+                                <circle cx="8.5" cy="8.5" r="1.5"></circle>
+                                <polyline points="21 15 16 10 5 21"></polyline>
+                            </svg>
+                            插入图片
+                        </button>
+                        <a href="/admin/media.html" class="btn-secondary btn-sm" style="flex: 1; text-align: center;">
+                            媒体库
+                        </a>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </main>
+
+    <script src="https://unpkg.com/easymde/dist/easymde.min.js"></script>
+    <script src="/js/admin/core.js"></script>
+    <script>
+        const { $, $$, API, Auth, UI, Theme, Utils, Router } = AdminCore;
+
+        if (!Auth.requireAuth()) throw new Error('Unauthorized');
+
+        // Mobile menu
+        const menuBtn = $('#menuBtn');
+        const sidebar = $('#sidebar');
+        const overlay = $('#sidebarOverlay');
+
+        function checkMobile() {
+            menuBtn.style.display = window.innerWidth <= 1024 ? 'flex' : 'none';
+            if (window.innerWidth > 1024) {
+                sidebar.classList.remove('open');
+                overlay.classList.remove('open');
+            }
+        }
+        checkMobile();
+        window.addEventListener('resize', checkMobile);
+
+        menuBtn.onclick = () => {
+            sidebar.classList.toggle('open');
+            overlay.classList.toggle('open');
+        };
+        overlay.onclick = () => {
+            sidebar.classList.remove('open');
+            overlay.classList.remove('open');
+        };
+
+        // Theme
+        $('#themeToggle').onclick = () => {
+            Theme.toggle();
+            updateThemeIcon();
+        };
+
+        function updateThemeIcon() {
+            const icon = $('#themeIcon');
+            icon.innerHTML = Theme.get() === 'dark'
+                ? '<circle cx="12" cy="12" r="5"></circle><line x1="12" y1="1" x2="12" y2="3"></line><line x1="12" y1="21" x2="12" y2="23"></line><line x1="4.22" y1="4.22" x2="5.64" y2="5.64"></line><line x1="18.36" y1="18.36" x2="19.78" y2="19.78"></line><line x1="1" y1="12" x2="3" y2="12"></line><line x1="21" y1="12" x2="23" y2="12"></line><line x1="4.22" y1="19.78" x2="5.64" y2="18.36"></line><line x1="18.36" y1="5.64" x2="19.78" y2="4.22"></line>'
+                : '<path d="M21 12.79A9 9 0 1 1 11.21 3 7 7 0 0 0 21 12.79z"></path>';
+        }
+        updateThemeIcon();
+
+        $('#logoutBtn').onclick = (e) => { e.preventDefault(); Auth.logout(); };
+
+        // State
+        let isEditMode = false;
+        let originalFilename = '';
+        let categories = [];
+        let tags = [];
+
+        // Get current file for autosave ID
+        const params = Router.getParams();
+        const currentFile = params.file || 'new-post';
+        const autosaveId = `blog-editor-${currentFile}`;
+
+        // Initialize EasyMDE
+        const easyMDE = new EasyMDE({
+            element: $('#editor'),
+            spellChecker: false,
+            autosave: {
+                enabled: true,
+                uniqueId: autosaveId,
+                delay: 5000
+            },
+            toolbar: [
+                'bold', 'italic', 'heading', '|',
+                'quote', 'unordered-list', 'ordered-list', '|',
+                'link', 'image', 'table', '|',
+                'preview', 'side-by-side', 'fullscreen', '|',
+                'guide'
+            ],
+            placeholder: '开始写作...',
+            status: false
+        });
+
+        // Tag input helper
+        function createTagInput(wrapperId, inputId, array) {
+            const wrapper = $(wrapperId);
+            const input = $(inputId);
+
+            function render() {
+                const tags = wrapper.querySelectorAll('.tag-item');
+                tags.forEach(t => t.remove());
+
+                array.forEach((item, index) => {
+                    const tag = document.createElement('span');
+                    tag.className = 'tag-item';
+                    tag.innerHTML = `${Utils.escapeHtml(item)}<button type="button" data-index="${index}">&times;</button>`;
+                    wrapper.insertBefore(tag, input);
+                });
+            }
+
+            input.onkeydown = (e) => {
+                if (e.key === 'Enter' || e.key === ',') {
+                    e.preventDefault();
+                    const value = input.value.trim();
+                    if (value && !array.includes(value)) {
+                        array.push(value);
+                        render();
+                    }
+                    input.value = '';
+                }
+                if (e.key === 'Backspace' && !input.value && array.length > 0) {
+                    array.pop();
+                    render();
+                }
+            };
+
+            wrapper.onclick = (e) => {
+                if (e.target.tagName === 'BUTTON') {
+                    const index = parseInt(e.target.dataset.index);
+                    array.splice(index, 1);
+                    render();
+                }
+                input.focus();
+            };
+
+            return { render };
+        }
+
+        const categoryInput = createTagInput('#categoriesWrapper', '#categoryInput', categories);
+        const tagInput = createTagInput('#tagsWrapper', '#tagInput', tags);
+
+        // Cover image preview
+        $('#coverImage').oninput = Utils.debounce(() => {
+            const url = $('#coverImage').value;
+            const preview = $('#coverPreview');
+            if (url) {
+                preview.querySelector('img').src = url;
+                preview.style.display = 'block';
+            } else {
+                preview.style.display = 'none';
+            }
+        }, 300);
+
+        // Auto-generate filename from title
+        $('#postTitle').oninput = Utils.debounce(() => {
+            if (!isEditMode && !$('#filename').value) {
+                const title = $('#postTitle').value;
+                if (title) {
+                    $('#filename').value = Utils.slug(title) + '.md';
+                }
+            }
+        }, 300);
+
+        // Insert image
+        $('#insertImageBtn').onclick = () => {
+            const url = prompt('请输入图片 URL:');
+            if (url) {
+                const cm = easyMDE.codemirror;
+                const pos = cm.getCursor();
+                cm.replaceRange(`![图片描述](${url})`, pos);
+            }
+        };
+
+        // Load post for editing
+        async function loadPost(filename) {
+            try {
+                const data = await API.get(`/posts/${encodeURIComponent(filename)}`);
+
+                isEditMode = true;
+                originalFilename = filename;
+
+                $('#postTitle').value = data.frontMatter.title || '';
+                $('#filename').value = filename;
+                easyMDE.value(data.content || '');
+
+                if (data.frontMatter.date) {
+                    const date = new Date(data.frontMatter.date);
+                    $('#postDate').value = date.toISOString().slice(0, 16);
+                }
+
+                if (data.frontMatter.categories) {
+                    categories.length = 0;
+                    const cats = Array.isArray(data.frontMatter.categories) ? data.frontMatter.categories : [data.frontMatter.categories];
+                    cats.forEach(c => categories.push(c));
+                    categoryInput.render();
+                }
+
+                if (data.frontMatter.tags) {
+                    tags.length = 0;
+                    const ts = Array.isArray(data.frontMatter.tags) ? data.frontMatter.tags : [data.frontMatter.tags];
+                    ts.forEach(t => tags.push(t));
+                    tagInput.render();
+                }
+
+                if (data.frontMatter.cover) {
+                    $('#coverImage').value = data.frontMatter.cover;
+                    $('#coverPreview').querySelector('img').src = data.frontMatter.cover;
+                    $('#coverPreview').style.display = 'block';
+                }
+
+                document.title = `编辑: ${data.frontMatter.title} - 星苒鸭`;
+
+            } catch (e) {
+                UI.toast('加载文章失败', 'error');
+            }
+        }
+
+        // Save post
+        $('#saveBtn').onclick = async () => {
+            const title = $('#postTitle').value.trim();
+            let filename = $('#filename').value.trim();
+            const content = easyMDE.value();
+
+            if (!title) {
+                UI.toast('请输入文章标题', 'warning');
+                return;
+            }
+
+            if (!filename) {
+                filename = Utils.slug(title) + '.md';
+            }
+            if (!filename.endsWith('.md')) {
+                filename += '.md';
+            }
+
+            const frontMatter = {
+                title,
+                date: $('#postDate').value ? new Date($('#postDate').value) : new Date(),
+                categories: categories.length > 0 ? categories : undefined,
+                tags: tags.length > 0 ? tags : undefined
+            };
+
+            const cover = $('#coverImage').value.trim();
+            if (cover) frontMatter.cover = cover;
+
+            try {
+                $('#saveStatus').textContent = '保存中...';
+
+                if (isEditMode) {
+                    await API.put(`/posts/${encodeURIComponent(originalFilename)}`, {
+                        content,
+                        frontMatter
+                    });
+                } else {
+                    await API.post('/posts', {
+                        title,
+                        filename,
+                        content,
+                        frontMatter
+                    });
+                    isEditMode = true;
+                    originalFilename = filename;
+                }
+
+                $('#saveStatus').textContent = '已保存';
+                UI.toast('保存成功', 'success');
+
+                setTimeout(() => {
+                    $('#saveStatus').textContent = '';
+                }, 3000);
+
+            } catch (e) {
+                $('#saveStatus').textContent = '保存失败';
+            }
+        };
+
+        // Keyboard shortcut
+        document.onkeydown = (e) => {
+            if ((e.ctrlKey || e.metaKey) && e.key === 's') {
+                e.preventDefault();
+                $('#saveBtn').click();
+            }
+        };
+
+        // Init
+        const params = Router.getParams();
+        if (params.file) {
+            loadPost(params.file);
+        } else {
+            // New post
+            const now = new Date();
+            $('#postDate').value = now.toISOString().slice(0, 16);
+        }
+    </script>
+</body>
+</html>

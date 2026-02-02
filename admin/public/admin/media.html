@@ -1,0 +1,450 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>媒体库 - 星苒鸭</title>
+    <link rel="stylesheet" href="/css/admin.css">
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&display=swap" rel="stylesheet">
+    <style>
+        body { font-family: 'Inter', system-ui, sans-serif; }
+
+        .upload-zone {
+            border: 2px dashed var(--a-border);
+            border-radius: var(--a-radius);
+            padding: 3rem;
+            text-align: center;
+            cursor: pointer;
+            transition: all 0.2s;
+            background: var(--a-bg-card);
+        }
+        .upload-zone:hover, .upload-zone.dragover {
+            border-color: var(--a-primary);
+            background: var(--a-primary-light);
+        }
+        .upload-zone svg {
+            width: 48px;
+            height: 48px;
+            color: var(--a-text-3);
+            margin-bottom: 1rem;
+        }
+        .upload-zone.dragover svg {
+            color: var(--a-primary);
+        }
+
+        .media-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fill, minmax(180px, 1fr));
+            gap: 1rem;
+        }
+        .media-item {
+            position: relative;
+            aspect-ratio: 1;
+            border-radius: var(--a-radius);
+            overflow: hidden;
+            cursor: pointer;
+            background: var(--a-bg-card);
+            border: 1px solid var(--a-border);
+        }
+        .media-item img {
+            width: 100%;
+            height: 100%;
+            object-fit: cover;
+            transition: transform 0.2s;
+        }
+        .media-item:hover img {
+            transform: scale(1.05);
+        }
+        .media-item .media-overlay {
+            position: absolute;
+            inset: 0;
+            background: linear-gradient(to top, rgba(0,0,0,0.7), transparent);
+            opacity: 0;
+            transition: opacity 0.2s;
+            display: flex;
+            align-items: flex-end;
+            padding: 0.75rem;
+        }
+        .media-item:hover .media-overlay {
+            opacity: 1;
+        }
+        .media-overlay .media-actions {
+            display: flex;
+            gap: 0.5rem;
+            width: 100%;
+        }
+        .media-overlay button {
+            flex: 1;
+            padding: 0.5rem;
+            border: none;
+            border-radius: 6px;
+            font-size: 0.75rem;
+            cursor: pointer;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            gap: 0.25rem;
+        }
+        .media-overlay .btn-copy {
+            background: rgba(255,255,255,0.9);
+            color: #333;
+        }
+        .media-overlay .btn-md {
+            background: var(--a-primary);
+            color: white;
+        }
+
+        .upload-progress {
+            display: none;
+            margin-top: 1rem;
+        }
+        .upload-progress.show {
+            display: block;
+        }
+        .progress-bar {
+            height: 8px;
+            background: var(--a-border);
+            border-radius: 4px;
+            overflow: hidden;
+        }
+        .progress-fill {
+            height: 100%;
+            background: var(--a-primary);
+            width: 0%;
+            transition: width 0.3s;
+        }
+        .progress-text {
+            font-size: 0.875rem;
+            color: var(--a-text-2);
+            margin-top: 0.5rem;
+        }
+    </style>
+</head>
+<body>
+    <!-- Sidebar Overlay -->
+    <div class="sidebar-overlay" id="sidebarOverlay"></div>
+
+    <!-- Sidebar -->
+    <aside class="glass-sidebar" id="sidebar">
+        <div class="sidebar-header">
+            <div class="sidebar-logo">星苒鸭</div>
+        </div>
+        <nav class="sidebar-nav">
+            <a href="/admin/" class="nav-item">
+                <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+                    <rect x="3" y="3" width="7" height="7"></rect>
+                    <rect x="14" y="3" width="7" height="7"></rect>
+                    <rect x="14" y="14" width="7" height="7"></rect>
+                    <rect x="3" y="14" width="7" height="7"></rect>
+                </svg>
+                控制台
+            </a>
+            <a href="/admin/posts.html" class="nav-item">
+                <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+                    <path d="M12 19l7-7 3 3-7 7-3-3z"></path>
+                    <path d="M18 13l-1.5-7.5L2 2l3.5 14.5L13 18l5-5z"></path>
+                    <circle cx="11" cy="11" r="2"></circle>
+                </svg>
+                文章管理
+            </a>
+            <a href="/admin/editor.html" class="nav-item">
+                <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+                    <path d="M11 4H4a2 2 0 0 0-2 2v14a2 2 0 0 0 2 2h14a2 2 0 0 0 2-2v-7"></path>
+                    <path d="M18.5 2.5a2.121 2.121 0 0 1 3 3L12 15l-4 1 1-4 9.5-9.5z"></path>
+                </svg>
+                写文章
+            </a>
+            <a href="/admin/media.html" class="nav-item active">
+                <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+                    <rect x="3" y="3" width="18" height="18" rx="2" ry="2"></rect>
+                    <circle cx="8.5" cy="8.5" r="1.5"></circle>
+                    <polyline points="21 15 16 10 5 21"></polyline>
+                </svg>
+                媒体库
+            </a>
+            <div class="nav-section-title">系统</div>
+            <a href="/admin/deploy.html" class="nav-item">
+                <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+                    <polygon points="13 2 3 14 12 14 11 22 21 10 12 10 13 2"></polygon>
+                </svg>
+                部署管理
+            </a>
+            <a href="/admin/settings.html" class="nav-item">
+                <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+                    <circle cx="12" cy="12" r="3"></circle>
+                    <path d="M19.4 15a1.65 1.65 0 0 0 .33 1.82l.06.06a2 2 0 0 1 0 2.83 2 2 0 0 1-2.83 0l-.06-.06a1.65 1.65 0 0 0-1.82-.33 1.65 1.65 0 0 0-1 1.51V21a2 2 0 0 1-2 2 2 2 0 0 1-2-2v-.09A1.65 1.65 0 0 0 9 19.4a1.65 1.65 0 0 0-1.82.33l-.06.06a2 2 0 0 1-2.83 0 2 2 0 0 1 0-2.83l.06-.06a1.65 1.65 0 0 0 .33-1.82 1.65 1.65 0 0 0-1.51-1H3a2 2 0 0 1-2-2 2 2 0 0 1 2-2h.09A1.65 1.65 0 0 0 4.6 9a1.65 1.65 0 0 0-.33-1.82l-.06-.06a2 2 0 0 1 0-2.83 2 2 0 0 1 2.83 0l.06.06a1.65 1.65 0 0 0 1.82.33H9a1.65 1.65 0 0 0 1-1.51V3a2 2 0 0 1 2-2 2 2 0 0 1 2 2v.09a1.65 1.65 0 0 0 1 1.51 1.65 1.65 0 0 0 1.82-.33l.06-.06a2 2 0 0 1 2.83 0 2 2 0 0 1 0 2.83l-.06.06a1.65 1.65 0 0 0-.33 1.82V9a1.65 1.65 0 0 0 1.51 1H21a2 2 0 0 1 2 2 2 2 0 0 1-2 2h-.09a1.65 1.65 0 0 0-1.51 1z"></path>
+                </svg>
+                站点设置
+            </a>
+        </nav>
+        <div class="sidebar-footer">
+            <a href="#" class="nav-item" id="logoutBtn">
+                <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+                    <path d="M9 21H5a2 2 0 0 1-2-2V5a2 2 0 0 1 2-2h4"></path>
+                    <polyline points="16 17 21 12 16 7"></polyline>
+                    <line x1="21" y1="12" x2="9" y2="12"></line>
+                </svg>
+                退出登录
+            </a>
+        </div>
+    </aside>
+
+    <!-- Main Content -->
+    <main class="main-content">
+        <!-- Header -->
+        <header style="display: flex; justify-content: space-between; align-items: center; margin-bottom: 2rem;">
+            <button class="btn-icon" id="menuBtn" style="display: none;">
+                <svg width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+                    <line x1="3" y1="12" x2="21" y2="12"></line>
+                    <line x1="3" y1="6" x2="21" y2="6"></line>
+                    <line x1="3" y1="18" x2="21" y2="18"></line>
+                </svg>
+            </button>
+            <div style="display: flex; gap: 0.5rem; align-items: center; margin-left: auto;">
+                <button class="btn-icon" id="themeToggle">
+                    <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" id="themeIcon">
+                        <path d="M21 12.79A9 9 0 1 1 11.21 3 7 7 0 0 0 21 12.79z"></path>
+                    </svg>
+                </button>
+                <div class="user-avatar">星</div>
+            </div>
+        </header>
+
+        <!-- Page Header -->
+        <div class="page-header">
+            <div>
+                <h1 class="page-title">媒体库</h1>
+                <p class="page-subtitle">管理图仓中的图片资源</p>
+            </div>
+            <a href="https://tucang.cc/image/manage" target="_blank" class="btn-secondary">
+                <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+                    <path d="M18 13v6a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2V8a2 2 0 0 1 2-2h6"></path>
+                    <polyline points="15 3 21 3 21 9"></polyline>
+                    <line x1="10" y1="14" x2="21" y2="3"></line>
+                </svg>
+                图仓管理
+            </a>
+        </div>
+
+        <!-- Upload Zone -->
+        <div class="glass-card" style="padding: 1.5rem; margin-bottom: 1.5rem;">
+            <div class="upload-zone" id="uploadZone">
+                <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5">
+                    <path d="M21 15v4a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2v-4"></path>
+                    <polyline points="17 8 12 3 7 8"></polyline>
+                    <line x1="12" y1="3" x2="12" y2="15"></line>
+                </svg>
+                <p style="margin: 0; font-weight: 500; color: var(--a-text);">点击或拖拽图片到此处上传</p>
+                <p style="margin: 0.5rem 0 0; font-size: 0.875rem; color: var(--a-text-3);">支持 JPG, PNG, GIF, WEBP</p>
+                <input type="file" id="fileInput" multiple accept="image/*" style="display: none;">
+            </div>
+            <div class="upload-progress" id="uploadProgress">
+                <div class="progress-bar">
+                    <div class="progress-fill" id="progressFill"></div>
+                </div>
+                <div class="progress-text" id="progressText">上传中...</div>
+            </div>
+        </div>
+
+        <!-- Media Grid -->
+        <div class="glass-card" style="padding: 1.5rem;">
+            <div style="display: flex; justify-content: space-between; align-items: center; margin-bottom: 1rem;">
+                <h3 style="font-size: 1rem; font-weight: 600; margin: 0;">已上传</h3>
+                <button class="btn-secondary btn-sm" id="refreshBtn">
+                    <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+                        <polyline points="23 4 23 10 17 10"></polyline>
+                        <path d="M20.49 15a9 9 0 1 1-2.12-9.36L23 10"></path>
+                    </svg>
+                    刷新
+                </button>
+            </div>
+            <div class="media-grid" id="mediaGrid">
+                <div style="grid-column: 1/-1; text-align: center; padding: 3rem; color: var(--a-text-3);">
+                    加载中...
+                </div>
+            </div>
+        </div>
+    </main>
+
+    <script src="/js/admin/core.js"></script>
+    <script>
+        const { $, $$, API, Auth, UI, Theme, Utils } = AdminCore;
+
+        if (!Auth.requireAuth()) throw new Error('Unauthorized');
+
+        // Mobile menu
+        const menuBtn = $('#menuBtn');
+        const sidebar = $('#sidebar');
+        const overlay = $('#sidebarOverlay');
+
+        function checkMobile() {
+            menuBtn.style.display = window.innerWidth <= 1024 ? 'flex' : 'none';
+            if (window.innerWidth > 1024) {
+                sidebar.classList.remove('open');
+                overlay.classList.remove('open');
+            }
+        }
+        checkMobile();
+        window.addEventListener('resize', checkMobile);
+
+        menuBtn.onclick = () => {
+            sidebar.classList.toggle('open');
+            overlay.classList.toggle('open');
+        };
+        overlay.onclick = () => {
+            sidebar.classList.remove('open');
+            overlay.classList.remove('open');
+        };
+
+        // Theme
+        $('#themeToggle').onclick = () => {
+            Theme.toggle();
+            updateThemeIcon();
+        };
+
+        function updateThemeIcon() {
+            const icon = $('#themeIcon');
+            icon.innerHTML = Theme.get() === 'dark'
+                ? '<circle cx="12" cy="12" r="5"></circle><line x1="12" y1="1" x2="12" y2="3"></line><line x1="12" y1="21" x2="12" y2="23"></line><line x1="4.22" y1="4.22" x2="5.64" y2="5.64"></line><line x1="18.36" y1="18.36" x2="19.78" y2="19.78"></line><line x1="1" y1="12" x2="3" y2="12"></line><line x1="21" y1="12" x2="23" y2="12"></line><line x1="4.22" y1="19.78" x2="5.64" y2="18.36"></line><line x1="18.36" y1="5.64" x2="19.78" y2="4.22"></line>'
+                : '<path d="M21 12.79A9 9 0 1 1 11.21 3 7 7 0 0 0 21 12.79z"></path>';
+        }
+        updateThemeIcon();
+
+        $('#logoutBtn').onclick = (e) => { e.preventDefault(); Auth.logout(); };
+
+        // State
+        let mediaList = [];
+
+        // Load media
+        async function loadMedia() {
+            const grid = $('#mediaGrid');
+            try {
+                const data = await API.get('/media');
+                mediaList = data.files || [];
+                renderMedia();
+            } catch (e) {
+                grid.innerHTML = '<div style="grid-column: 1/-1; text-align: center; padding: 3rem; color: var(--a-danger);">加载失败</div>';
+            }
+        }
+
+        function renderMedia() {
+            const grid = $('#mediaGrid');
+
+            if (mediaList.length === 0) {
+                grid.innerHTML = `
+                    <div style="grid-column: 1/-1; text-align: center; padding: 3rem;">
+                        <svg width="48" height="48" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5" style="opacity: 0.3; margin-bottom: 1rem;">
+                            <rect x="3" y="3" width="18" height="18" rx="2" ry="2"></rect>
+                            <circle cx="8.5" cy="8.5" r="1.5"></circle>
+                            <polyline points="21 15 16 10 5 21"></polyline>
+                        </svg>
+                        <p style="color: var(--a-text-3); margin: 0;">暂无图片</p>
+                    </div>`;
+                return;
+            }
+
+            grid.innerHTML = mediaList.map((file, idx) => `
+                <div class="media-item" data-idx="${idx}">
+                    <img src="${file.url}" alt="${file.name}" loading="lazy">
+                    <div class="media-overlay">
+                        <div class="media-actions">
+                            <button class="btn-copy" onclick="copyUrl(${idx})">复制链接</button>
+                            <button class="btn-md" onclick="copyMd(${idx})">MD</button>
+                        </div>
+                    </div>
+                </div>
+            `).join('');
+        }
+
+        window.copyUrl = (idx) => {
+            const file = mediaList[idx];
+            navigator.clipboard.writeText(file.url);
+            UI.toast('链接已复制', 'success');
+        };
+
+        window.copyMd = (idx) => {
+            const file = mediaList[idx];
+            const md = `![${file.name}](${file.url})`;
+            navigator.clipboard.writeText(md);
+            UI.toast('Markdown已复制', 'success');
+        };
+
+        // Upload
+        const uploadZone = $('#uploadZone');
+        const fileInput = $('#fileInput');
+        const progressEl = $('#uploadProgress');
+        const progressFill = $('#progressFill');
+        const progressText = $('#progressText');
+
+        uploadZone.onclick = () => fileInput.click();
+
+        uploadZone.ondragover = (e) => {
+            e.preventDefault();
+            uploadZone.classList.add('dragover');
+        };
+        uploadZone.ondragleave = () => uploadZone.classList.remove('dragover');
+        uploadZone.ondrop = (e) => {
+            e.preventDefault();
+            uploadZone.classList.remove('dragover');
+            handleFiles(e.dataTransfer.files);
+        };
+
+        fileInput.onchange = () => handleFiles(fileInput.files);
+
+        async function handleFiles(files) {
+            if (!files.length) return;
+
+            progressEl.classList.add('show');
+            let uploaded = 0;
+            const total = files.length;
+
+            for (const file of files) {
+                progressText.textContent = `上传中 (${uploaded + 1}/${total}): ${file.name}`;
+                progressFill.style.width = `${(uploaded / total) * 100}%`;
+
+                try {
+                    const formData = new FormData();
+                    formData.append('file', file);
+
+                    const res = await fetch('/api/media/upload', {
+                        method: 'POST',
+                        headers: {
+                            'Authorization': `Bearer ${localStorage.getItem('token')}`
+                        },
+                        body: formData
+                    });
+
+                    if (!res.ok) throw new Error('Upload failed');
+
+                    const data = await res.json();
+                    if (data.url) {
+                        mediaList.unshift({ url: data.url, name: file.name });
+                    }
+                } catch (e) {
+                    UI.toast(`上传失败: ${file.name}`, 'error');
+                }
+
+                uploaded++;
+                progressFill.style.width = `${(uploaded / total) * 100}%`;
+            }
+
+            progressText.textContent = '上传完成';
+            setTimeout(() => {
+                progressEl.classList.remove('show');
+                progressFill.style.width = '0%';
+            }, 1500);
+
+            renderMedia();
+            fileInput.value = '';
+        }
+
+        // Refresh
+        $('#refreshBtn').onclick = loadMedia;
+
+        // Init
+        loadMedia();
+    </script>
+</body>
+</html>

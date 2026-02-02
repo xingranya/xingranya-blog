@@ -1,0 +1,323 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>站点设置 - 星苒鸭</title>
+    <link rel="stylesheet" href="/css/admin.css">
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&display=swap" rel="stylesheet">
+    <style>body { font-family: 'Inter', system-ui, sans-serif; }</style>
+</head>
+<body>
+    <!-- Sidebar Overlay -->
+    <div class="sidebar-overlay" id="sidebarOverlay"></div>
+
+    <!-- Sidebar -->
+    <aside class="glass-sidebar" id="sidebar">
+        <div class="sidebar-header">
+            <div class="sidebar-logo">星苒鸭</div>
+        </div>
+        <nav class="sidebar-nav">
+            <a href="/admin/" class="nav-item">
+                <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+                    <rect x="3" y="3" width="7" height="7"></rect>
+                    <rect x="14" y="3" width="7" height="7"></rect>
+                    <rect x="14" y="14" width="7" height="7"></rect>
+                    <rect x="3" y="14" width="7" height="7"></rect>
+                </svg>
+                控制台
+            </a>
+            <a href="/admin/posts.html" class="nav-item">
+                <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+                    <path d="M12 19l7-7 3 3-7 7-3-3z"></path>
+                    <path d="M18 13l-1.5-7.5L2 2l3.5 14.5L13 18l5-5z"></path>
+                    <circle cx="11" cy="11" r="2"></circle>
+                </svg>
+                文章管理
+            </a>
+            <a href="/admin/editor.html" class="nav-item">
+                <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+                    <path d="M11 4H4a2 2 0 0 0-2 2v14a2 2 0 0 0 2 2h14a2 2 0 0 0 2-2v-7"></path>
+                    <path d="M18.5 2.5a2.121 2.121 0 0 1 3 3L12 15l-4 1 1-4 9.5-9.5z"></path>
+                </svg>
+                写文章
+            </a>
+            <a href="/admin/media.html" class="nav-item">
+                <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+                    <rect x="3" y="3" width="18" height="18" rx="2" ry="2"></rect>
+                    <circle cx="8.5" cy="8.5" r="1.5"></circle>
+                    <polyline points="21 15 16 10 5 21"></polyline>
+                </svg>
+                媒体库
+            </a>
+            <div class="nav-section-title">系统</div>
+            <a href="/admin/deploy.html" class="nav-item">
+                <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+                    <polygon points="13 2 3 14 12 14 11 22 21 10 12 10 13 2"></polygon>
+                </svg>
+                部署管理
+            </a>
+            <a href="/admin/settings.html" class="nav-item active">
+                <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+                    <circle cx="12" cy="12" r="3"></circle>
+                    <path d="M19.4 15a1.65 1.65 0 0 0 .33 1.82l.06.06a2 2 0 0 1 0 2.83 2 2 0 0 1-2.83 0l-.06-.06a1.65 1.65 0 0 0-1.82-.33 1.65 1.65 0 0 0-1 1.51V21a2 2 0 0 1-2 2 2 2 0 0 1-2-2v-.09A1.65 1.65 0 0 0 9 19.4a1.65 1.65 0 0 0-1.82.33l-.06.06a2 2 0 0 1-2.83 0 2 2 0 0 1 0-2.83l.06-.06a1.65 1.65 0 0 0 .33-1.82 1.65 1.65 0 0 0-1.51-1H3a2 2 0 0 1-2-2 2 2 0 0 1 2-2h.09A1.65 1.65 0 0 0 4.6 9a1.65 1.65 0 0 0-.33-1.82l-.06-.06a2 2 0 0 1 0-2.83 2 2 0 0 1 2.83 0l.06.06a1.65 1.65 0 0 0 1.82.33H9a1.65 1.65 0 0 0 1-1.51V3a2 2 0 0 1 2-2 2 2 0 0 1 2 2v.09a1.65 1.65 0 0 0 1 1.51 1.65 1.65 0 0 0 1.82-.33l.06-.06a2 2 0 0 1 2.83 0 2 2 0 0 1 0 2.83l-.06.06a1.65 1.65 0 0 0-.33 1.82V9a1.65 1.65 0 0 0 1.51 1H21a2 2 0 0 1 2 2 2 2 0 0 1-2 2h-.09a1.65 1.65 0 0 0-1.51 1z"></path>
+                </svg>
+                站点设置
+            </a>
+        </nav>
+        <div class="sidebar-footer">
+            <a href="#" class="nav-item" id="logoutBtn">
+                <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+                    <path d="M9 21H5a2 2 0 0 1-2-2V5a2 2 0 0 1 2-2h4"></path>
+                    <polyline points="16 17 21 12 16 7"></polyline>
+                    <line x1="21" y1="12" x2="9" y2="12"></line>
+                </svg>
+                退出登录
+            </a>
+        </div>
+    </aside>
+
+    <!-- Main Content -->
+    <main class="main-content">
+        <!-- Header -->
+        <header style="display: flex; justify-content: space-between; align-items: center; margin-bottom: 2rem;">
+            <button class="btn-icon" id="menuBtn" style="display: none;">
+                <svg width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+                    <line x1="3" y1="12" x2="21" y2="12"></line>
+                    <line x1="3" y1="6" x2="21" y2="6"></line>
+                    <line x1="3" y1="18" x2="21" y2="18"></line>
+                </svg>
+            </button>
+            <div style="display: flex; gap: 0.5rem; align-items: center; margin-left: auto;">
+                <button class="btn-icon" id="themeToggle">
+                    <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" id="themeIcon">
+                        <path d="M21 12.79A9 9 0 1 1 11.21 3 7 7 0 0 0 21 12.79z"></path>
+                    </svg>
+                </button>
+                <div class="user-avatar">星</div>
+            </div>
+        </header>
+
+        <!-- Page Header -->
+        <div class="page-header">
+            <div>
+                <h1 class="page-title">站点设置</h1>
+                <p class="page-subtitle">配置博客参数和管理员信息</p>
+            </div>
+        </div>
+
+        <!-- Settings Grid -->
+        <div style="display: grid; grid-template-columns: repeat(auto-fit, minmax(400px, 1fr)); gap: 1.5rem; max-width: 1000px;">
+            <!-- Password Card -->
+            <div class="glass-card" style="padding: 1.5rem;">
+                <h3 style="font-size: 1.125rem; font-weight: 600; margin: 0 0 1.5rem 0; display: flex; align-items: center; gap: 0.5rem;">
+                    <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+                        <rect x="3" y="11" width="18" height="11" rx="2" ry="2"></rect>
+                        <path d="M7 11V7a5 5 0 0 1 10 0v4"></path>
+                    </svg>
+                    修改密码
+                </h3>
+                <form id="passwordForm">
+                    <div class="form-group">
+                        <label class="form-label">原密码</label>
+                        <input type="password" id="oldPassword" class="form-input" required autocomplete="current-password">
+                    </div>
+                    <div class="form-group">
+                        <label class="form-label">新密码</label>
+                        <input type="password" id="newPassword" class="form-input" required minlength="6" autocomplete="new-password">
+                    </div>
+                    <div class="form-group">
+                        <label class="form-label">确认新密码</label>
+                        <input type="password" id="confirmPassword" class="form-input" required minlength="6" autocomplete="new-password">
+                    </div>
+                    <button type="submit" class="btn-primary" style="width: 100%;">
+                        <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+                            <path d="M19 21H5a2 2 0 0 1-2-2V5a2 2 0 0 1 2-2h11l5 5v11a2 2 0 0 1-2 2z"></path>
+                            <polyline points="17 21 17 13 7 13 7 21"></polyline>
+                            <polyline points="7 3 7 8 15 8"></polyline>
+                        </svg>
+                        更新密码
+                    </button>
+                </form>
+            </div>
+
+            <!-- Config Info Card -->
+            <div class="glass-card" style="padding: 1.5rem;">
+                <h3 style="font-size: 1.125rem; font-weight: 600; margin: 0 0 1.5rem 0; display: flex; align-items: center; gap: 0.5rem;">
+                    <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+                        <circle cx="12" cy="12" r="10"></circle>
+                        <line x1="12" y1="16" x2="12" y2="12"></line>
+                        <line x1="12" y1="8" x2="12.01" y2="8"></line>
+                    </svg>
+                    系统信息
+                </h3>
+                <div class="form-group">
+                    <label class="form-label">图仓 API</label>
+                    <input type="text" class="form-input" value="https://api.tucang.cc/api/v1/upload" disabled style="opacity: 0.7;">
+                </div>
+                <div class="form-group">
+                    <label class="form-label">图仓 Folder ID</label>
+                    <input type="text" class="form-input" value="3528" disabled style="opacity: 0.7;">
+                </div>
+                <div class="form-group">
+                    <label class="form-label">服务端口</label>
+                    <input type="text" class="form-input" value="3001" disabled style="opacity: 0.7;">
+                </div>
+                <div style="padding: 1rem; background: var(--a-primary-light); border-radius: var(--a-radius-sm); margin-top: 1rem;">
+                    <p style="margin: 0; font-size: 0.875rem; color: var(--a-text-2);">
+                        <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" style="display: inline; vertical-align: middle; margin-right: 0.25rem;">
+                            <circle cx="12" cy="12" r="10"></circle>
+                            <line x1="12" y1="16" x2="12" y2="12"></line>
+                            <line x1="12" y1="8" x2="12.01" y2="8"></line>
+                        </svg>
+                        更多配置请直接修改服务器端的 <code style="background: var(--a-bg-card); padding: 0.125rem 0.375rem; border-radius: 4px;">.env</code> 文件
+                    </p>
+                </div>
+            </div>
+
+            <!-- Tucang Link Card -->
+            <div class="glass-card" style="padding: 1.5rem;">
+                <h3 style="font-size: 1.125rem; font-weight: 600; margin: 0 0 1.5rem 0; display: flex; align-items: center; gap: 0.5rem;">
+                    <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+                        <rect x="3" y="3" width="18" height="18" rx="2" ry="2"></rect>
+                        <circle cx="8.5" cy="8.5" r="1.5"></circle>
+                        <polyline points="21 15 16 10 5 21"></polyline>
+                    </svg>
+                    图仓管理
+                </h3>
+                <p style="color: var(--a-text-2); margin: 0 0 1rem 0; font-size: 0.875rem;">
+                    管理上传到图仓的所有图片资源
+                </p>
+                <a href="https://tucang.cc/image/manage" target="_blank" class="btn-secondary" style="width: 100%; justify-content: center;">
+                    <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+                        <path d="M18 13v6a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2V8a2 2 0 0 1 2-2h6"></path>
+                        <polyline points="15 3 21 3 21 9"></polyline>
+                        <line x1="10" y1="14" x2="21" y2="3"></line>
+                    </svg>
+                    前往图仓管理
+                </a>
+            </div>
+
+            <!-- Theme Card -->
+            <div class="glass-card" style="padding: 1.5rem;">
+                <h3 style="font-size: 1.125rem; font-weight: 600; margin: 0 0 1.5rem 0; display: flex; align-items: center; gap: 0.5rem;">
+                    <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+                        <circle cx="12" cy="12" r="5"></circle>
+                        <line x1="12" y1="1" x2="12" y2="3"></line>
+                        <line x1="12" y1="21" x2="12" y2="23"></line>
+                        <line x1="4.22" y1="4.22" x2="5.64" y2="5.64"></line>
+                        <line x1="18.36" y1="18.36" x2="19.78" y2="19.78"></line>
+                        <line x1="1" y1="12" x2="3" y2="12"></line>
+                        <line x1="21" y1="12" x2="23" y2="12"></line>
+                        <line x1="4.22" y1="19.78" x2="5.64" y2="18.36"></line>
+                        <line x1="18.36" y1="5.64" x2="19.78" y2="4.22"></line>
+                    </svg>
+                    主题设置
+                </h3>
+                <p style="color: var(--a-text-2); margin: 0 0 1rem 0; font-size: 0.875rem;">
+                    当前主题: <span id="currentTheme" style="font-weight: 500; color: var(--a-text);">浅色</span>
+                </p>
+                <button id="switchThemeBtn" class="btn-secondary" style="width: 100%; justify-content: center;">
+                    <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+                        <path d="M21 12.79A9 9 0 1 1 11.21 3 7 7 0 0 0 21 12.79z"></path>
+                    </svg>
+                    切换为深色模式
+                </button>
+            </div>
+        </div>
+    </main>
+
+    <script src="/js/admin/core.js"></script>
+    <script>
+        const { $, $$, API, Auth, UI, Theme, Utils } = AdminCore;
+
+        if (!Auth.requireAuth()) throw new Error('Unauthorized');
+
+        // Mobile menu
+        const menuBtn = $('#menuBtn');
+        const sidebar = $('#sidebar');
+        const overlay = $('#sidebarOverlay');
+
+        function checkMobile() {
+            menuBtn.style.display = window.innerWidth <= 1024 ? 'flex' : 'none';
+            if (window.innerWidth > 1024) {
+                sidebar.classList.remove('open');
+                overlay.classList.remove('open');
+            }
+        }
+        checkMobile();
+        window.addEventListener('resize', checkMobile);
+
+        menuBtn.onclick = () => {
+            sidebar.classList.toggle('open');
+            overlay.classList.toggle('open');
+        };
+        overlay.onclick = () => {
+            sidebar.classList.remove('open');
+            overlay.classList.remove('open');
+        };
+
+        // Theme
+        $('#themeToggle').onclick = () => {
+            Theme.toggle();
+            updateThemeIcon();
+            updateThemeCard();
+        };
+
+        function updateThemeIcon() {
+            const icon = $('#themeIcon');
+            icon.innerHTML = Theme.get() === 'dark'
+                ? '<circle cx="12" cy="12" r="5"></circle><line x1="12" y1="1" x2="12" y2="3"></line><line x1="12" y1="21" x2="12" y2="23"></line><line x1="4.22" y1="4.22" x2="5.64" y2="5.64"></line><line x1="18.36" y1="18.36" x2="19.78" y2="19.78"></line><line x1="1" y1="12" x2="3" y2="12"></line><line x1="21" y1="12" x2="23" y2="12"></line><line x1="4.22" y1="19.78" x2="5.64" y2="18.36"></line><line x1="18.36" y1="5.64" x2="19.78" y2="4.22"></line>'
+                : '<path d="M21 12.79A9 9 0 1 1 11.21 3 7 7 0 0 0 21 12.79z"></path>';
+        }
+
+        function updateThemeCard() {
+            const isDark = Theme.get() === 'dark';
+            $('#currentTheme').textContent = isDark ? '深色' : '浅色';
+            $('#switchThemeBtn').innerHTML = isDark
+                ? '<svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><circle cx="12" cy="12" r="5"></circle><line x1="12" y1="1" x2="12" y2="3"></line><line x1="12" y1="21" x2="12" y2="23"></line><line x1="4.22" y1="4.22" x2="5.64" y2="5.64"></line><line x1="18.36" y1="18.36" x2="19.78" y2="19.78"></line><line x1="1" y1="12" x2="3" y2="12"></line><line x1="21" y1="12" x2="23" y2="12"></line><line x1="4.22" y1="19.78" x2="5.64" y2="18.36"></line><line x1="18.36" y1="5.64" x2="19.78" y2="4.22"></line></svg> 切换为浅色模式'
+                : '<svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M21 12.79A9 9 0 1 1 11.21 3 7 7 0 0 0 21 12.79z"></path></svg> 切换为深色模式';
+        }
+
+        updateThemeIcon();
+        updateThemeCard();
+
+        $('#switchThemeBtn').onclick = () => {
+            Theme.toggle();
+            updateThemeIcon();
+            updateThemeCard();
+        };
+
+        $('#logoutBtn').onclick = (e) => { e.preventDefault(); Auth.logout(); };
+
+        // Password Form
+        $('#passwordForm').onsubmit = async (e) => {
+            e.preventDefault();
+
+            const oldPassword = $('#oldPassword').value;
+            const newPassword = $('#newPassword').value;
+            const confirmPassword = $('#confirmPassword').value;
+
+            if (newPassword !== confirmPassword) {
+                UI.toast('两次输入的密码不一致', 'error');
+                return;
+            }
+
+            if (newPassword.length < 6) {
+                UI.toast('新密码至少需要6个字符', 'error');
+                return;
+            }
+
+            try {
+                await API.post('/config/password', { oldPassword, newPassword });
+                UI.toast('密码已更新，请重新登录', 'success');
+                setTimeout(() => Auth.logout(), 1500);
+            } catch (e) {
+                // Error handled by API
+            }
+        };
+    </script>
+</body>
+</html>

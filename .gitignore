@@ -1,5 +1,5 @@
 node_modules/
-public/
+/public/
 db.json
 .deploy_git/
 *.log
