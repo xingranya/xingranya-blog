@@ -43,14 +43,26 @@
         0px,
         38px
       )
-
+      
+      .home-article-thumbnail
+        position relative
+        width 100%
+        aspect-ratio 16/9
+        max-height 200px
+        
+        +redefine-tablet()
+          max-height 180px
+          
+        +redefine-mobile()
+          max-height 150px
+        
       .home-article-thumbnail img
           width 100%
           height 100%
           object-fit cover
           position absolute
-          top 50%
-          transform translateY(-50%)
+          top 0
+          left 0
 
       .home-article-title
         position relative

@@ -68,11 +68,19 @@ $logo-image-box-width = 34px
 
       .logo-title
         font-size $logo-title-font-size
-        font-weight 520
-        //letter-spacing 1px
-        line-height 1
+        font-weight 600
+        line-height 1.2
         color var(--first-text-color)
         transform translateY(1px)
+        text-shadow 1px 1px 3px rgba(0, 0, 0, 0.3)
+        letter-spacing 0.5px
+        transition all 0.3s ease
+        
+        &:hover
+          color var(--primary-color)
+          transform translateY(1px) scale(1.03)
+          text-shadow 2px 2px 4px rgba(0, 0, 0, 0.4)
+
         if hexo-config('global.fonts.title.enable') {
           font-family hexo-config('global.fonts.title.family')
         }
@@ -80,11 +88,12 @@ $logo-image-box-width = 34px
         h1
           margin 0
           font-size $logo-title-font-size
-          font-weight 520
-          //letter-spacing 1px
-          line-height 1
+          font-weight 600
+          line-height 1.2
           color var(--first-text-color)
           transform translateY(1px)
+          text-shadow 1px 1px 3px rgba(0, 0, 0, 0.3)
+          letter-spacing 0.5px
 
           +redefine-tablet()
             font-size: $logo-title-font-size * 0.9
