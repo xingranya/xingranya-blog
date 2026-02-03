@@ -30,12 +30,28 @@ $home-banner-icon-size = 1.6rem
       font-size $title-font-size
       line-height $line-height
       color var(--home-banner-text-color)
+      position relative
+      padding 24px 40px
+      border-radius $redefine-border-radius-large
+      background var(--background-color-transparent-40)
+      backdrop-filter blur(16px)
+      -webkit-backdrop-filter blur(16px)
+      border 1px solid rgba(255, 255, 255, 0.2)
+      box-shadow var(--redefine-box-shadow)
+      width auto
+      min-width 400px
+      max-width 90%
+      display inline-block
+      white-space nowrap
 
       p
         margin 0
-        opacity 0.9
+        opacity 0.95
         font-family 'Geist Variable', sans-serif
-        font-weight 350
+        font-weight 400
+        position relative
+        z-index 1
+        white-space nowrap
 
         i
           font-size $subtitle-font-size
@@ -46,3 +62,10 @@ $home-banner-icon-size = 1.6rem
 
       +redefine-tablet()
         font-size: $title-font-size * 0.9
+        padding 20px 32px
+        min-width 300px
+        max-width 95%
+        
+      +redefine-mobile()
+        min-width 280px
+        max-width 95%
