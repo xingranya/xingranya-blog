@@ -1,8 +1,8 @@
 ---
 title: HTTP/HTTPS 协议详解
-date: 2026-02-02 14:00:00
-banner: "理解 Web 通信的底层逻辑"
-cover: /images/main_bg.jpg
+date: '2026-02-02 14:00:00'
+banner: 理解 Web 通信的底层逻辑
+cover: 'https://img1.tucang.cc/api/image/show/a3f61f32014a8a86b14894736fed953c'
 tags:
   - HTTP
   - HTTPS

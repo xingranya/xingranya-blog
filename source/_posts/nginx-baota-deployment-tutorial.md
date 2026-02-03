@@ -1,8 +1,8 @@
 ---
 title: 基于宝塔面板和 Nginx 的网站部署实战教程
-date: 2025-10-27 22:00:23
-banner: "从代码到世界，只需几步之遥"
-cover: /images/main_bg.jpg
+date: '2025-10-27 22:00:00'
+banner: 从代码到世界，只需几步之遥
+cover: 'https://img1.tucang.cc/api/image/show/995dee51a079528dbe0be6cd50bb0b73'
 tags:
   - Nginx
   - 宝塔面板

@@ -1,7 +1,8 @@
 ---
 title: HTML 快速入门
-banner: "HTML 基础开发学习笔记"
-cover: /images/main_bg.jpg
+banner: HTML 基础开发学习笔记
+cover: 'https://img1.tucang.cc/api/image/show/e039b3959f2ba0c7b984766a8e49a7a0'
+date: '2026-02-02 19:43:00'
 ---
 
 HTML (HyperText Markup Language, 超文本标记语言) 是构建网页内容的骨架。无论多复杂的网站，其基础都是由 HTML 构成的。这篇笔记将带你快速了解 HTML 的基本结构和常用标签。

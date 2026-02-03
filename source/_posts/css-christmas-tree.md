@@ -1,8 +1,8 @@
 ---
 title: 纯 CSS 圣诞树项目：Christmas-tree 的创意实现
-date: 2025-10-24 21:05:36
-banner: "用代码点亮圣诞"
-cover: /images/main_bg.jpg
+date: '2025-10-24 21:05:00'
+banner: 用代码点亮圣诞
+cover: 'https://img1.tucang.cc/api/image/show/2416191767d0444c7669569e9a7652cc'
 tags:
   - CSS
   - 前端开发

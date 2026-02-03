@@ -1,8 +1,8 @@
 ---
 title: CI/CD 自动化部署实战
-date: 2026-02-02 12:00:00
-banner: "从本地到线上，自动化让部署像喝水一样简单"
-cover: /images/main_bg.jpg
+date: '2026-02-02 12:00:00'
+banner: 从本地到线上，自动化让部署像喝水一样简单
+cover: 'https://img1.tucang.cc/api/image/show/22d364409f72d5490e3925ea15e0219a'
 tags:
   - CI/CD
   - DevOps

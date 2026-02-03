@@ -1,8 +1,8 @@
 ---
 title: Docker 容器技术入门
-date: 2026-02-02 13:00:00
-banner: "一次构建，到处运行——容器化的魔力"
-cover: /images/main_bg.jpg
+date: '2026-02-02 13:00:00'
+banner: 一次构建，到处运行——容器化的魔力
+cover: 'https://img1.tucang.cc/api/image/show/8e285f299a0647e688ab53d72605627b'
 tags:
   - Docker
   - 容器

@@ -1,8 +1,8 @@
 ---
 title: Shell 脚本编程入门
-date: 2026-02-02 11:00:00
-banner: "自动化从写好第一个 Shell 脚本开始"
-cover: /images/main_bg.jpg
+date: '2026-02-02 11:00:00'
+banner: 自动化从写好第一个 Shell 脚本开始
+cover: 'https://img1.tucang.cc/api/image/show/69c1b8e72c22e056f50b82cb91bb6a1b'
 tags:
   - Shell
   - 脚本

@@ -1,7 +1,8 @@
 ---
 title: 安卓 KernelSU 详细安装与使用教程
-banner: "深入探索安卓内核的世界"
-cover: /images/main_bg.jpg
+banner: 深入探索安卓内核的世界
+cover: 'https://img1.tucang.cc/api/image/show/6efa6b8e1132c7147743e9c2a6c9d2a1'
+date: '2026-02-03 03:42:00'
 ---
 
 如果你是安卓折腾党的一员，渴望挖掘手机的更多潜力，那么 KernelSU 这个名字你一定不会陌生。它是一种新潮且强大的“内核级”Root 方案，能让你以更安全、更巧妙的方式掌控自己的设备。今天，我们就来一起手把手，把这个强大的工具请进你的手机里！

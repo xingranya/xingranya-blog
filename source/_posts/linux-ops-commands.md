@@ -1,8 +1,8 @@
 ---
 title: Linux 运维命令详解
-date: 2026-02-02 10:00:00
-banner: "掌握这些命令，服务器管理不再头大"
-cover: /images/main_bg.jpg
+date: '2026-02-02 10:00:00'
+banner: 掌握这些命令，服务器管理不再头大
+cover: 'https://img1.tucang.cc/api/image/show/ded6c1dfe0b381a94389ecb8d19b21b3'
 tags:
   - Linux
   - 运维

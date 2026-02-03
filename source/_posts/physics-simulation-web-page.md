@@ -1,8 +1,8 @@
 ---
 title: 物理模拟网页探索：xingranya-physics-simulation-web-page
-date: 2025-10-24 21:02:45
-banner: "探索物理世界的奥秘"
-cover: /images/main_bg.jpg
+date: '2025-10-24 21:02:00'
+banner: 探索物理世界的奥秘
+cover: 'https://img1.tucang.cc/api/image/show/d1ad6897d56575896c47e8586cc2260c'
 tags:
   - HTML
   - JavaScript

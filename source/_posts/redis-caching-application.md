@@ -1,8 +1,8 @@
 ---
 title: Redis 缓存应用实战
-date: 2026-02-02 15:00:00
-banner: "让你的接口飞起来——Redis 缓存的魔法"
-cover: /images/main_bg.jpg
+date: '2026-02-02 15:00:00'
+banner: 让你的接口飞起来——Redis 缓存的魔法
+cover: 'https://img1.tucang.cc/api/image/show/e214b30dbc809f94bd3c562238a27b80'
 tags:
   - Redis
   - 缓存
