@@ -4,9 +4,9 @@ info:
   # 站点副标题
   subtitle: xingranya · 个人博客与作品集
   # 作者名称
-  author: xingranya
+  author: 星苒鸭
   # 站点 URL
-  url: https://xingranya.asia
+  url: https://xingranya.cn
 # 基础信息 <<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<< end
 
 
@@ -16,7 +16,7 @@ defaults:
   # 网站图标 Favicon
   favicon: /images/favicon.svg
   # 站点 Logo
-  logo: 
+  logo: /images/avatar-0.jpg
   # 站点头像
   avatar: /images/avatar-0.jpg
 # 图片配置 <<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<< end
@@ -60,11 +60,11 @@ global:
   # 鼠标悬停效果
   hover:
     shadow: true # 阴影效果
-    scale: false # 缩放效果
+    scale: true # 缩放效果
   # 滚动进度
   scroll_progress:
-    bar: false # 进度条
-    percentage: true # 百分比
+    bar: true # 进度条
+    percentage: false # 百分比
   # 网站计数器
   website_counter:
     url: https://cn.vercount.one/js # 计数器脚本（通常无需修改）
@@ -100,7 +100,7 @@ fontawesome: # 专业版 v6.2.1
   # 双重色版
   duotone: false
   # 锐利实心版
-  sharp_solid: false
+  sharp_solid: true
 # FONTAWESOME <<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<< end
 
 
@@ -113,13 +113,13 @@ home_banner:
   style: fixed # static 或 fixed
   # 横幅图片
   image: 
-    light: /images/main_bg_ligth.jpg # light mode
-    dark: /images/main_bg.jpg # dark mode
+    light: https://img1.tucang.cc/api/image/show/dfaec2d2a6c8c70d3cb0df64c4c97b0d # light mode
+    dark: https://img1.tucang.cc/api/image/show/ac5fcbc88d41dc84518913b836531768 # dark mode
   # 横幅标题
   title: 星苒鸭 · 博客
   # 横幅副标题
   subtitle:
-    text: ["Hi there 👋, I'm xingranya / 星苒鸭", 'A passionate developer from China']# 文案数组
+    text: ["Hi there 👋, I'm xingranya / 星苒鸭", 'A passionate developer from China']
     hitokoto:  # 一言配置
       enable: true # 是否启用一言
       show_author: false # 是否显示作者
@@ -166,7 +166,7 @@ home_banner:
       # ...... # 可继续添加
     # 带二维码抽屉的社交链接
     qrs:
-      weixin:  # 你的微信二维码图片
+      weixin: https://img1.tucang.cc/api/image/show/673ba553b98bb81251740a53978dd8e5 # 你的微信二维码图片
       # ...... # 可继续添加
 # 首页横幅 <<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<< end
 
@@ -189,35 +189,25 @@ navbar:
   links:
     Home: 
       path: / 
-      icon: fa-regular fa-house # 可留空
-    Archives: 
-      path: /archives 
-      icon: fa-regular fa-archive # 可留空
-    Github: 
-      path: https://github.com/xingranya
-      icon: fa-brands fa-github
-      # submenus:
-      #   Link1: /link1
-      #   Link2: /link2
-      #   Link3: /link3
-    Album: #
-      icon: fa-solid fa-image #icon
+      icon: fa-regular fa-house
+    Blog:
+      icon: fa-solid fa-blog
+      submenus:
+        归档: /archives
+        标签: /tags/
+        分类: /categories/
+    Album:
+      icon: fa-solid fa-image
       path: /masonry/ 
-    # Categories: 
-    #   icon: fa-solid fa-tags #icon
-    #   path: /tags/ #Link
     Projects: 
       path: /projects/
       icon: fa-solid fa-folder-open
     About: 
-      path: /about
       icon: fa-solid fa-circle-info
-      # submenus:
-      #   Me: /about
-      #   Github: https://github.com/EvanNotFound/hexo-theme-redefine
-      #   Blog: https://ohevan.com
-      #   Friends: /friends
-    # ...... # you can add more
+      submenus:
+        关于我: /about
+        友链: /links/
+        Github: https://github.com/xingranya
   # Navbar search (local search). Requires hexo-generator-searchdb (npm i hexo-generator-searchdb). See https://github.com/theme-next/hexo-generator-searchdb
   search:
     # Whether to enable
@@ -251,14 +241,14 @@ home:
   # 文章日期格式
   article_date_format: auto # auto, relative, YYYY-MM-DD, YYYY-MM-DD HH:mm:ss 等
   # 文章摘要长度
-  excerpt_length: 200 # 最大摘要长度
+  excerpt_length: 100 # 最大摘要长度
   # 分类可见性
   categories:
     enable: false  # 是否启用
     limit: 3 # 最多显示数量
   # 标签可见性
   tags:
-    enable: false  # 是否启用
+    enable: true # 是否启用
     limit: 3  # 最多显示数量
 # 首页文章设置 <<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<< end
 
@@ -344,26 +334,26 @@ effects:
 # 文档: https://redefine-docs.ohevan.com/posts/comment
 comment:
   # 是否启用评论
-  enable: false
+  enable: true
   # 评论系统
-  system: waline # waline, gitalk, twikoo, giscus
+  system: gitalk # waline, gitalk, twikoo, giscus
   # 系统配置
   config:
     # Waline comment system. See https://waline.js.org/
     waline:
       serverUrl: https://ifpx3kuv.api.lncldglobal.com # Waline 服务地址，例如 https://example.example.com
-      lang: en-US # Waline 语言，如 zh-CN, en-US
+      lang: zh-CN # Waline 语言，如 zh-CN, en-US
       emoji: [] # Waline 表情
       recaptchaV3Key: # Google reCAPTCHA v3 密钥
       turnstileKey: # Turnstile 密钥
-      reaction: false # Waline 表情反馈
+      reaction: true # Waline 表情反馈
     # Gitalk comment system. See https://github.com/gitalk/gitalk
     gitalk:
-      clientID: # GitHub Application Client ID
-      clientSecret: # GitHub Application Client Secret
-      repo: # GitHub repository
-      owner: # GitHub repository owner
-      proxy: # GitHub repository proxy
+      clientID: Ov23liYu16nHSE6Qth0E # GitHub Application Client ID
+      clientSecret: 93823d44c8948a1894b29110a05d1de4c6cb9968 # GitHub Application Client Secret
+      repo: blog-comment # GitHub repository
+      owner: xingranya # GitHub repository owner
+      proxy: https://cors-anywhere.azm.workers.dev/https://github.com/login/oauth/access_token # GitHub repository proxy
     # Twikoo comment system. See https://twikoo.js.org/
     twikoo:
       version: 1.6.10 # Twikoo 版本，不清楚请勿修改
@@ -401,7 +391,7 @@ footer:
   # ICP 备案号：https://beian.miit.gov.cn/
   icp:
     enable: true # Whether to enable
-    number: 备案号：待备案（湖北·十堰） # ICP record number
+    number: 鄂ICP备2026006203号-1 # ICP record number
     url: https://beian.miit.gov.cn/ # ICP record url
 # FOOTER <<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<< end
 

@@ -149,6 +149,82 @@
         .editor-main .EasyMDEContainer.side-by-side .editor-preview {
             height: 100% !important;
         }
+
+        /* 图片选择器模态框 */
+        .modal-overlay {
+            position: fixed;
+            inset: 0;
+            background: rgba(0, 0, 0, 0.6);
+            backdrop-filter: blur(4px);
+            z-index: 1000;
+            display: none;
+            align-items: center;
+            justify-content: center;
+        }
+        .modal-overlay.show { display: flex; }
+        .modal-content {
+            background: var(--a-bg-card);
+            border-radius: var(--a-radius);
+            width: 90%;
+            max-width: 600px;
+            max-height: 80vh;
+            overflow: hidden;
+            display: flex;
+            flex-direction: column;
+            box-shadow: 0 25px 50px -12px rgba(0, 0, 0, 0.25);
+        }
+        .modal-header {
+            padding: 1rem 1.25rem;
+            border-bottom: 1px solid var(--a-border);
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+        }
+        .modal-header h3 { margin: 0; font-size: 1rem; font-weight: 600; }
+        .modal-body {
+            padding: 1.25rem;
+            overflow-y: auto;
+            flex: 1;
+        }
+        .modal-tabs {
+            display: flex;
+            gap: 0.5rem;
+            margin-bottom: 1rem;
+        }
+        .modal-tab {
+            padding: 0.5rem 1rem;
+            background: transparent;
+            border: 1px solid var(--a-border);
+            border-radius: var(--a-radius-sm);
+            cursor: pointer;
+            color: var(--a-text-2);
+            font-size: 0.875rem;
+            transition: all 0.2s;
+        }
+        .modal-tab.active {
+            background: var(--a-primary);
+            color: white;
+            border-color: var(--a-primary);
+        }
+        .image-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fill, minmax(100px, 1fr));
+            gap: 0.75rem;
+            max-height: 300px;
+            overflow-y: auto;
+        }
+        .image-grid-item {
+            aspect-ratio: 1;
+            border-radius: var(--a-radius-sm);
+            overflow: hidden;
+            cursor: pointer;
+            border: 2px solid transparent;
+            transition: all 0.2s;
+        }
+        .image-grid-item:hover { border-color: var(--a-primary); transform: scale(1.02); }
+        .image-grid-item img { width: 100%; height: 100%; object-fit: cover; }
+        .url-tab-content { display: none; }
+        .url-tab-content.show { display: block; }
     </style>
 </head>
 <body>
@@ -192,6 +268,15 @@
                     <polyline points="21 15 16 10 5 21"></polyline>
                 </svg>
                 媒体库
+            </a>
+            <a href="/admin/masonry.html" class="nav-item">
+                <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+                    <rect x="3" y="3" width="7" height="9"></rect>
+                    <rect x="14" y="3" width="7" height="5"></rect>
+                    <rect x="14" y="12" width="7" height="9"></rect>
+                    <rect x="3" y="16" width="7" height="5"></rect>
+                </svg>
+                图片墙
             </a>
             <div class="nav-section-title">系统</div>
             <a href="/admin/deploy.html" class="nav-item">
@@ -305,6 +390,12 @@
                         </div>
                     </div>
 
+                    <!-- Banner -->
+                    <div class="form-group" style="margin-bottom: 0;">
+                        <label class="form-label">Banner 标语</label>
+                        <input type="text" id="postBanner" class="form-input" placeholder="文章顶部展示的简短描述">
+                    </div>
+
                     <!-- Quick Actions -->
                     <div style="display: flex; gap: 0.5rem; margin-top: 0.5rem;">
                         <button class="btn-secondary btn-sm" style="flex: 1;" id="insertImageBtn">
@@ -320,9 +411,47 @@
                         </a>
                     </div>
                 </div>
-            </div>
         </div>
     </main>
+
+    <!-- 图片选择器模态框 -->
+    <div class="modal-overlay" id="imageModal">
+        <div class="modal-content">
+            <div class="modal-header">
+                <h3>插入图片</h3>
+                <button class="btn-icon" id="closeImageModal">
+                    <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+                        <line x1="18" y1="6" x2="6" y2="18"></line>
+                        <line x1="6" y1="6" x2="18" y2="18"></line>
+                    </svg>
+                </button>
+            </div>
+            <div class="modal-body">
+                <div class="modal-tabs">
+                    <button class="modal-tab active" data-tab="library">从媒体库选择</button>
+                    <button class="modal-tab" data-tab="url">输入图片 URL</button>
+                </div>
+                <!-- 媒体库选项卡 -->
+                <div id="libraryTab" class="url-tab-content show">
+                    <div class="image-grid" id="imageGrid">
+                        <div style="grid-column: 1/-1; text-align: center; padding: 2rem; color: var(--a-text-3);">加载中...</div>
+                    </div>
+                </div>
+                <!-- URL 选项卡 -->
+                <div id="urlTab" class="url-tab-content">
+                    <div class="form-group">
+                        <label class="form-label">图片 URL</label>
+                        <input type="text" id="imageUrl" class="form-input" placeholder="https://example.com/image.jpg">
+                    </div>
+                    <div class="form-group">
+                        <label class="form-label">图片描述 (Alt 文本)</label>
+                        <input type="text" id="imageAlt" class="form-input" placeholder="图片描述">
+                    </div>
+                    <button class="btn-primary" id="insertUrlImageBtn" style="width: 100%;">插入图片</button>
+                </div>
+            </div>
+        </div>
+    </div>
 
     <script src="https://unpkg.com/easymde/dist/easymde.min.js"></script>
     <script src="/js/admin/core.js"></script>
@@ -472,15 +601,88 @@
             }
         }, 300);
 
-        // Insert image
-        $('#insertImageBtn').onclick = () => {
-            const url = prompt('请输入图片 URL:');
-            if (url) {
-                const cm = easyMDE.codemirror;
-                const pos = cm.getCursor();
-                cm.replaceRange(`![图片描述](${url})`, pos);
-            }
+        // 图片选择器模态框逻辑
+        const imageModal = $('#imageModal');
+        const imageGrid = $('#imageGrid');
+        let mediaListCache = [];
+
+        // 打开模态框
+        $('#insertImageBtn').onclick = async () => {
+            imageModal.classList.add('show');
+            await loadMediaForPicker();
         };
+
+        // 关闭模态框
+        $('#closeImageModal').onclick = () => imageModal.classList.remove('show');
+        imageModal.onclick = (e) => {
+            if (e.target === imageModal) imageModal.classList.remove('show');
+        };
+
+        // 选项卡切换
+        $$('.modal-tab').forEach(tab => {
+            tab.onclick = () => {
+                $$('.modal-tab').forEach(t => t.classList.remove('active'));
+                tab.classList.add('active');
+                const tabName = tab.dataset.tab;
+                $('#libraryTab').classList.toggle('show', tabName === 'library');
+                $('#urlTab').classList.toggle('show', tabName === 'url');
+            };
+        });
+
+        // 加载媒体库图片
+        async function loadMediaForPicker() {
+            imageGrid.innerHTML = '<div style="grid-column: 1/-1; text-align: center; padding: 2rem; color: var(--a-text-3);">加载中...</div>';
+            try {
+                mediaListCache = await API.get('/media', { silent: true }) || [];
+                renderMediaGrid();
+            } catch (e) {
+                imageGrid.innerHTML = '<div style="grid-column: 1/-1; text-align: center; padding: 2rem; color: var(--a-danger);">加载失败</div>';
+            }
+        }
+
+        function renderMediaGrid() {
+            if (mediaListCache.length === 0) {
+                imageGrid.innerHTML = '<div style="grid-column: 1/-1; text-align: center; padding: 2rem; color: var(--a-text-3);">暂无图片，请先上传</div>';
+                return;
+            }
+            imageGrid.innerHTML = mediaListCache.map((file, idx) => `
+                <div class="image-grid-item" data-url="${file.url}" data-name="${Utils.escapeHtml(file.name)}">
+                    <img src="${file.url}" alt="${Utils.escapeHtml(file.name)}" loading="lazy">
+                </div>
+            `).join('');
+
+            // 点击选择图片
+            $$('.image-grid-item').forEach(item => {
+                item.onclick = () => {
+                    const url = item.dataset.url;
+                    const name = item.dataset.name;
+                    insertImageToEditor(url, name);
+                    imageModal.classList.remove('show');
+                };
+            });
+        }
+
+        // 从 URL 插入图片
+        $('#insertUrlImageBtn').onclick = () => {
+            const url = $('#imageUrl').value.trim();
+            const alt = $('#imageAlt').value.trim() || '图片';
+            if (!url) {
+                UI.toast('请输入图片 URL', 'warning');
+                return;
+            }
+            insertImageToEditor(url, alt);
+            imageModal.classList.remove('show');
+            $('#imageUrl').value = '';
+            $('#imageAlt').value = '';
+        };
+
+        // 插入图片到编辑器
+        function insertImageToEditor(url, alt) {
+            const cm = easyMDE.codemirror;
+            const pos = cm.getCursor();
+            cm.replaceRange(`![${alt}](${url})`, pos);
+            cm.focus();
+        }
 
         // Load post for editing
         async function loadPost(filename) {
@@ -519,6 +721,10 @@
                     $('#coverPreview').style.display = 'block';
                 }
 
+                if (data.frontMatter.banner) {
+                    $('#postBanner').value = data.frontMatter.banner;
+                }
+
                 document.title = `编辑: ${data.frontMatter.title} - 星苒鸭`;
 
             } catch (e) {
@@ -553,6 +759,9 @@
 
             const cover = $('#coverImage').value.trim();
             if (cover) frontMatter.cover = cover;
+
+            const banner = $('#postBanner').value.trim();
+            if (banner) frontMatter.banner = banner;
 
             try {
                 $('#saveStatus').textContent = '保存中...';

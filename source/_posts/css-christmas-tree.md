@@ -1,8 +1,10 @@
 ---
 title: 纯 CSS 圣诞树项目：Christmas-tree 的创意实现
-date: '2025-10-24 21:05:00'
+date: "2025-10-24 21:05:00"
 banner: 用代码点亮圣诞
-cover: 'https://img1.tucang.cc/api/image/show/2416191767d0444c7669569e9a7652cc'
+cover: "https://img1.tucang.cc/api/image/show/2416191767d0444c7669569e9a7652cc"
+categories:
+  - 前端开发
 tags:
   - CSS
   - 前端开发
@@ -19,8 +21,9 @@ tags:
 ### 技术栈
 
 这个项目主要的技术核心是：
-*   **HTML**：提供最基础的页面结构，作为 CSS 绘制的“画布”。
-*   **CSS**：项目的灵魂所在。通过运用伪元素 (`::before`, `::after`)、`border` 属性、`transform` 变换（如 `rotate`, `scale`）、`box-shadow` 以及 `animation` 动画等技术，精巧地勾勒出圣诞树的形状、树叶、装饰球、星星，甚至闪烁的灯光效果。
+
+- **HTML**：提供最基础的页面结构，作为 CSS 绘制的“画布”。
+- **CSS**：项目的灵魂所在。通过运用伪元素 (`::before`, `::after`)、`border` 属性、`transform` 变换（如 `rotate`, `scale`）、`box-shadow` 以及 `animation` 动画等技术，精巧地勾勒出圣诞树的形状、树叶、装饰球、星星，甚至闪烁的灯光效果。
 
 ```css
 /* 示例：圣诞树主体的基本样式 */
@@ -29,21 +32,21 @@ tags:
   height: 0;
   border-left: 100px solid transparent;
   border-right: 100px solid transparent;
-  border-bottom: 200px solid #228B22; /* 深绿色 */
+  border-bottom: 200px solid #228b22; /* 深绿色 */
   position: relative;
   margin: 50px auto;
 }
 
 /* 树干 */
 .christmas-tree::after {
-  content: '';
+  content: "";
   position: absolute;
   left: 50%;
   transform: translateX(-50%);
   bottom: -50px;
   width: 40px;
   height: 50px;
-  background-color: #8B4513; /* 棕色 */
+  background-color: #8b4513; /* 棕色 */
 }
 
 /* 更多层和装饰会通过伪元素和动画实现 */
@@ -51,10 +54,10 @@ tags:
 
 ### 项目亮点
 
-*   **纯 CSS 绘制**：不依赖任何图片资源，所有视觉元素都由 CSS 代码生成，极大地减少了资源加载。
-*   **创意与技巧**：展示了 CSS 在图形绘制和动画方面的强大潜力，对于学习和理解 CSS 属性的组合运用非常有帮助。
-*   **轻量级**：由于是纯 CSS 实现，页面加载速度快，性能优异。
-*   **节日氛围**：通过代码，为网页增添了一份独特的节日温馨。
+- **纯 CSS 绘制**：不依赖任何图片资源，所有视觉元素都由 CSS 代码生成，极大地减少了资源加载。
+- **创意与技巧**：展示了 CSS 在图形绘制和动画方面的强大潜力，对于学习和理解 CSS 属性的组合运用非常有帮助。
+- **轻量级**：由于是纯 CSS 实现，页面加载速度快，性能优异。
+- **节日氛围**：通过代码，为网页增添了一份独特的节日温馨。
 
 ### 体验项目
 

@@ -1,8 +1,10 @@
 ---
 title: Docker 容器技术入门
-date: '2026-02-02 13:00:00'
+date: "2026-02-02 13:00:00"
 banner: 一次构建，到处运行——容器化的魔力
-cover: 'https://img1.tucang.cc/api/image/show/8e285f299a0647e688ab53d72605627b'
+cover: "https://img1.tucang.cc/api/image/show/8e285f299a0647e688ab53d72605627b"
+categories:
+  - 运维技术
 tags:
   - Docker
   - 容器
@@ -19,12 +21,14 @@ tags:
 在深入 Docker 之前，先来对比一下它和传统虚拟机的区别。
 
 **虚拟机（VM）**
+
 - 模拟完整的操作系统，包括内核
 - 每个虚拟机都有独立的 Guest OS
 - 资源占用大，启动慢（分钟级）
 - 隔离性强，但重量级
 
 **Docker 容器**
+
 - 共享宿主机的内核，只包含应用和依赖
 - 没有 Guest OS，轻量级
 - 资源占用小，启动快（秒级）
@@ -83,11 +87,13 @@ sudo systemctl enable docker
 Docker 有两个核心概念：
 
 **镜像（Image）**
+
 - 只读模板，包含运行应用所需的一切（代码、运行时、库、配置等）
 - 类似于面向对象中的"类"
 - 可以被分享和存储
 
 **容器（Container）**
+
 - 镜像的运行实例
 - 类似于面向对象中的"对象"
 - 可以被启动、停止、删除
@@ -191,17 +197,17 @@ CMD ["node", "app.js"]
 
 **常用指令说明**
 
-| 指令 | 说明 |
-|------|------|
-| `FROM` | 指定基础镜像 |
-| `RUN` | 执行命令（如安装软件） |
-| `COPY` | 复制文件到镜像 |
-| `ADD` | 类似 COPY，但支持 URL 和自动解压 |
-| `WORKDIR` | 设置工作目录 |
-| `ENV` | 设置环境变量 |
-| `EXPOSE` | 声明容器监听的端口 |
-| `CMD` | 容器启动时执行的命令（只有最后一个生效） |
-| `ENTRYPOINT` | 容器启动入口点（不会被 CMD 覆盖） |
+| 指令         | 说明                                     |
+| ------------ | ---------------------------------------- |
+| `FROM`       | 指定基础镜像                             |
+| `RUN`        | 执行命令（如安装软件）                   |
+| `COPY`       | 复制文件到镜像                           |
+| `ADD`        | 类似 COPY，但支持 URL 和自动解压         |
+| `WORKDIR`    | 设置工作目录                             |
+| `ENV`        | 设置环境变量                             |
+| `EXPOSE`     | 声明容器监听的端口                       |
+| `CMD`        | 容器启动时执行的命令（只有最后一个生效） |
+| `ENTRYPOINT` | 容器启动入口点（不会被 CMD 覆盖）        |
 
 **构建镜像**
 
@@ -219,7 +225,7 @@ docker build -t myapp:v1.0 .
 
 ```yaml
 # docker-compose.yml
-version: '3.8'
+version: "3.8"
 
 services:
   # Web 应用
@@ -300,15 +306,15 @@ docker-compose up -d --build
 
 ```javascript
 // app.js
-const express = require('express');
+const express = require("express");
 const app = express();
 
-app.get('/', (req, res) => {
-  res.send('Hello from Docker!');
+app.get("/", (req, res) => {
+  res.send("Hello from Docker!");
 });
 
 app.listen(3000, () => {
-  console.log('Server running on port 3000');
+  console.log("Server running on port 3000");
 });
 ```
 
@@ -348,7 +354,7 @@ CMD ["npm", "start"]
 **docker-compose.yml**
 
 ```yaml
-version: '3.8'
+version: "3.8"
 
 services:
   app:

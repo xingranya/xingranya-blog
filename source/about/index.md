@@ -39,7 +39,7 @@ date: 2025-04-09 16:23:59
   </div>
   <div style="background-color: var(--background-color-transparent-80, rgba(255,255,255,0.8)); border: 1px solid var(--border-color, #e1e1e1); border-radius: 8px; padding: 15px; box-shadow: 0 2px 4px rgba(0,0,0,0.05);">
     <b>个人站点</b>
-    <div style="color: var(--text-color, #555); font-size: 14px; margin-top: 5px;"><a href="https://xingranya.asia" target="_blank" rel="noreferrer">xingranya.asia</a></div>
+    <div style="color: var(--text-color, #555); font-size: 14px; margin-top: 5px;"><a href="https://xingranya.cn" target="_blank" rel="noreferrer">xingranya.cn</a></div>
   </div>
 </div>
 
@@ -48,6 +48,7 @@ date: 2025-04-09 16:23:59
 ### **🏆 荣誉与奖项 (Honors & Awards)**
 
 - **2025** 全国大学生计算机设计大赛 中南赛区省级二等奖
+- **2025** 第二届CCF算法能力大赛(CACC) 湖北省省级二等奖
 
 ---
 
@@ -90,7 +91,9 @@ date: 2025-04-09 16:23:59
 </p>
 
 ---
+
 ### **🐍 我的贡献图化身贪吃蛇 (My Contribution Snake)**
+
 <p align="center">
   <img src="https://raw.githubusercontent.com/xingranya/xingranya/output/github-contribution-grid-snake.svg" alt="snake" />
 </p>

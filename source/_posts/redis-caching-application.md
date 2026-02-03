@@ -1,8 +1,10 @@
 ---
 title: Redis 缓存应用实战
-date: '2026-02-02 15:00:00'
+date: "2026-02-02 15:00:00"
 banner: 让你的接口飞起来——Redis 缓存的魔法
-cover: 'https://img1.tucang.cc/api/image/show/e214b30dbc809f94bd3c562238a27b80'
+cover: "https://img1.tucang.cc/api/image/show/e214b30dbc809f94bd3c562238a27b80"
+categories:
+  - 运维技术
 tags:
   - Redis
   - 缓存
@@ -26,14 +28,14 @@ Redis（Remote Dictionary Server，远程字典服务器）是一个开源的内
 
 **典型应用场景**
 
-| 场景 | 说明 |
-|------|------|
-| 缓存 | 缓存热点数据，减轻数据库压力 |
-| 会话存储 | 存储用户登录状态、购物车等 |
-| 排行榜 | 利用有序集合实现实时排名 |
-| 计数器 | 文章阅读数、点赞数等 |
-| 分布式锁 | 防止并发操作冲突 |
-| 消息队列 | 简单的发布订阅、列表队列 |
+| 场景     | 说明                         |
+| -------- | ---------------------------- |
+| 缓存     | 缓存热点数据，减轻数据库压力 |
+| 会话存储 | 存储用户登录状态、购物车等   |
+| 排行榜   | 利用有序集合实现实时排名     |
+| 计数器   | 文章阅读数、点赞数等         |
+| 分布式锁 | 防止并发操作冲突             |
+| 消息队列 | 简单的发布订阅、列表队列     |
 
 ### 五大基础数据类型
 
@@ -174,6 +176,7 @@ SAVE               # 同步保存（会阻塞）
 ```
 
 RDB 特点：
+
 - 文件紧凑，适合备份
 - 恢复速度快
 - 可能丢失最后一次快照后的数据
@@ -189,6 +192,7 @@ appendfsync no                    # 由操作系统决定
 ```
 
 AOF 特点：
+
 - 数据更安全，丢失数据更少
 - 文件较大，恢复较慢
 - 可以重写压缩文件
@@ -223,7 +227,7 @@ end
 **Node.js 实现**
 
 ```javascript
-const redis = require('redis');
+const redis = require("redis");
 const client = redis.createClient();
 
 class RedisLock {
@@ -238,11 +242,11 @@ class RedisLock {
     const result = await client.set(
       this.key,
       this.identifier,
-      'NX',
-      'EX',
-      this.ttl
+      "NX",
+      "EX",
+      this.ttl,
     );
-    return result === 'OK';
+    return result === "OK";
   }
 
   // 释放锁
@@ -265,12 +269,12 @@ async function processOrder(orderId) {
   if (await lock.acquire()) {
     try {
       // 处理订单逻辑
-      console.log('处理订单:', orderId);
+      console.log("处理订单:", orderId);
     } finally {
       await lock.release();
     }
   } else {
-    console.log('获取锁失败，订单正在处理中');
+    console.log("获取锁失败，订单正在处理中");
   }
 }
 ```
@@ -284,6 +288,7 @@ async function processOrder(orderId) {
 问题描述：查询一个不存在的数据，缓存和数据库都没有，每次都打到数据库。
 
 解决方案：
+
 ```javascript
 // 1. 布隆过滤器（提前判断 key 是否可能存在）
 // 2. 缓存空值（短时间）
@@ -292,17 +297,17 @@ async function getUser(userId) {
 
   // 查缓存
   let user = await redis.get(key);
-  if (user === 'NULL') return null;  // 空值标记
+  if (user === "NULL") return null; // 空值标记
   if (user) return JSON.parse(user);
 
   // 查数据库
-  user = await db.query('SELECT * FROM users WHERE id = ?', [userId]);
+  user = await db.query("SELECT * FROM users WHERE id = ?", [userId]);
 
   if (user) {
-    await redis.set(key, JSON.stringify(user), 'EX', 3600);
+    await redis.set(key, JSON.stringify(user), "EX", 3600);
   } else {
     // 缓存空值，防止穿透
-    await redis.set(key, 'NULL', 'EX', 60);
+    await redis.set(key, "NULL", "EX", 60);
   }
 
   return user;
@@ -314,6 +319,7 @@ async function getUser(userId) {
 问题描述：某个热点 key 过期瞬间，大量请求直接打到数据库。
 
 解决方案：
+
 ```javascript
 // 1. 热点数据永不过期
 // 2. 互斥锁
@@ -331,8 +337,8 @@ async function getHotData(key) {
       if (data) return JSON.parse(data);
 
       // 从数据库加载
-      data = await db.query('...');
-      await redis.set(key, JSON.stringify(data), 'EX', 3600);
+      data = await db.query("...");
+      await redis.set(key, JSON.stringify(data), "EX", 3600);
       return data;
     } finally {
       await lock.release();
@@ -350,10 +356,11 @@ async function getHotData(key) {
 问题描述：大量 key 同时失效，请求全部打到数据库。
 
 解决方案：
+
 ```javascript
 // 1. 过期时间加随机值
-const expireTime = 3600 + Math.random() * 600;  // 3600~4200 秒
-await redis.set(key, data, 'EX', expireTime);
+const expireTime = 3600 + Math.random() * 600; // 3600~4200 秒
+await redis.set(key, data, "EX", expireTime);
 
 // 2. 多级缓存（本地缓存 + Redis）
 // 3. 缓存预热（系统启动时加载热点数据）
@@ -364,15 +371,14 @@ await redis.set(key, data, 'EX', expireTime);
 假设有一个获取文章详情的接口，每次都查询数据库，响应时间约 200ms。
 
 ```javascript
-const redis = require('redis');
+const redis = require("redis");
 const client = redis.createClient();
 
 // 未优化：每次查数据库
 async function getArticle(articleId) {
-  const article = await db.query(
-    'SELECT * FROM articles WHERE id = ?',
-    [articleId]
-  );
+  const article = await db.query("SELECT * FROM articles WHERE id = ?", [
+    articleId,
+  ]);
   return article;
 }
 
@@ -383,19 +389,18 @@ async function getArticleCached(articleId) {
   // 1. 先查缓存
   const cached = await client.get(key);
   if (cached) {
-    console.log('从缓存获取');
+    console.log("从缓存获取");
     return JSON.parse(cached);
   }
 
   // 2. 缓存未命中，查数据库
-  console.log('从数据库获取');
-  const article = await db.query(
-    'SELECT * FROM articles WHERE id = ?',
-    [articleId]
-  );
+  console.log("从数据库获取");
+  const article = await db.query("SELECT * FROM articles WHERE id = ?", [
+    articleId,
+  ]);
 
   // 3. 写入缓存
-  await client.set(key, JSON.stringify(article), 'EX', 3600);
+  await client.set(key, JSON.stringify(article), "EX", 3600);
 
   return article;
 }
@@ -411,7 +416,7 @@ async function getArticleWithLock(articleId) {
   }
 
   // 尝试获取锁
-  const lockAcquired = await client.set(lockKey, '1', 'NX', 'EX', 10);
+  const lockAcquired = await client.set(lockKey, "1", "NX", "EX", 10);
 
   if (lockAcquired) {
     try {
@@ -422,13 +427,12 @@ async function getArticleWithLock(articleId) {
       }
 
       // 从数据库获取
-      const article = await db.query(
-        'SELECT * FROM articles WHERE id = ?',
-        [articleId]
-      );
+      const article = await db.query("SELECT * FROM articles WHERE id = ?", [
+        articleId,
+      ]);
 
       // 写入缓存
-      await client.set(key, JSON.stringify(article), 'EX', 3600);
+      await client.set(key, JSON.stringify(article), "EX", 3600);
 
       return article;
     } finally {
@@ -436,7 +440,7 @@ async function getArticleWithLock(articleId) {
     }
   } else {
     // 获取锁失败，等待后重试
-    await new Promise(resolve => setTimeout(resolve, 100));
+    await new Promise((resolve) => setTimeout(resolve, 100));
     return getArticleWithLock(articleId);
   }
 }
@@ -452,12 +456,14 @@ Redis 是一个强大而灵活的缓存工具，掌握它能带来：
 4. **简单易用**：丰富的客户端库，学习成本低
 
 关键知识点回顾：
+
 - **数据类型**：String、Hash、List、Set、Sorted Set
 - **持久化**：RDB 快照、AOF 日志、混合模式
 - **常见问题**：缓存穿透、击穿、雪崩及解决方案
 - **最佳实践**：合理设置过期时间、使用互斥锁、多级缓存
 
 接下来你可以探索：
+
 - Redis 主从复制和哨兵
 - Redis 集群搭建
 - Redis 事务和管道

@@ -1,8 +1,10 @@
 ---
 title: Linux 运维命令详解
-date: '2026-02-02 10:00:00'
+date: "2026-02-02 10:00:00"
 banner: 掌握这些命令，服务器管理不再头大
-cover: 'https://img1.tucang.cc/api/image/show/ded6c1dfe0b381a94389ecb8d19b21b3'
+cover: "https://img1.tucang.cc/api/image/show/ded6c1dfe0b381a94389ecb8d19b21b3"
+categories:
+  - 运维技术
 tags:
   - Linux
   - 运维
@@ -92,6 +94,7 @@ chmod u+x,g+r file.txt        # 用户添加执行权限，组添加读权限
 ```
 
 权限数字的含义：
+
 - 4 = 读权限（r）
 - 2 = 写权限（w）
 - 1 = 执行权限（x）

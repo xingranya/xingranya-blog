@@ -1,25 +1,24 @@
-- links_category: This is the first categrory
+- links_category: 推荐博客
   has_thumbnail: true
   list:
-      - name: Jack's Blog
-        link: https://example.com
-        description: I will refresh my article every day.
-        avatar: /images/avatar-0.jpg
-        thumbnail: /images/desc-image.jpg # has_thumbnail 为 true 时才需要
- 
-- links_category: This is the second categrory
+    - name: 星苒鸭的博客
+      link: https://xingranya.cn
+      description: 分享技术与生活的个人博客
+      avatar: /images/avatar-0.jpg
+      thumbnail: https://img1.tucang.cc/api/image/show/562186dce8f9de0395930b7627168673 # has_thumbnail 为 true 时才需要
+
+- links_category: 友情链接
   has_thumbnail: false
   list:
-      - name: Partner Link 1
-        link: https://example.com
-        description: Example Site Imformation
-        avatar: /images/avatar-1.jpg
-      - name: Partner Link 2
-        link: https://example.com
-        description: Example Site Description
-        avatar: /images/avatar-2.png
-      - name: Partner Link 3
-        link: https://example.com
-        description: Example Site Description
-        avatar: /images/avatar-3.png
- 
+    - name: Perimsx的博客
+      link: https://chenguitao.com
+      description: ✨ 轻量级静态博客系统 + RESTful API 后端
+      avatar: https://img1.tucang.cc/api/image/show/950af8663f9756525612711dec4a43b6
+    # - name: 示例站点 2
+    #   link: https://example.com
+    #   description: 这是一个示例站点描述
+    #   avatar: /images/avatar-2.png
+    # - name: 示例站点 3
+    #   link: https://example.com
+    #   description: 这是一个示例站点描述
+    #   avatar: /images/avatar-3.png

@@ -9,24 +9,36 @@ comments: false
 
 ---
 
-<div style="display: flex; flex-wrap: wrap; gap: 20px; justify-content: center;">
+<div class="grid grid-cols-1 sm:grid-cols-2 gap-6 mt-8">
 
-<div style="flex: 1 1 45%; min-width: 300px; border: 1px solid #eee; border-radius: 8px; padding: 15px; box-shadow: 0 4px 8px rgba(0,0,0,0.2);">
-    <h3 style="margin-top: 0;">物理模拟Web网页</h3>
-    <img src="/images/main_bg.jpg" alt="物理模拟网页项目截图" style="width: 100%; height: auto; border-radius: 4px; margin-bottom: 10px;">
-    <p>这是一个基于 Web 的物理模拟网页，旨在通过直观、互动的方式，在浏览器中展示各种物理现象。项目主要利用 HTML、CSS 和 JavaScript 实现，展现了前端技术在互动可视化方面的潜力。</p>
-    <p style="text-align: right;"><a href="/physics-simulation-web-page/" style="text-decoration: none; color: #007bff; font-weight: bold;">查看详情 &raquo;</a></p>
-  </div>
+<div class="group bg-second-background-color rounded-xl overflow-hidden shadow-redefine-flat hover:shadow-redefine-flat-hover transition-all duration-300 hover:-translate-y-1">
+    <div class="h-40 overflow-hidden">
+        <img src="/images/main_bg.jpg" alt="物理模拟网页项目截图" class="w-full h-full object-cover transition-transform duration-300 group-hover:scale-105">
+    </div>
+    <div class="p-5">
+        <h3 class="text-xl font-semibold text-second-text-color mb-3 group-hover:text-primary transition-colors">物理模拟Web网页</h3>
+        <p class="text-third-text-color text-sm leading-relaxed mb-4">这是一个基于 Web 的物理模拟网页，旨在通过直观、互动的方式，在浏览器中展示各种物理现象。项目主要利用 HTML、CSS 和 JavaScript 实现。</p>
+        <a href="/physics-simulation-web-page/" class="inline-flex items-center text-sm font-medium text-primary hover:underline">
+            查看详情 <i class="fa-solid fa-arrow-right ml-1.5 text-xs"></i>
+        </a>
+    </div>
+</div>
 
-  <div style="flex: 1 1 45%; min-width: 300px; border: 1px solid #eee; border-radius: 8px; padding: 15px; box-shadow: 0 4px 8px rgba(0,0,0,0.2);">
-    <h3 style="margin-top: 0;">纯 CSS 圣诞树项目：Christmas-tree 的创意实现</h3>
-    <img src="/images/main_bg.jpg" alt="纯 CSS 圣诞树项目截图" style="width: 100%; height: auto; border-radius: 4px; margin-bottom: 10px;">
-    <p>这个项目完全使用纯 CSS 绘制了一棵精美的圣诞树，利用了 CSS 的绘图。它通过巧妙运用 CSS 属性和动画，在不依赖任何图片资源的情况下，创造出富有节日氛围的动态效果。</p>
-    <p style="text-align: right;"><a href="/css-christmas-tree/" style="text-decoration: none; color: #007bff; font-weight: bold;">查看详情 &raquo;</a></p>
-  </div>
+<div class="group bg-second-background-color rounded-xl overflow-hidden shadow-redefine-flat hover:shadow-redefine-flat-hover transition-all duration-300 hover:-translate-y-1">
+    <div class="h-40 overflow-hidden">
+        <img src="/images/main_bg.jpg" alt="纯CSS圣诞树项目截图" class="w-full h-full object-cover transition-transform duration-300 group-hover:scale-105">
+    </div>
+    <div class="p-5">
+        <h3 class="text-xl font-semibold text-second-text-color mb-3 group-hover:text-primary transition-colors">纯 CSS 圣诞树项目</h3>
+        <p class="text-third-text-color text-sm leading-relaxed mb-4">这个项目完全使用纯 CSS 绘制了一棵精美的圣诞树，通过巧妙运用 CSS 属性和动画，创造出富有节日氛围的动态效果。</p>
+        <a href="/css-christmas-tree/" class="inline-flex items-center text-sm font-medium text-primary hover:underline">
+            查看详情 <i class="fa-solid fa-arrow-right ml-1.5 text-xs"></i>
+        </a>
+    </div>
+</div>
 
 </div>
 
 ---
 
-更多项目正在规划中，敬请期待！
+<p class="text-center text-third-text-color mt-8">🚀 更多项目正在规划中，敬请期待！</p>
