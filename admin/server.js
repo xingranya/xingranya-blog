@@ -22,6 +22,10 @@ app.use('/api', apiLimiter);
 // Static Files
 app.use(express.static(path.join(__dirname, 'public')));
 
+// 主题图片静态目录
+const imagesDir = path.resolve(__dirname, config.blogRoot, 'themes/defaultone/source/images');
+app.use('/images', express.static(imagesDir));
+
 // Routes
 app.use('/api', require('./routes/auth')); // Login route
 app.use('/api/posts', require('./routes/posts'));
@@ -29,6 +33,7 @@ app.use('/api/dashboard', require('./routes/dashboard'));
 app.use('/api/config', require('./routes/config'));
 app.use('/api/deploy', require('./routes/deploy'));
 app.use('/api/media', require('./routes/media'));
+app.use('/api/masonry', require('./routes/masonry'));
 
 // Admin catch-all - 同时处理 /admin 和 /admin/
 app.get('/admin', (req, res) => {

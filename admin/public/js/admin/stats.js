@@ -4,7 +4,7 @@
     async function loadStats() {
         try {
             // Load stats
-            const stats = await API.get('/posts/stats');
+            const stats = await API.get('/dashboard/stats');
             $('#statPosts').textContent = stats.postsCount;
             $('#statCategories').textContent = stats.categoriesCount;
             $('#statTags').textContent = stats.tagsCount;

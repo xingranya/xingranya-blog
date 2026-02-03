@@ -1,0 +1,901 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>图片墙 - 星苒鸭</title>
+    <link rel="stylesheet" href="/css/admin.css">
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&display=swap" rel="stylesheet">
+    <style>
+        body { font-family: 'Inter', system-ui, sans-serif; }
+
+        .masonry-preview {
+            display: grid;
+            grid-template-columns: repeat(auto-fill, minmax(200px, 1fr));
+            gap: 1rem;
+        }
+        .masonry-item {
+            position: relative;
+            border-radius: var(--a-radius);
+            overflow: hidden;
+            background: var(--a-bg-card);
+            border: 1px solid var(--a-border);
+            transition: all 0.3s cubic-bezier(0.4, 0, 0.2, 1);
+        }
+        .masonry-item:hover {
+            transform: translateY(-4px);
+            border-color: var(--a-primary);
+            box-shadow: 0 12px 40px rgba(244, 114, 182, 0.2);
+        }
+        .masonry-item img {
+            width: 100%;
+            aspect-ratio: 4/3;
+            object-fit: cover;
+            display: block;
+            transition: transform 0.4s ease;
+        }
+        .masonry-item:hover img {
+            transform: scale(1.05);
+        }
+        .masonry-item-overlay {
+            position: absolute;
+            inset: 0;
+            background: linear-gradient(to top, rgba(0,0,0,0.85), transparent 60%);
+            opacity: 0;
+            transition: opacity 0.3s ease;
+            display: flex;
+            flex-direction: column;
+            justify-content: flex-end;
+            padding: 1rem;
+        }
+        .masonry-item:hover .masonry-item-overlay {
+            opacity: 1;
+        }
+        .masonry-item-info {
+            margin-bottom: 0.75rem;
+        }
+        .masonry-item-title {
+            color: white;
+            font-size: 0.875rem;
+            font-weight: 600;
+            margin: 0 0 0.25rem;
+        }
+        .masonry-item-desc {
+            color: rgba(255,255,255,0.7);
+            font-size: 0.75rem;
+            margin: 0;
+            display: -webkit-box;
+            -webkit-line-clamp: 2;
+            -webkit-box-orient: vertical;
+            overflow: hidden;
+        }
+        .masonry-item-actions {
+            display: flex;
+            gap: 0.5rem;
+        }
+        .masonry-item-actions button {
+            flex: 1;
+            padding: 0.5rem;
+            border: none;
+            border-radius: 6px;
+            font-size: 0.75rem;
+            cursor: pointer;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            gap: 0.25rem;
+            transition: all 0.2s ease;
+        }
+        .masonry-item-actions button:active {
+            transform: scale(0.95);
+        }
+        .masonry-item-actions .btn-edit {
+            background: rgba(255,255,255,0.95);
+            color: #333;
+        }
+        .masonry-item-actions .btn-del {
+            background: rgba(248, 113, 113, 0.9);
+            color: white;
+        }
+
+        /* 选择器弹窗 */
+        .picker-overlay {
+            position: fixed;
+            inset: 0;
+            background: rgba(0,0,0,0.7);
+            backdrop-filter: blur(8px);
+            display: none;
+            align-items: center;
+            justify-content: center;
+            z-index: 200;
+            padding: 1rem;
+        }
+        .picker-overlay.show {
+            display: flex;
+        }
+        .picker-modal {
+            background: var(--a-bg-card-solid);
+            border: 1px solid var(--a-border);
+            border-radius: var(--a-radius-lg);
+            width: 100%;
+            max-width: 800px;
+            max-height: 80vh;
+            display: flex;
+            flex-direction: column;
+            animation: scaleIn 0.3s ease;
+        }
+        .picker-header {
+            padding: 1.25rem 1.5rem;
+            border-bottom: 1px solid var(--a-border);
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+        }
+        .picker-header h3 {
+            margin: 0;
+            font-size: 1.125rem;
+        }
+        .picker-body {
+            flex: 1;
+            overflow-y: auto;
+            padding: 1.5rem;
+        }
+        .picker-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fill, minmax(120px, 1fr));
+            gap: 0.75rem;
+        }
+        .picker-item {
+            aspect-ratio: 1;
+            border-radius: var(--a-radius-sm);
+            overflow: hidden;
+            cursor: pointer;
+            border: 3px solid transparent;
+            transition: all 0.2s ease;
+            position: relative;
+        }
+        .picker-item:hover {
+            border-color: var(--a-primary);
+            transform: scale(1.02);
+        }
+        .picker-item.selected {
+            border-color: var(--a-primary);
+        }
+        .picker-item.selected::after {
+            content: '✓';
+            position: absolute;
+            top: 0.5rem;
+            right: 0.5rem;
+            width: 1.5rem;
+            height: 1.5rem;
+            background: var(--a-primary);
+            color: white;
+            border-radius: 50%;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-size: 0.75rem;
+            font-weight: bold;
+        }
+        .picker-item img {
+            width: 100%;
+            height: 100%;
+            object-fit: cover;
+        }
+        .picker-footer {
+            padding: 1rem 1.5rem;
+            border-top: 1px solid var(--a-border);
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+        }
+        .picker-count {
+            color: var(--a-text-2);
+            font-size: 0.875rem;
+        }
+
+        /* 编辑弹窗 */
+        .edit-overlay {
+            position: fixed;
+            inset: 0;
+            background: rgba(0,0,0,0.7);
+            backdrop-filter: blur(8px);
+            display: none;
+            align-items: center;
+            justify-content: center;
+            z-index: 200;
+            padding: 1rem;
+        }
+        .edit-overlay.show {
+            display: flex;
+        }
+        .edit-modal {
+            background: var(--a-bg-card-solid);
+            border: 1px solid var(--a-border);
+            border-radius: var(--a-radius-lg);
+            width: 100%;
+            max-width: 500px;
+            padding: 1.5rem;
+            animation: scaleIn 0.3s ease;
+        }
+        .edit-modal h3 {
+            margin: 0 0 1.5rem;
+            font-size: 1.125rem;
+        }
+        .edit-preview {
+            width: 100%;
+            max-height: 200px;
+            object-fit: contain;
+            border-radius: var(--a-radius-sm);
+            margin-bottom: 1rem;
+            background: var(--a-bg);
+        }
+        .form-group {
+            margin-bottom: 1rem;
+        }
+        .form-group label {
+            display: block;
+            font-size: 0.85rem;
+            font-weight: 500;
+            margin-bottom: 0.5rem;
+            color: var(--a-text-2);
+        }
+        .form-group input,
+        .form-group textarea {
+            width: 100%;
+            padding: 0.75rem 1rem;
+            border: 1px solid var(--a-border);
+            border-radius: var(--a-radius-sm);
+            background: rgba(255, 255, 255, 0.03);
+            color: var(--a-text);
+            font-size: 0.9rem;
+            font-family: inherit;
+            transition: all 0.2s ease;
+        }
+        .form-group input:focus,
+        .form-group textarea:focus {
+            outline: none;
+            border-color: var(--a-primary);
+            box-shadow: 0 0 0 3px rgba(244, 114, 182, 0.15);
+        }
+        .form-group textarea {
+            resize: vertical;
+            min-height: 80px;
+        }
+        .modal-actions {
+            display: flex;
+            gap: 0.75rem;
+            justify-content: flex-end;
+            margin-top: 1.5rem;
+        }
+
+        .empty-state {
+            text-align: center;
+            padding: 4rem 2rem;
+        }
+        .empty-state svg {
+            width: 64px;
+            height: 64px;
+            color: var(--a-text-3);
+            opacity: 0.4;
+            margin-bottom: 1rem;
+        }
+        .empty-state p {
+            color: var(--a-text-3);
+            margin: 0 0 1.5rem;
+        }
+
+        /* URL输入弹窗 */
+        .url-input-overlay {
+            position: fixed;
+            inset: 0;
+            background: rgba(0,0,0,0.7);
+            backdrop-filter: blur(8px);
+            display: none;
+            align-items: center;
+            justify-content: center;
+            z-index: 200;
+            padding: 1rem;
+        }
+        .url-input-overlay.show {
+            display: flex;
+        }
+        .url-input-modal {
+            background: var(--a-bg-card-solid);
+            border: 1px solid var(--a-border);
+            border-radius: var(--a-radius-lg);
+            width: 100%;
+            max-width: 500px;
+            padding: 1.5rem;
+            animation: scaleIn 0.3s ease;
+        }
+        .url-input-modal h3 {
+            margin: 0 0 1.5rem;
+            font-size: 1.125rem;
+        }
+        .url-preview {
+            width: 100%;
+            max-height: 200px;
+            object-fit: contain;
+            border-radius: var(--a-radius-sm);
+            margin-bottom: 1rem;
+            background: var(--a-bg);
+            border: 1px dashed var(--a-border);
+            min-height: 120px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+        }
+        .url-preview img {
+            max-width: 100%;
+            max-height: 200px;
+            object-fit: contain;
+            border-radius: var(--a-radius-sm);
+        }
+        .url-preview .placeholder {
+            color: var(--a-text-3);
+            font-size: 0.85rem;
+            text-align: center;
+        }
+        .url-preview .loading {
+            color: var(--a-primary);
+        }
+        .input-hint {
+            font-size: 0.75rem;
+            color: var(--a-text-3);
+            margin-top: 0.5rem;
+        }
+    </style>
+</head>
+<body>
+    <!-- Sidebar Overlay -->
+    <div class="sidebar-overlay" id="sidebarOverlay"></div>
+
+    <!-- Sidebar -->
+    <aside class="glass-sidebar" id="sidebar">
+        <div class="sidebar-header">
+            <div class="sidebar-logo">星苒鸭</div>
+        </div>
+        <nav class="sidebar-nav">
+            <a href="/admin/" class="nav-item">
+                <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+                    <rect x="3" y="3" width="7" height="7"></rect>
+                    <rect x="14" y="3" width="7" height="7"></rect>
+                    <rect x="14" y="14" width="7" height="7"></rect>
+                    <rect x="3" y="14" width="7" height="7"></rect>
+                </svg>
+                控制台
+            </a>
+            <a href="/admin/posts.html" class="nav-item">
+                <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+                    <path d="M12 19l7-7 3 3-7 7-3-3z"></path>
+                    <path d="M18 13l-1.5-7.5L2 2l3.5 14.5L13 18l5-5z"></path>
+                    <circle cx="11" cy="11" r="2"></circle>
+                </svg>
+                文章管理
+            </a>
+            <a href="/admin/editor.html" class="nav-item">
+                <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+                    <path d="M11 4H4a2 2 0 0 0-2 2v14a2 2 0 0 0 2 2h14a2 2 0 0 0 2-2v-7"></path>
+                    <path d="M18.5 2.5a2.121 2.121 0 0 1 3 3L12 15l-4 1 1-4 9.5-9.5z"></path>
+                </svg>
+                写文章
+            </a>
+            <a href="/admin/media.html" class="nav-item">
+                <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+                    <rect x="3" y="3" width="18" height="18" rx="2" ry="2"></rect>
+                    <circle cx="8.5" cy="8.5" r="1.5"></circle>
+                    <polyline points="21 15 16 10 5 21"></polyline>
+                </svg>
+                媒体库
+            </a>
+            <a href="/admin/masonry.html" class="nav-item active">
+                <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+                    <rect x="3" y="3" width="7" height="9"></rect>
+                    <rect x="14" y="3" width="7" height="5"></rect>
+                    <rect x="14" y="12" width="7" height="9"></rect>
+                    <rect x="3" y="16" width="7" height="5"></rect>
+                </svg>
+                图片墙
+            </a>
+            <div class="nav-section-title">系统</div>
+            <a href="/admin/deploy.html" class="nav-item">
+                <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+                    <polygon points="13 2 3 14 12 14 11 22 21 10 12 10 13 2"></polygon>
+                </svg>
+                部署管理
+            </a>
+            <a href="/admin/settings.html" class="nav-item">
+                <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+                    <circle cx="12" cy="12" r="3"></circle>
+                    <path d="M19.4 15a1.65 1.65 0 0 0 .33 1.82l.06.06a2 2 0 0 1 0 2.83 2 2 0 0 1-2.83 0l-.06-.06a1.65 1.65 0 0 0-1.82-.33 1.65 1.65 0 0 0-1 1.51V21a2 2 0 0 1-2 2 2 2 0 0 1-2-2v-.09A1.65 1.65 0 0 0 9 19.4a1.65 1.65 0 0 0-1.82.33l-.06.06a2 2 0 0 1-2.83 0 2 2 0 0 1 0-2.83l.06-.06a1.65 1.65 0 0 0 .33-1.82 1.65 1.65 0 0 0-1.51-1H3a2 2 0 0 1-2-2 2 2 0 0 1 2-2h.09A1.65 1.65 0 0 0 4.6 9a1.65 1.65 0 0 0-.33-1.82l-.06-.06a2 2 0 0 1 0-2.83 2 2 0 0 1 2.83 0l.06.06a1.65 1.65 0 0 0 1.82.33H9a1.65 1.65 0 0 0 1-1.51V3a2 2 0 0 1 2-2 2 2 0 0 1 2 2v.09a1.65 1.65 0 0 0 1 1.51 1.65 1.65 0 0 0 1.82-.33l.06-.06a2 2 0 0 1 2.83 0 2 2 0 0 1 0 2.83l-.06.06a1.65 1.65 0 0 0-.33 1.82V9a1.65 1.65 0 0 0 1.51 1H21a2 2 0 0 1 2 2 2 2 0 0 1-2 2h-.09a1.65 1.65 0 0 0-1.51 1z"></path>
+                </svg>
+                站点设置
+            </a>
+        </nav>
+        <div class="sidebar-footer">
+            <a href="#" class="nav-item" id="logoutBtn">
+                <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+                    <path d="M9 21H5a2 2 0 0 1-2-2V5a2 2 0 0 1 2-2h4"></path>
+                    <polyline points="16 17 21 12 16 7"></polyline>
+                    <line x1="21" y1="12" x2="9" y2="12"></line>
+                </svg>
+                退出登录
+            </a>
+        </div>
+    </aside>
+
+    <!-- Main Content -->
+    <main class="main-content">
+        <!-- Header -->
+        <header style="display: flex; justify-content: space-between; align-items: center; margin-bottom: 2rem;">
+            <button class="btn-icon" id="menuBtn" style="display: none;">
+                <svg width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+                    <line x1="3" y1="12" x2="21" y2="12"></line>
+                    <line x1="3" y1="6" x2="21" y2="6"></line>
+                    <line x1="3" y1="18" x2="21" y2="18"></line>
+                </svg>
+            </button>
+            <div style="display: flex; gap: 0.5rem; align-items: center; margin-left: auto;">
+                <button class="btn-icon" id="themeToggle">
+                    <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" id="themeIcon">
+                        <path d="M21 12.79A9 9 0 1 1 11.21 3 7 7 0 0 0 21 12.79z"></path>
+                    </svg>
+                </button>
+                <div class="user-avatar">星</div>
+            </div>
+        </header>
+
+        <!-- Page Header -->
+        <div class="page-header">
+            <div>
+                <h1 class="page-title">图片墙</h1>
+                <p class="page-subtitle">管理首页精选图片展示</p>
+            </div>
+            <button class="btn-primary" id="addBtn">
+                <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+                    <line x1="12" y1="5" x2="12" y2="19"></line>
+                    <line x1="5" y1="12" x2="19" y2="12"></line>
+                </svg>
+                从媒体库添加
+            </button>
+            <button class="btn-secondary" id="addUrlBtn">
+                <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+                    <path d="M10 13a5 5 0 0 0 7.54.54l3-3a5 5 0 0 0-7.07-7.07l-1.72 1.71"></path>
+                    <path d="M14 11a5 5 0 0 0-7.54-.54l-3 3a5 5 0 0 0 7.07 7.07l1.71-1.71"></path>
+                </svg>
+                外部链接
+            </button>
+        </div>
+
+        <!-- Masonry Preview -->
+        <div class="glass-card" style="padding: 1.5rem;">
+            <div style="display: flex; justify-content: space-between; align-items: center; margin-bottom: 1rem;">
+                <h3 style="font-size: 1rem; font-weight: 600; margin: 0;">
+                    精选图片
+                    <span id="selectedCount" style="color: var(--a-text-3); font-weight: 400;">(0)</span>
+                </h3>
+                <button class="btn-secondary btn-sm" id="refreshBtn">
+                    <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+                        <polyline points="23 4 23 10 17 10"></polyline>
+                        <path d="M20.49 15a9 9 0 1 1-2.12-9.36L23 10"></path>
+                    </svg>
+                    刷新
+                </button>
+            </div>
+            <div class="masonry-preview stagger-animate" id="masonryGrid">
+                <div style="grid-column: 1/-1; text-align: center; padding: 3rem; color: var(--a-text-3);">
+                    加载中...
+                </div>
+            </div>
+        </div>
+    </main>
+
+    <!-- 图片选择器 -->
+    <div class="picker-overlay" id="pickerOverlay">
+        <div class="picker-modal">
+            <div class="picker-header">
+                <h3>从媒体库选择</h3>
+                <button class="btn-icon" id="closePicker">
+                    <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+                        <line x1="18" y1="6" x2="6" y2="18"></line>
+                        <line x1="6" y1="6" x2="18" y2="18"></line>
+                    </svg>
+                </button>
+            </div>
+            <div class="picker-body">
+                <div class="picker-grid" id="pickerGrid">
+                    加载中...
+                </div>
+            </div>
+            <div class="picker-footer">
+                <span class="picker-count">已选择 <strong id="pickerCount">0</strong> 张</span>
+                <div style="display: flex; gap: 0.75rem;">
+                    <button class="btn-secondary" id="cancelPicker">取消</button>
+                    <button class="btn-primary" id="confirmPicker">确认添加</button>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <!-- 编辑弹窗 -->
+    <div class="edit-overlay" id="editOverlay">
+        <div class="edit-modal">
+            <h3>编辑图片信息</h3>
+            <img id="editPreview" class="edit-preview" src="" alt="">
+            <input type="hidden" id="editId">
+            <div class="form-group">
+                <label>标题</label>
+                <input type="text" id="editTitle" placeholder="图片标题">
+            </div>
+            <div class="form-group">
+                <label>描述</label>
+                <textarea id="editDesc" placeholder="图片描述（可选）"></textarea>
+            </div>
+            <div class="modal-actions">
+                <button class="btn-secondary" id="cancelEdit">取消</button>
+                <button class="btn-primary" id="saveEdit">保存</button>
+            </div>
+        </div>
+    </div>
+
+    <!-- 外部URL输入弹窗 -->
+    <div class="url-input-overlay" id="urlInputOverlay">
+        <div class="url-input-modal">
+            <h3>添加外部图片链接</h3>
+            <div class="url-preview" id="urlPreview">
+                <span class="placeholder">输入URL后预览图片</span>
+            </div>
+            <div class="form-group">
+                <label>图片URL</label>
+                <input type="url" id="urlInput" placeholder="https://example.com/image.jpg">
+                <p class="input-hint">直接使用外部链接，不会下载到本站</p>
+            </div>
+            <div class="form-group">
+                <label>标题</label>
+                <input type="text" id="urlTitle" placeholder="图片标题（可选）">
+            </div>
+            <div class="form-group">
+                <label>描述</label>
+                <textarea id="urlDesc" placeholder="图片描述（可选）"></textarea>
+            </div>
+            <div class="modal-actions">
+                <button class="btn-secondary" id="cancelUrl">取消</button>
+                <button class="btn-primary" id="confirmUrl">添加</button>
+            </div>
+        </div>
+    </div>
+
+    <script src="/js/admin/core.js"></script>
+    <script>
+        const { $, $$, API, Auth, UI, Theme, Utils } = AdminCore;
+
+        if (!Auth.requireAuth()) throw new Error('Unauthorized');
+
+        // Mobile menu
+        const menuBtn = $('#menuBtn');
+        const sidebar = $('#sidebar');
+        const overlay = $('#sidebarOverlay');
+
+        function checkMobile() {
+            menuBtn.style.display = window.innerWidth <= 1024 ? 'flex' : 'none';
+            if (window.innerWidth > 1024) {
+                sidebar.classList.remove('open');
+                overlay.classList.remove('open');
+            }
+        }
+        checkMobile();
+        window.addEventListener('resize', checkMobile);
+
+        menuBtn.onclick = () => {
+            sidebar.classList.toggle('open');
+            overlay.classList.toggle('open');
+        };
+        overlay.onclick = () => {
+            sidebar.classList.remove('open');
+            overlay.classList.remove('open');
+        };
+
+        // Theme
+        $('#themeToggle').onclick = () => {
+            Theme.toggle();
+            updateThemeIcon();
+        };
+
+        function updateThemeIcon() {
+            const icon = $('#themeIcon');
+            icon.innerHTML = Theme.get() === 'dark'
+                ? '<circle cx="12" cy="12" r="5"></circle><line x1="12" y1="1" x2="12" y2="3"></line><line x1="12" y1="21" x2="12" y2="23"></line><line x1="4.22" y1="4.22" x2="5.64" y2="5.64"></line><line x1="18.36" y1="18.36" x2="19.78" y2="19.78"></line><line x1="1" y1="12" x2="3" y2="12"></line><line x1="21" y1="12" x2="23" y2="12"></line><line x1="4.22" y1="19.78" x2="5.64" y2="18.36"></line><line x1="18.36" y1="5.64" x2="19.78" y2="4.22"></line>'
+                : '<path d="M21 12.79A9 9 0 1 1 11.21 3 7 7 0 0 0 21 12.79z"></path>';
+        }
+        updateThemeIcon();
+
+        $('#logoutBtn').onclick = (e) => { e.preventDefault(); Auth.logout(); };
+
+        // State
+        let masonryList = [];
+        let mediaList = [];
+        let selectedUrls = new Set();
+
+        // Load masonry images
+        async function loadMasonry() {
+            try {
+                const data = await API.get('/masonry', { silent: true });
+                masonryList = data || [];
+                renderMasonry();
+            } catch (e) {
+                $('#masonryGrid').innerHTML = '<div style="grid-column: 1/-1; text-align: center; padding: 3rem; color: var(--a-danger);">加载失败</div>';
+            }
+        }
+
+        function renderMasonry() {
+            const grid = $('#masonryGrid');
+            $('#selectedCount').textContent = `(${masonryList.length})`;
+
+            if (masonryList.length === 0) {
+                grid.innerHTML = `
+                    <div class="empty-state" style="grid-column: 1/-1;">
+                        <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5">
+                            <rect x="3" y="3" width="7" height="9"></rect>
+                            <rect x="14" y="3" width="7" height="5"></rect>
+                            <rect x="14" y="12" width="7" height="9"></rect>
+                            <rect x="3" y="16" width="7" height="5"></rect>
+                        </svg>
+                        <p>还没有精选图片<br>点击上方按钮从媒体库添加</p>
+                    </div>`;
+                return;
+            }
+
+            grid.innerHTML = masonryList.map((img, idx) => `
+                <div class="masonry-item" data-id="${img.id}">
+                    <img src="${img.image}" alt="${Utils.escapeHtml(img.title || '')}" loading="lazy">
+                    <div class="masonry-item-overlay">
+                        <div class="masonry-item-info">
+                            <p class="masonry-item-title">${Utils.escapeHtml(img.title || '未命名')}</p>
+                            <p class="masonry-item-desc">${Utils.escapeHtml(img.description || '')}</p>
+                        </div>
+                        <div class="masonry-item-actions">
+                            <button class="btn-edit" onclick="editImage('${img.id}')">编辑</button>
+                            <button class="btn-del" onclick="deleteImage('${img.id}')">移除</button>
+                        </div>
+                    </div>
+                </div>
+            `).join('');
+        }
+
+        // Load media for picker
+        async function loadMedia() {
+            try {
+                const data = await API.get('/media', { silent: true });
+                mediaList = data || [];
+            } catch (e) {
+                mediaList = [];
+            }
+        }
+
+        function renderPicker() {
+            const grid = $('#pickerGrid');
+            const existingUrls = new Set(masonryList.map(m => m.image));
+
+            if (mediaList.length === 0) {
+                grid.innerHTML = '<div style="text-align: center; padding: 2rem; color: var(--a-text-3); grid-column: 1/-1;">媒体库为空，请先上传图片</div>';
+                return;
+            }
+
+            grid.innerHTML = mediaList.map(file => {
+                const isAdded = existingUrls.has(file.url);
+                const isSelected = selectedUrls.has(file.url);
+                return `
+                    <div class="picker-item ${isSelected ? 'selected' : ''} ${isAdded ? 'added' : ''}"
+                         data-url="${file.url}"
+                         data-name="${Utils.escapeHtml(file.name)}"
+                         style="${isAdded ? 'opacity: 0.4; pointer-events: none;' : ''}"
+                         onclick="toggleSelect(this, '${file.url}')">
+                        <img src="${file.url}" alt="${Utils.escapeHtml(file.name)}" loading="lazy">
+                    </div>
+                `;
+            }).join('');
+        }
+
+        window.toggleSelect = (el, url) => {
+            if (selectedUrls.has(url)) {
+                selectedUrls.delete(url);
+                el.classList.remove('selected');
+            } else {
+                selectedUrls.add(url);
+                el.classList.add('selected');
+            }
+            $('#pickerCount').textContent = selectedUrls.size;
+        };
+
+        // Picker controls
+        const pickerOverlay = $('#pickerOverlay');
+
+        $('#addBtn').onclick = async () => {
+            selectedUrls.clear();
+            $('#pickerCount').textContent = '0';
+            await loadMedia();
+            renderPicker();
+            pickerOverlay.classList.add('show');
+        };
+
+        $('#closePicker').onclick = () => pickerOverlay.classList.remove('show');
+        $('#cancelPicker').onclick = () => pickerOverlay.classList.remove('show');
+        pickerOverlay.onclick = (e) => {
+            if (e.target === pickerOverlay) pickerOverlay.classList.remove('show');
+        };
+
+        $('#confirmPicker').onclick = async () => {
+            if (selectedUrls.size === 0) {
+                UI.toast('请选择至少一张图片', 'warning');
+                return;
+            }
+
+            let added = 0;
+            for (const url of selectedUrls) {
+                const file = mediaList.find(f => f.url === url);
+                const title = file ? file.name.replace(/\.[^/.]+$/, '') : '';
+
+                try {
+                    const res = await API.post('/masonry', { url, title }, { silent: true });
+                    if (res.success && res.data) {
+                        masonryList.unshift(res.data);
+                        added++;
+                    }
+                } catch (e) {
+                    console.error(e);
+                }
+            }
+
+            pickerOverlay.classList.remove('show');
+            renderMasonry();
+            UI.toast(`已添加 ${added} 张图片`, 'success');
+        };
+
+        // Edit
+        const editOverlay = $('#editOverlay');
+
+        window.editImage = (id) => {
+            const img = masonryList.find(i => i.id === id);
+            if (!img) return;
+
+            $('#editId').value = id;
+            $('#editPreview').src = img.image;
+            $('#editTitle').value = img.title || '';
+            $('#editDesc').value = img.description || '';
+            editOverlay.classList.add('show');
+        };
+
+        $('#cancelEdit').onclick = () => editOverlay.classList.remove('show');
+        editOverlay.onclick = (e) => {
+            if (e.target === editOverlay) editOverlay.classList.remove('show');
+        };
+
+        $('#saveEdit').onclick = async () => {
+            const id = $('#editId').value;
+            const title = $('#editTitle').value.trim();
+            const description = $('#editDesc').value.trim();
+
+            try {
+                const res = await API.put(`/masonry/${id}`, { title, description });
+                if (res.success) {
+                    const idx = masonryList.findIndex(i => i.id === id);
+                    if (idx !== -1) {
+                        masonryList[idx] = { ...masonryList[idx], title, description };
+                        renderMasonry();
+                    }
+                    editOverlay.classList.remove('show');
+                    UI.toast('保存成功', 'success');
+                }
+            } catch (e) {
+                // handled by API
+            }
+        };
+
+        // Delete
+        window.deleteImage = async (id) => {
+            const confirmed = await UI.confirm('确定要从图片墙移除这张图片吗？', { title: '移除图片' });
+            if (!confirmed) return;
+
+            try {
+                const res = await API.delete(`/masonry/${id}`);
+                if (res.success) {
+                    masonryList = masonryList.filter(i => i.id !== id);
+                    renderMasonry();
+                    UI.toast('已移除', 'success');
+                }
+            } catch (e) {
+                // handled by API
+            }
+        };
+
+        // Refresh
+        $('#refreshBtn').onclick = loadMasonry;
+
+        // URL Input Modal
+        const urlInputOverlay = $('#urlInputOverlay');
+        const urlInput = $('#urlInput');
+        const urlPreview = $('#urlPreview');
+
+        $('#addUrlBtn').onclick = () => {
+            urlInput.value = '';
+            $('#urlTitle').value = '';
+            $('#urlDesc').value = '';
+            urlPreview.innerHTML = '<span class="placeholder">输入URL后预览图片</span>';
+            urlInputOverlay.classList.add('show');
+            urlInput.focus();
+        };
+
+        // 预览URL图片
+        let previewTimeout;
+        urlInput.oninput = () => {
+            clearTimeout(previewTimeout);
+            const url = urlInput.value.trim();
+
+            if (!url || (!url.startsWith('http://') && !url.startsWith('https://'))) {
+                urlPreview.innerHTML = '<span class="placeholder">输入URL后预览图片</span>';
+                return;
+            }
+
+            urlPreview.innerHTML = '<span class="placeholder loading">加载中...</span>';
+
+            previewTimeout = setTimeout(() => {
+                const img = new Image();
+                img.onload = () => {
+                    urlPreview.innerHTML = '';
+                    urlPreview.appendChild(img);
+                };
+                img.onerror = () => {
+                    urlPreview.innerHTML = '<span class="placeholder" style="color: var(--a-danger);">图片无法加载</span>';
+                };
+                // 使用后端代理绕过SSL限制
+                img.src = `/api/masonry/proxy?url=${encodeURIComponent(url)}`;
+            }, 300);
+        };
+
+        $('#cancelUrl').onclick = () => urlInputOverlay.classList.remove('show');
+        urlInputOverlay.onclick = (e) => {
+            if (e.target === urlInputOverlay) urlInputOverlay.classList.remove('show');
+        };
+
+        $('#confirmUrl').onclick = async () => {
+            const url = urlInput.value.trim();
+            const title = $('#urlTitle').value.trim();
+            const description = $('#urlDesc').value.trim();
+
+            if (!url) {
+                UI.toast('请输入图片URL', 'warning');
+                return;
+            }
+
+            if (!url.startsWith('http://') && !url.startsWith('https://')) {
+                UI.toast('请输入有效的URL', 'warning');
+                return;
+            }
+
+            // 检查是否已存在
+            if (masonryList.some(m => m.image === url)) {
+                UI.toast('该图片已在图片墙中', 'warning');
+                return;
+            }
+
+            try {
+                const res = await API.post('/masonry', { url, title, description });
+                if (res.success && res.data) {
+                    masonryList.unshift(res.data);
+                    renderMasonry();
+                    urlInputOverlay.classList.remove('show');
+                    UI.toast('添加成功', 'success');
+                }
+            } catch (e) {
+                // handled by API
+            }
+        };
+
+        // Init
+        loadMasonry();
+    </script>
+</body>
+</html>

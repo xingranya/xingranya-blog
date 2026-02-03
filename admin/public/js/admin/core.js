@@ -391,4 +391,140 @@
     // 自动初始化主题
     Theme.init();
 
+    // ========== 动效系统 ==========
+    const Motion = {
+        // 涟漪效果
+        ripple(e) {
+            const btn = e.currentTarget;
+            const rect = btn.getBoundingClientRect();
+            const ripple = document.createElement('span');
+            const size = Math.max(rect.width, rect.height);
+
+            ripple.className = 'ripple';
+            ripple.style.width = ripple.style.height = size + 'px';
+            ripple.style.left = (e.clientX - rect.left - size / 2) + 'px';
+            ripple.style.top = (e.clientY - rect.top - size / 2) + 'px';
+
+            btn.appendChild(ripple);
+            setTimeout(() => ripple.remove(), 600);
+        },
+
+        // 页面切换动画
+        pageTransition(url) {
+            const overlay = document.createElement('div');
+            overlay.className = 'page-transition';
+            document.body.appendChild(overlay);
+
+            requestAnimationFrame(() => {
+                overlay.classList.add('active');
+                setTimeout(() => {
+                    location.href = url;
+                }, 300);
+            });
+        },
+
+        // 主题切换动画
+        themeTransition() {
+            document.documentElement.classList.add('theme-transitioning');
+            setTimeout(() => {
+                document.documentElement.classList.remove('theme-transitioning');
+            }, 400);
+        },
+
+        // 数字滚动动画
+        countUp(el, target, duration = 800) {
+            const start = parseInt(el.textContent) || 0;
+            const startTime = performance.now();
+
+            const update = (currentTime) => {
+                const elapsed = currentTime - startTime;
+                const progress = Math.min(elapsed / duration, 1);
+                const eased = 1 - Math.pow(1 - progress, 3); // easeOutCubic
+                const current = Math.round(start + (target - start) * eased);
+
+                el.textContent = current;
+
+                if (progress < 1) {
+                    requestAnimationFrame(update);
+                } else {
+                    el.classList.add('updated');
+                    setTimeout(() => el.classList.remove('updated'), 400);
+                }
+            };
+
+            requestAnimationFrame(update);
+        },
+
+        // 错误抖动
+        shake(el) {
+            el.classList.add('error-shake');
+            setTimeout(() => el.classList.remove('error-shake'), 400);
+        },
+
+        // 成功脉冲
+        pulse(el) {
+            el.classList.add('success-pulse');
+            setTimeout(() => el.classList.remove('success-pulse'), 600);
+        },
+
+        // 入场动画
+        staggerIn(container) {
+            container.classList.add('stagger-animate');
+        },
+
+        // 滚动显示
+        initScrollReveal() {
+            const observer = new IntersectionObserver((entries) => {
+                entries.forEach(entry => {
+                    if (entry.isIntersecting) {
+                        entry.target.classList.add('revealed');
+                    }
+                });
+            }, { threshold: 0.1 });
+
+            document.querySelectorAll('.reveal-on-scroll').forEach(el => {
+                observer.observe(el);
+            });
+        },
+
+        // 初始化所有动效
+        init() {
+            // 给所有按钮添加涟漪效果
+            document.addEventListener('click', (e) => {
+                const btn = e.target.closest('.btn-primary, .btn-secondary, .btn-danger, .nav-item');
+                if (btn) {
+                    this.ripple(e);
+                }
+            });
+
+            // 页面内链接添加过渡效果
+            document.addEventListener('click', (e) => {
+                const link = e.target.closest('a[href^="/admin"]');
+                if (link && !e.ctrlKey && !e.metaKey) {
+                    e.preventDefault();
+                    this.pageTransition(link.href);
+                }
+            });
+
+            // 统计卡片入场动画
+            const statsGrid = document.querySelector('.stats-grid');
+            if (statsGrid) {
+                this.staggerIn(statsGrid);
+            }
+
+            // 初始化滚动显示
+            this.initScrollReveal();
+        }
+    };
+
+    // 导出 Motion
+    global.AdminCore.Motion = Motion;
+
+    // DOM Ready 后初始化动效
+    if (document.readyState === 'loading') {
+        document.addEventListener('DOMContentLoaded', () => Motion.init());
+    } else {
+        Motion.init();
+    }
+
 })(window);
