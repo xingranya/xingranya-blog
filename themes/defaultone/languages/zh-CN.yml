@@ -30,9 +30,12 @@ go-back-home: 回到首页
 # 菜单翻译
 # ----------------------------------------
 home: 首页
+blog: 博客
+album: 相册
+projects: 项目
+about: 关于
 archive: 归档
 archives: 归档
-about: 关于
 links: 链接
 link: 链接
 friends: 友情链接
