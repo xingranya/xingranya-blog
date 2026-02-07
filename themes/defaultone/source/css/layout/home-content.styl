@@ -1,4 +1,5 @@
 @require '../common/variables'
+@require '../common/redefine-theme'
 
 .home-content-container
   if (hexo-config('home.sidebar.enable') && hexo-config('home.sidebar.position') == 'right')
@@ -63,10 +64,10 @@
           left 0
           width 100%
           height 40px
-          // 柔和的模糊过渡
+          // Soft blur transition
           backdrop-filter blur(15px)
           -webkit-backdrop-filter blur(15px)
-          // 简洁的渐变背景
+          // Simple gradient background
           background linear-gradient(to bottom, 
             transparent 0%, 
             var(--background-color-transparent-40) 100%)
@@ -86,7 +87,7 @@
           position absolute
           top 0
           left 0
-          // 轻微的渐变过渡 - 从图片到文字区域
+          // Slight gradient transition - from image to text area
           -webkit-mask-image linear-gradient(to bottom, 
             black 0%, 
             black 90%, 
@@ -100,7 +101,7 @@
         position relative
         font-weight 600
         font-size 1.4rem
-        // 轻微调整标题位置
+        // Slight adjustment to title position
         margin-top -10px
         z-index 2
         line-height 1.5

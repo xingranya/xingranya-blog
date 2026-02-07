@@ -1,14 +1,39 @@
 /** @type {import('tailwindcss').Config} */
+const path = require('path');
+
 module.exports = {
   darkMode: "class",
   content: [
-    "./source/**/*.js",
-    "./layout/**/*.ejs",
-    "./scripts/**/*.js",
-    "../../source/**/*.md",
-    "../../source/**/*.html"
+    path.join(__dirname, "./source/**/*.{js,jsx,ts,tsx}"),
+    path.join(__dirname, "./layout/**/*.{ejs,html}"),
+    path.join(__dirname, "./scripts/**/*.{js,jsx,ts,tsx}"),
+    path.join(__dirname, "../../source/**/*.{md,html}")
   ],
   safelist: [
+    // 明确列出所有使用的类
+    'backdrop-blur-lg',
+    'backdrop-blur-2xl',
+    'bg-black/30',
+    'dark:bg-white/20',
+    'bg-gray-300/50',
+    'dark:bg-gray-500/40',
+    'bg-white/90',
+    'dark:bg-gray-800/90',
+    'border-white/20',
+    'dark:border-white/10',
+    'dark:border-gray-500/30',
+    'dark:border-gray-600/50',
+    'shadow-redefine-flat',
+    'hover:shadow-redefine-flat-hover',
+    'sm:shadow-redefine',
+    'sm:hover:shadow-redefine-hover',
+    'bg-background-color-transparent',
+    { pattern: /^backdrop-blur/ },
+    { pattern: /^bg-/ },
+    { pattern: /^text-/ },
+    { pattern: /^border-/ },
+    { pattern: /^rounded-/ },
+    { pattern: /^shadow-/ },
     "justify-center", "flex-row-reverse", "flex-row",
     "flex", "flex-col", "items-center", "justify-between", "justify-around",
     "hidden", "block", "inline-block",
@@ -21,7 +46,6 @@ module.exports = {
     "transition", "transition-all", "duration-300",
     "cursor-pointer",
     "overflow-hidden", "truncate",
-    "backdrop-blur", "backdrop-blur-lg", "backdrop-blur-2xl",
     "z-50", "z-40", "z-30",
     "container", "mx-auto",
     "grid", "grid-cols-1", "grid-cols-2", "grid-cols-3",
@@ -30,9 +54,6 @@ module.exports = {
     "m-4", "mx-4", "my-4", "mb-4", "mt-4",
     "text-sm", "text-base", "text-lg", "text-xl", "text-2xl", "text-3xl",
     "font-normal", "font-medium", "font-semibold", "font-bold",
-    "text-primary", "text-second-text-color", "text-third-text-color",
-    "bg-background-color", "bg-second-background-color", "bg-third-background-color",
-    "border", "border-border-color",
     "dark:block", "dark:hidden", "dark:bg-gray-800", "dark:text-gray-100"
   ],
   theme: {

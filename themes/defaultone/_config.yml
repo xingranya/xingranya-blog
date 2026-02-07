@@ -30,7 +30,7 @@ colors:
   # 辅助色（可选）
   secondary:
   # 默认主题模式初始值（会被系统配色偏好覆盖）
-  default_mode: light # light, dark
+  default_mode: dark # light, dark
 # 颜色配置 <<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<< end
 
 
@@ -64,7 +64,7 @@ global:
   # 滚动进度
   scroll_progress:
     bar: true # 进度条
-    percentage: false # 百分比
+    percentage: true # 百分比
   # 网站计数器
   website_counter:
     url: https://cn.vercount.one/js # 计数器脚本（通常无需修改）
@@ -164,7 +164,7 @@ home_banner:
       telegram: https://t.me/xingranya
       bilibili: https://space.bilibili.com/357220647
       twitter:  https://x.com/xingranya # 你的 X(Twitter) 链接
-      email: xingranya@outlook.jp # 你的邮箱
+      email: mailto:xingranya@outlook.jp # 你的邮箱
       # ...... # 可继续添加
     # 带二维码抽屉的社交链接
     qrs:

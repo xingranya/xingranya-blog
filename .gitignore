@@ -3,3 +3,6 @@ public
 db.json
 .DS_Store
 Thumbs.db
+# Tailwind CSS 构建产物
+themes/defaultone/source/css/build/
+themes/defaultone/test-output.css
