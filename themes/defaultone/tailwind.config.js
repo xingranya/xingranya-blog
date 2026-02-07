@@ -1,8 +1,40 @@
 /** @type {import('tailwindcss').Config} */
 module.exports = {
   darkMode: "class",
-  content: ["source/**/*.js", "layout/**/*.ejs", "scripts/**/*.js"],
-  safelist: ["justify-center", "flex-row-reverse", "flex-row"],
+  content: [
+    "./source/**/*.js",
+    "./layout/**/*.ejs",
+    "./scripts/**/*.js",
+    "../../source/**/*.md",
+    "../../source/**/*.html"
+  ],
+  safelist: [
+    "justify-center", "flex-row-reverse", "flex-row",
+    "flex", "flex-col", "items-center", "justify-between", "justify-around",
+    "hidden", "block", "inline-block",
+    "relative", "absolute", "fixed", "sticky",
+    "w-full", "h-full", "min-w-0", "max-w-full",
+    "text-center", "text-left", "text-right",
+    "rounded", "rounded-lg", "rounded-full",
+    "shadow", "shadow-md", "shadow-lg",
+    "hover:shadow-lg", "hover:scale-105",
+    "transition", "transition-all", "duration-300",
+    "cursor-pointer",
+    "overflow-hidden", "truncate",
+    "backdrop-blur", "backdrop-blur-lg", "backdrop-blur-2xl",
+    "z-50", "z-40", "z-30",
+    "container", "mx-auto",
+    "grid", "grid-cols-1", "grid-cols-2", "grid-cols-3",
+    "gap-4", "gap-6",
+    "p-4", "px-4", "py-4", "px-6", "py-6",
+    "m-4", "mx-4", "my-4", "mb-4", "mt-4",
+    "text-sm", "text-base", "text-lg", "text-xl", "text-2xl", "text-3xl",
+    "font-normal", "font-medium", "font-semibold", "font-bold",
+    "text-primary", "text-second-text-color", "text-third-text-color",
+    "bg-background-color", "bg-second-background-color", "bg-third-background-color",
+    "border", "border-border-color",
+    "dark:block", "dark:hidden", "dark:bg-gray-800", "dark:text-gray-100"
+  ],
   theme: {
     extend: {
       spacing: {
