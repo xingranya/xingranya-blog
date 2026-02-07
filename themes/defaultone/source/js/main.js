@@ -7,7 +7,7 @@ import initScrollTopBottom from "./tools/scrollTopBottom.js";
 import initLocalSearch from "./tools/localSearch.js";
 import initCopyCode from "./tools/codeBlock.js";
 import initBookmarkNav from "./layouts/bookmarkNav.js";
-import initParticles from "./build/layouts/setup-particles.js";
+import initParticles from "./layouts/setup-particles.js";
 // import { emojiCursor } from "cursor-effects";
 // console.log(emojiCursor);
 // new emojiCursor({ emoji: ["🔥", "🐬", "🦆"] });
