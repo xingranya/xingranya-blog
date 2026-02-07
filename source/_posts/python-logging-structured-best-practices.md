@@ -2,7 +2,7 @@
 title: Python 日志最佳实践：从 print 到结构化
 date: "2026-02-06 11:30:00"
 banner: 让日志可搜索、可聚合、可定位，而不是“刷屏”
-cover: "https://images.unsplash.com/photo-1627399270231-7d36245355a9?auto=format&fit=crop&w=1600&q=80&ixlib=rb-4.1.0"
+cover: "https://img1.tucang.cc/api/image/show/7f575fd2b58b3e389c0eb0223fea3de3"
 categories:
   - 编程实践
 tags:

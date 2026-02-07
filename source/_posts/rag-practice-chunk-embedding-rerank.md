@@ -2,7 +2,7 @@
 title: RAG 实战：切分、Embedding、检索、重排一条线
 date: "2026-02-06 14:30:00"
 banner: 让模型“有据可查”，比一味加大参数更靠谱
-cover: "https://images.unsplash.com/photo-1761474909212-21b511bd3eb6?auto=format&fit=crop&w=1600&q=80&ixlib=rb-4.1.0"
+cover: "https://img1.tucang.cc/api/image/show/c6cfbe0dfe438001ca6dabd5f2a39779"
 categories:
   - AI 技术
 tags:

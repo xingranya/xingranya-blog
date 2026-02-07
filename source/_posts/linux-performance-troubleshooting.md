@@ -2,7 +2,7 @@
 title: Linux 性能排查：CPU/内存/磁盘/网络一条龙
 date: "2026-02-06 08:00:00"
 banner: 别急着重启，先把指标看明白
-cover: "https://img1.tucang.cc/api/image/show/982ca007fb1e4d60bc052f2709e9a49c"
+cover: "https://img1.tucang.cc/api/image/show/7a053f1265875fc052f4c0e6b0a8a889"
 categories:
   - 运维技术
 tags:

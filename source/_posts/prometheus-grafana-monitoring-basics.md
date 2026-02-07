@@ -2,7 +2,7 @@
 title: Prometheus + Grafana：搭一套“看得见”的监控
 date: "2026-02-06 10:30:00"
 banner: 指标、告警、仪表盘——把服务状态从“玄学”变成数字
-cover: "https://images.unsplash.com/photo-1551288049-bebda4e38f71?auto=format&fit=crop&w=1600&q=80&ixlib=rb-4.1.0"
+cover: "https://img1.tucang.cc/api/image/show/186a25ffafe5bb6c3c6daae3916f6c55"
 categories:
   - 运维技术
 tags:

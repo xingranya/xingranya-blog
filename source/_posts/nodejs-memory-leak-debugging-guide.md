@@ -2,7 +2,7 @@
 title: Node.js 内存泄漏排查：把“越跑越慢”抓现行
 date: "2026-02-06 12:00:00"
 banner: 不是 GC 不努力，是对象被你“留住”了
-cover: "https://images.unsplash.com/photo-1741392078190-d263a71291cd?auto=format&fit=crop&w=1600&q=80&ixlib=rb-4.1.0"
+cover: "https://img1.tucang.cc/api/image/show/d74543864ea3db820791a866fe0876be"
 categories:
   - 编程实践
 tags:

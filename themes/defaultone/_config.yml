@@ -160,12 +160,15 @@ home_banner:
     links:
       github:  https://github.com/xingranya # 你的 GitHub 链接
       instagram: # 你的 Instagram 链接
-      zhihu:  # 你的知乎主页
+      google: mailto:xingranya666@gmail.com
+      telegram: https://t.me/xingranya
+      bilibili: https://space.bilibili.com/357220647
       twitter:  https://x.com/xingranya # 你的 X(Twitter) 链接
-      email:  mailto:xingranya@outlook.jp # 你的邮箱
+      email: xingranya@outlook.jp # 你的邮箱
       # ...... # 可继续添加
     # 带二维码抽屉的社交链接
     qrs:
+      qq: https://img1.tucang.cc/api/image/show/d036748c250fe94358e82a551a8df8a1
       weixin: https://img1.tucang.cc/api/image/show/673ba553b98bb81251740a53978dd8e5 # 你的微信二维码图片
       # ...... # 可继续添加
 # 首页横幅 <<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<< end

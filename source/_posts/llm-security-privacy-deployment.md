@@ -2,7 +2,7 @@
 title: 大模型安全与隐私：从密钥到数据脱敏的落地清单
 date: "2026-02-06 15:30:00"
 banner: 不是“接上模型就行”，而是“接上就要负责”
-cover: "https://images.unsplash.com/photo-1493129922668-fcb1a8514643?auto=format&fit=crop&w=1600&q=80&ixlib=rb-4.1.0"
+cover: "https://img1.tucang.cc/api/image/show/cef303a092f3e1eef67f72b040493cd2"
 categories:
   - AI 技术
 tags:

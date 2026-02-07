@@ -2,7 +2,7 @@
 title: SSH 安全加固清单：从“能用”到“难进”
 date: "2026-02-06 11:00:00"
 banner: 只靠改端口不够，关键是最小权限 + 防暴力破解
-cover: "https://images.unsplash.com/photo-1744329630282-ace56b873b79?auto=format&fit=crop&w=1600&q=80&ixlib=rb-4.1.0"
+cover: "https://img1.tucang.cc/api/image/show/cff684ffa7a64fb47d4830ff76f4ff29"
 categories:
   - 运维技术
 tags:

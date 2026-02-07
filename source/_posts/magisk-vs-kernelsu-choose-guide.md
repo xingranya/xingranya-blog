@@ -2,7 +2,7 @@
 title: Magisk vs KernelSU：怎么选更适合你的 Root 方案
 date: "2026-02-06 16:00:00"
 banner: 选型先看“风险与兼容性”，再谈“好不好玩”
-cover: "https://source.unsplash.com/RXn-uTxKBtQ/1600x900"
+cover: "https://img1.tucang.cc/api/image/show/329b9666f14ce93184b276606a5be61e"
 categories:
   - 安卓折腾
 tags:

@@ -2,7 +2,7 @@
 title: Docker 网络与存储进阶：容器不“迷路”
 date: "2026-02-06 09:30:00"
 banner: 端口映射、网络驱动、volume，一次讲透最常踩的坑
-cover: "https://images.unsplash.com/photo-1710762382866-2d12000736ea?auto=format&fit=crop&w=1600&q=80&ixlib=rb-4.1.0"
+cover: "https://img1.tucang.cc/api/image/show/d25e016ab6b1f524fa9910db3d932e3b"
 categories:
   - 运维技术
 tags:

@@ -2,7 +2,7 @@
 title: API 设计要点：错误码、幂等、分页与限流
 date: "2026-02-06 13:00:00"
 banner: 让接口“好用且不坑人”，比多写几个字段更重要
-cover: "https://source.unsplash.com/ZfVyuV8l7WU/1600x900"
+cover: "https://img1.tucang.cc/api/image/show/b248fa0b0b36638823a3285f9de089dc"
 categories:
   - 编程实践
 tags:

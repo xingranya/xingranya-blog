@@ -2,7 +2,7 @@
 title: 大模型基础：Token、上下文、温度与采样到底在干嘛
 date: "2026-02-06 13:30:00"
 banner: 先把“调参玄学”变成可解释的概念
-cover: "https://source.unsplash.com/pnPwc-Pffuk/1600x900"
+cover: "https://img1.tucang.cc/api/image/show/8f4b1204fc17123b56aed816657de9f8"
 categories:
   - AI 技术
 tags:

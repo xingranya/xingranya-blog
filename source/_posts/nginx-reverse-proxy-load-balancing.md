@@ -2,7 +2,7 @@
 title: Nginx 反向代理与负载均衡：从入门到可上线
 date: "2026-02-06 09:00:00"
 banner: 配对转发、缓存、健康检查，一套配置吃遍常见场景
-cover: "https://images.unsplash.com/photo-1558494949-ef010cbdcc31?auto=format&fit=crop&w=1600&q=80&ixlib=rb-4.1.0"
+cover: "https://img1.tucang.cc/api/image/show/f7b12632caf0c9c6b3a881291e21c380"
 categories:
   - 运维技术
 tags:

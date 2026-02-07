@@ -2,7 +2,7 @@
 title: Kubernetes 入门：用最小例子跑通 Deployment/Service
 date: "2026-02-06 10:00:00"
 banner: 先把核心对象跑通，再谈“云原生”
-cover: "https://images.unsplash.com/photo-1652189977368-e9d033e7d3e7?auto=format&fit=crop&w=1600&q=80&ixlib=rb-4.1.0"
+cover: "https://img1.tucang.cc/api/image/show/91fe3a5f4ce292a5f0b84833cba43acc"
 categories:
   - 运维技术
 tags:

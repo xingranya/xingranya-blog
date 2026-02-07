@@ -2,7 +2,7 @@
 title: 搞机常见问题排查：卡开机/无限重启/模块冲突
 date: "2026-02-06 17:30:00"
 banner: 把问题拆小，一次只改一件事，救砖会轻松很多
-cover: "https://images.unsplash.com/photo-1667264501379-c1537934c7ab?auto=format&fit=crop&w=1600&q=80&ixlib=rb-4.1.0"
+cover: "https://img1.tucang.cc/api/image/show/982ca007fb1e4d60bc052f2709e9a49c"
 categories:
   - 安卓折腾
 tags:

@@ -2,7 +2,7 @@
 title: 救砖与备份：boot/vbmeta/分区与 fastboot 工具箱
 date: "2026-02-06 17:00:00"
 banner: 折腾之前先准备“救命稻草”，不然翻车只剩绝望
-cover: "https://source.unsplash.com/tDIzK0B5Sp8/1600x900"
+cover: "https://img1.tucang.cc/api/image/show/bf0066ea8efa3c3a4d931c4c4c865fab"
 categories:
   - 安卓折腾
 tags:

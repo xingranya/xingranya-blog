@@ -2,7 +2,7 @@
 title: Root 环境隔离与应用兼容性：完整性检测是什么？
 date: "2026-02-06 16:30:00"
 banner: 日用与折腾分开，能省掉 80% 的麻烦
-cover: "https://images.unsplash.com/photo-1459292113141-4cacea7878b1?auto=format&fit=crop&w=1600&q=80&ixlib=rb-4.1.0"
+cover: "https://img1.tucang.cc/api/image/show/a48ae39af2da78182be029492f5d68d8"
 categories:
   - 安卓折腾
 tags:

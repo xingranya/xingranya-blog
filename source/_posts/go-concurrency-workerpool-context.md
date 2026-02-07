@@ -2,7 +2,7 @@
 title: Go 并发模式：Worker Pool + Context + 限流
 date: "2026-02-06 12:30:00"
 banner: 并发不是“起更多 goroutine”，而是“可控地并发”
-cover: "https://images.unsplash.com/photo-1756575802474-b2348cef95c3?auto=format&fit=crop&w=1600&q=80&ixlib=rb-4.1.0"
+cover: "https://img1.tucang.cc/api/image/show/4c90d17e3f5820846af76660ce25e1a9"
 categories:
   - 编程实践
 tags:

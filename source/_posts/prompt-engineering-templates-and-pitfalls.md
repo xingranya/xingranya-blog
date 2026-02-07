@@ -2,7 +2,7 @@
 title: 提示工程：一套可复用的提示模板（附常见坑）
 date: "2026-02-06 15:00:00"
 banner: 把需求写清楚，比“更会问问题”更重要
-cover: "https://images.unsplash.com/photo-1757310998437-b2e8a7bd2e97?auto=format&fit=crop&w=1600&q=80&ixlib=rb-4.1.0"
+cover: "https://img1.tucang.cc/api/image/show/d45855ca0872cf44937bffd1d2f6d94a"
 categories:
   - AI 技术
 tags:

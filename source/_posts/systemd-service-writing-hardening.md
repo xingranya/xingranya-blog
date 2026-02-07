@@ -2,7 +2,7 @@
 title: systemd：写一个靠谱的服务并顺手加固
 date: "2026-02-06 08:30:00"
 banner: 从“能跑”到“可维护”，只差一个 unit 文件
-cover: "https://images.unsplash.com/photo-1695668548342-c0c1ad479aee?auto=format&fit=crop&w=1600&q=80&ixlib=rb-4.1.0"
+cover: "https://img1.tucang.cc/api/image/show/072784e18bafcb68393691484f75ec7d"
 categories:
   - 运维技术
 tags:

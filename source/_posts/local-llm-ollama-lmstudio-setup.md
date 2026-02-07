@@ -2,7 +2,7 @@
 title: 本地跑大模型：Ollama / LM Studio 选型与调参思路
 date: "2026-02-06 14:00:00"
 banner: 不一定要上云，先把“能跑起来 + 跑得稳”搞定
-cover: "https://images.unsplash.com/photo-1757310998309-87a97e562ee5?auto=format&fit=crop&w=1600&q=80&ixlib=rb-4.1.0"
+cover: "https://img1.tucang.cc/api/image/show/594db2a7f6e6a38af237088dc7ffc053"
 categories:
   - AI 技术
 tags:

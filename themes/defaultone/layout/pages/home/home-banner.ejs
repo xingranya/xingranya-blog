@@ -40,7 +40,7 @@
     </div>
     <% } %>
     <div class="content mt-8 flex flex-col justify-center items-center transition-fade-down">
-        <div class="description flex flex-col justify-center items-center w-screen font-medium text-center"
+        <div class="description flex flex-col justify-center items-center w-screen font-medium text-center backdrop-blur-2xl bg-black/30 dark:bg-white/20 px-6 py-8 rounded-2xl border border-white/20 dark:border-white/10 shadow-2xl"
         <% if (theme.home_banner.custom_font.enable) { %>
              style="font-family: '<%- theme.home_banner.custom_font.family %>', sans-serif; !important;"
                 <% } %>
@@ -104,9 +104,13 @@
                                     <span class="social-contact-item-qr cursor-pointer group">
                                         <a target="_blank">
                                             <i class="<%= key %> fa-fw fa-lg"></i>
-                                            <div class="social-qr-container absolute h-auto bg-background-color-transparent-40 border border-white/20 dark:border-gray-500/30 overflow-hidden rounded-2xl bottom-0 mb-14 right-0 invisible group-hover:visible opacity-0 group-hover:opacity-100 translate-y-0.5 group-hover:translate-y-0 transition-all">
-                                                <img class="social-contacts-qr w-64"
+                                            <div class="social-qr-container absolute h-auto w-64 backdrop-blur-2xl bg-white/90 dark:bg-gray-800/90 border border-white/20 dark:border-gray-500/30 overflow-hidden rounded-2xl bottom-0 mb-14 right-0 invisible group-hover:visible opacity-0 group-hover:opacity-100 translate-y-0.5 group-hover:translate-y-0 transition-all flex flex-col items-center pb-3 shadow-2xl z-50">
+                                                <img class="social-contacts-qr w-full"
                                                      src="<%- url_for(theme.home_banner.social_links.qrs[key]) %>"/>
+                                                <a href="javascript:void(0);" onclick="downloadImage('<%- url_for(theme.home_banner.social_links.qrs[key]) %>', 'qr-code-<%= key %>.png')" class="mt-2 px-4 py-1.5 bg-blue-500 hover:bg-blue-600 text-white rounded-full text-sm transition-colors duration-200 flex items-center gap-1.5 shadow-md">
+                                                    <i class="fa-solid fa-download"></i>
+                                                    <span>下载</span>
+                                                </a>
                                             </div>
                                         </a>
                                     </span>
@@ -114,9 +118,13 @@
                                     <span class="social-contact-item-qr <%= key %> cursor-pointer group">
                                         <a target="_blank">
                                             <i class="fa-brands fa-fw fa-lg fa-<%= key %>"></i>
-                                            <div class="social-qr-container absolute h-auto bg-background-color-transparent-40 border border-white/20 dark:border-gray-500/30 overflow-hidden rounded-2xl bottom-0 mb-14 right-0 invisible group-hover:visible opacity-0 group-hover:opacity-100 translate-y-0.5 group-hover:translate-y-0 transition-all">
-                                                <img class="social-contacts-qr w-64"
+                                            <div class="social-qr-container absolute h-auto w-64 backdrop-blur-2xl bg-white/90 dark:bg-gray-800/90 border border-white/20 dark:border-gray-500/30 overflow-hidden rounded-2xl bottom-0 mb-14 right-0 invisible group-hover:visible opacity-0 group-hover:opacity-100 translate-y-0.5 group-hover:translate-y-0 transition-all flex flex-col items-center pb-3 shadow-2xl z-50">
+                                                <img class="social-contacts-qr w-full"
                                                      src="<%- url_for(theme.home_banner.social_links.qrs[key]) %>"/>
+                                                <a href="javascript:void(0);" onclick="downloadImage('<%- url_for(theme.home_banner.social_links.qrs[key]) %>', 'qr-code-<%= key %>.png')" class="mt-2 px-4 py-1.5 bg-blue-500 hover:bg-blue-600 text-white rounded-full text-sm transition-colors duration-200 flex items-center gap-1.5 shadow-md">
+                                                    <i class="fa-solid fa-download"></i>
+                                                    <span>下载</span>
+                                                </a>
                                             </div>
                                         </a>
                                     </span>
@@ -126,12 +134,198 @@
                     <% } %>
                 </div>
             </div>
+                </div>
+            </div>
         <% } %>
+    
     <script>
         const scrollToMain = ()=> {
             console.log('scroll');
             const target = document.querySelector('.main-content-container');
             target.scrollIntoView({ behavior: 'smooth'});
         }
+
+        document.addEventListener('DOMContentLoaded', () => {
+            // Toast Notification Creation - Enhanced version
+            const toast = document.createElement('div');
+            toast.id = 'toast-notification';
+            toast.className = 'fixed top-20 left-1/2 -translate-x-1/2 bg-white/90 dark:bg-gray-800/90 backdrop-blur-lg border border-white/30 dark:border-gray-600/50 px-6 py-4 rounded-2xl shadow-2xl transform transition-all duration-300 opacity-0 pointer-events-none z-[9999] flex items-center gap-3 min-w-[300px] justify-center';
+            toast.innerHTML = `
+                <i class="fa-solid fa-circle-check text-green-500 text-xl"></i>
+                <span class="text-sm font-medium text-gray-800 dark:text-gray-100" id="toast-message">Notification</span>
+                <button onclick="hideToast()" class="ml-2 text-gray-400 hover:text-gray-600 dark:hover:text-gray-200">
+                    <i class="fa-solid fa-times"></i>
+                </button>
+            `;
+            document.body.appendChild(toast);
+            
+            const toastMsg = toast.querySelector('#toast-message');
+            let toastTimer;
+
+            const showToast = (message) => {
+                toastMsg.textContent = message;
+                toast.classList.remove('opacity-0', 'translate-y-4', 'scale-95');
+                toast.classList.add('opacity-100', 'translate-y-0', 'scale-100');
+                
+                // Clear any existing timer
+                if (toastTimer) clearTimeout(toastTimer);
+                
+                // Auto hide after 4 seconds
+                toastTimer = setTimeout(() => {
+                    hideToast();
+                }, 4000);
+            };
+            
+            const hideToast = () => {
+                toast.classList.remove('opacity-100', 'translate-y-0', 'scale-100');
+                toast.classList.add('opacity-0', 'translate-y-4', 'scale-95');
+                if (toastTimer) clearTimeout(toastTimer);
+            };
+            
+            // Make hideToast globally available
+            window.hideToast = hideToast;
+
+            // Email Copy Functionality - Enhanced version
+            const initEmailCopy = () => {
+                // Multiple selectors to catch all email links including Google
+                const emailSelectors = [
+                    '.social-contacts a[href*="mailto:"]',
+                    '.social-contact-item.email a',
+                    '.social-contact-item.google a',
+                    'a[href*="@"]', // Catch any link containing @ symbol
+                    'a[href^="mailto:"]'
+                ];
+                
+                console.log('Looking for email links with selectors:', emailSelectors);
+                
+                emailSelectors.forEach(selector => {
+                    const links = document.querySelectorAll(selector);
+                    console.log(`Found ${links.length} links with selector: ${selector}`);
+                    links.forEach((link, index) => {
+                        console.log(`Link ${index}:`, link.href, link.className);
+                        // Remove existing event listeners to prevent duplicates
+                        link.removeEventListener('click', handleEmailClick);
+                        // Add new event listener
+                        link.addEventListener('click', handleEmailClick);
+                    });
+                });
+            };
+            
+            const handleEmailClick = (e) => {
+                e.preventDefault();
+                e.stopPropagation();
+                
+                const linkElement = e.target.closest('a');
+                let email = linkElement.getAttribute('href');
+                console.log('Original email href:', email);
+                
+                // Clean up the email address - handle various formats
+                email = email.replace(/^(mailto:)+/gi, '').trim();
+                
+                // Handle special case for Google which might have different structure
+                if (email.includes('@')) {
+                    // Extract just the email part if there's extra text
+                    const emailMatch = email.match(/([a-zA-Z0-9._%+-]+@[a-zA-Z0-9.-]+\.[a-zA-Z]{2,})/);
+                    if (emailMatch) {
+                        email = emailMatch[1];
+                    }
+                }
+                
+                console.log('Final cleaned email:', email);
+                
+                // Validate email format
+                const emailRegex = /^[^\s@]+@[^\s@]+\.[^\s@]+$/;
+                if (!emailRegex.test(email)) {
+                    showToast('❌ 无效的邮箱地址格式');
+                    return;
+                }
+                
+                // Try to copy to clipboard
+                if (navigator.clipboard && window.isSecureContext) {
+                    navigator.clipboard.writeText(email)
+                        .then(() => {
+                            showToast(`已复制邮箱地址: ${email}`);
+                            console.log('Email copied successfully:', email);
+                        })
+                        .catch(err => {
+                            console.error('Clipboard API failed:', err);
+                            fallbackCopyTextToClipboard(email);
+                        });
+                } else {
+                    fallbackCopyTextToClipboard(email);
+                }
+            };
+            
+            const fallbackCopyTextToClipboard = (text) => {
+                const textArea = document.createElement("textarea");
+                textArea.value = text;
+                textArea.style.position = "fixed";
+                textArea.style.left = "-999999px";
+                textArea.style.top = "-999999px";
+                document.body.appendChild(textArea);
+                textArea.focus();
+                textArea.select();
+                
+                try {
+                    const successful = document.execCommand('copy');
+                    if (successful) {
+                        showToast(`已复制邮箱地址: ${text}`);
+                        console.log('Fallback copy successful:', text);
+                    } else {
+                        throw new Error('Copy command failed');
+                    }
+                } catch (err) {
+                    console.error('Fallback copy failed:', err);
+                    showToast('❌ 复制失败，请手动复制: ' + text);
+                } finally {
+                    document.body.removeChild(textArea);
+                }
+            };
+            
+            // Initialize email copy functionality
+            console.log('Initializing email copy functionality...');
+            initEmailCopy();
+            
+            // Debug: Log all email links found
+            setTimeout(() => {
+                const allEmailLinks = document.querySelectorAll('a[href*="mailto:"]');
+                console.log('Found email links:', allEmailLinks.length);
+                allEmailLinks.forEach((link, index) => {
+                    console.log(`Link ${index}:`, link.href);
+                });
+            }, 500);
+            
+            // Re-initialize after DOM updates (for SPA navigation)
+            if (typeof swup !== 'undefined') {
+                try {
+                    swup.hooks.on('page:view', () => {
+                        setTimeout(initEmailCopy, 100);
+                    });
+                } catch (e) {
+                    console.log('Swup not available, using traditional page load');
+                }
+            }
+
+            // QR Code Download Functionality
+            window.downloadImage = (url, filename) => {
+                fetch(url)
+                    .then(response => response.blob())
+                    .then(blob => {
+                        const blobUrl = window.URL.createObjectURL(blob);
+                        const link = document.createElement('a');
+                        link.href = blobUrl;
+                        link.download = filename;
+                        document.body.appendChild(link);
+                        link.click();
+                        document.body.removeChild(link);
+                        window.URL.revokeObjectURL(blobUrl);
+                        showToast('已开始下载');
+                    })
+                    .catch(err => {
+                        console.error('Download failed', err);
+                        window.open(url, '_blank');
+                    });
+            };
+        });
     </script>
 </div>
