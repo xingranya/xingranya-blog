@@ -3,3 +3,9 @@ public
 db.json
 .DS_Store
 Thumbs.db
+
+# Build outputs
+themes/*/source/css/build/
+themes/*/source/js/build/
+*.css.map
+*.js.map
