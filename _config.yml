@@ -84,7 +84,7 @@ updated_option: 'mtime'
 
 # 分页
 ## 将 per_page 设为 0 可禁用分页
-per_page: 0
+per_page: 6
 pagination_dir: page
 
 # 包含 / 排除 文件

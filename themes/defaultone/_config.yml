@@ -161,7 +161,7 @@ home_banner:
       github:  https://github.com/xingranya # 你的 GitHub 链接
       instagram: # 你的 Instagram 链接
       zhihu:  # 你的知乎主页
-      # twitter:  https://x.com/xingranya # 你的 X(Twitter) 链接
+      twitter:  https://x.com/xingranya # 你的 X(Twitter) 链接
       email:  mailto:xingranya@outlook.jp # 你的邮箱
       # ...... # 可继续添加
     # 带二维码抽屉的社交链接
@@ -244,8 +244,8 @@ home:
   excerpt_length: 100 # 最大摘要长度
   # 分类可见性
   categories:
-    enable: false  # 是否启用
-    limit: 3 # 最多显示数量
+    enable: true  # 是否启用
+    limit: 1 # 最多显示数量
   # 标签可见性
   tags:
     enable: true # 是否启用
@@ -280,8 +280,8 @@ articles:
     min2read: true # 是否显示阅读时长
   # 作者标识
   author_label: 
-    enable: false # 是否启用
-    auto: false # 是否自动添加等级（Lv1/Lv2/...）
+    enable: true # 是否启用
+    auto: true # 是否自动添加等级（Lv1/Lv2/...）
     list: []
   # 代码块设置
   code_block:
