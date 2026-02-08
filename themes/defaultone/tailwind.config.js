@@ -7,7 +7,6 @@ module.exports = {
     path.join(__dirname, "./source/**/*.{js,jsx,ts,tsx}"),
     path.join(__dirname, "./layout/**/*.{ejs,html}"),
     path.join(__dirname, "./scripts/**/*.{js,jsx,ts,tsx}"),
-    path.join(__dirname, "../../source/**/*.{md,html}")
   ],
   safelist: [
     // 明确列出所有使用的类
