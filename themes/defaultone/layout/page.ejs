@@ -17,7 +17,9 @@
 
 		<div class="main-content-body transition-fade-up">
 			<% if (is_home() && theme.home.sidebar.enable === true && theme.home.sidebar.position === "left") { %>
-			<%- partial('pages/home/home-sidebar') %>
+            <div class="hidden md:block">
+			    <%- partial('pages/home/home-sidebar') %>
+            </div>
 			<% } %>
 
 			<div class="main-content">
@@ -25,7 +27,9 @@
 			</div>
 
 			<% if (is_home() && theme.home.sidebar.enable === true && theme.home.sidebar.position === "right") { %>
-			<%- partial('pages/home/home-sidebar') %>
+            <div class="hidden md:block">
+			    <%- partial('pages/home/home-sidebar') %>
+            </div>
 			<% } %>
 		</div>
 

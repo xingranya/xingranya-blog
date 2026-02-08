@@ -32,6 +32,11 @@ $right-bottom-tools-border-radius = 12px
       font-size: $right-bottom-tools-font-size * 0.9
       margin-bottom 2px
 
+    +redefine-mobile()
+      width $right-bottom-tools-width
+      height $right-bottom-tools-width
+      margin-bottom 8px
+
     &.rss
       a
         border-radius $right-bottom-tools-border-radius

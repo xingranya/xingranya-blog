@@ -3,7 +3,7 @@
     <% postList.forEach(postYear => { %>
         <section class="archive-item mb-spacing-unit last:mb-0">
             <div class="archive-item-header flex flex-row items-center mb-2">
-                <span class="archive-year font-semibold text-3xl mr-2"><%= postYear.year %></span>
+                <span class="archive-year font-semibold text-2xl md:text-3xl mr-2"><%= postYear.year %></span>
                 <span class="archive-year-post-count text-xs md:text-sm font-bold rounded-small bg-third-background-color py-[2px] px-[10px] border border-border-color"><%= postYear.postList.length %></span>
             </div>
             <% let previousDate = null; %>
@@ -14,10 +14,10 @@
                         <% if (previousDate) { %>
                             </li>
                         <% } %> <!-- Close the previous LI if not the first item -->
-                        <li class="article-item space-y-2 px-6 pt-10 pb-2 text-xl relative border-l-2 border-border-color" date-is='<%= currentDate %>'>
+                        <li class="article-item space-y-2 px-4 md:px-6 pt-6 md:pt-10 pb-2 text-xl relative border-l-2 border-border-color" date-is='<%= currentDate %>'>
                     <% } %>
                     <a href="<%- url_for(post.path) %>" class="block w-fit">
-                        <span class="article-title my-0.5 text-2xl"><%= post.title %></span>
+                        <span class="article-title my-0.5 text-xl md:text-2xl"><%= post.title %></span>
                     </a>
                     <% previousDate = currentDate; %>
                 <% }) %>

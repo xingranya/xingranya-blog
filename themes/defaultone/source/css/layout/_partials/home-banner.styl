@@ -42,7 +42,7 @@ $home-banner-icon-size = 1.6rem
       min-width 400px
       max-width 90%
       display inline-block
-      white-space nowrap
+      white-space normal
 
       p
         margin 0
@@ -51,7 +51,7 @@ $home-banner-icon-size = 1.6rem
         font-weight 400
         position relative
         z-index 1
-        white-space nowrap
+        white-space normal
 
         i
           font-size $subtitle-font-size
@@ -65,7 +65,9 @@ $home-banner-icon-size = 1.6rem
         padding 20px 32px
         min-width 300px
         max-width 95%
-        
+
       +redefine-mobile()
         min-width 280px
         max-width 95%
+        font-size: $title-font-size * 0.75
+        padding 16px 24px
