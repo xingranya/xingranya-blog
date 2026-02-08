@@ -98,6 +98,17 @@ ignore:
 ## 主题: https://hexo.io/themes/
 theme: defaultone
 
+# 插件配置
+# Sitemap
+sitemap:
+  path: sitemap.xml
+
+# Hexo Admin
+admin:
+  username: admin
+  password_hash: ''
+  secret: 'my secret'
+
 # 部署
 ## 文档: https://hexo.io/docs/one-command-deployment
 deploy:

@@ -1,0 +1,5 @@
+options:
+  overwriteImages: true
+  lineNumbers: true
+editor:
+  lineNumbers: true
