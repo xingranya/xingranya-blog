@@ -3,7 +3,21 @@
     <meta name="viewport" content="width=device-width, initial-scale=1">
     <meta name="keywords" content="<%= page.keywords || config.keywords || 'Hexo Theme defaultone' %>">
     <% if (!theme.global.open_graph) { %>
-        <meta name="description" content="<%= page.description || config.description || 'Hexo Theme defaultone' %>">
+        <%
+        // SEO优化：确保 description 长度在 25-160 字符之间
+        let seoDescription = page.description || page.excerpt || config.description || 'Hexo Theme defaultone';
+        // 移除 HTML 标签
+        seoDescription = seoDescription.replace(/<[^>]*>/g, '').replace(/\s+/g, ' ').trim();
+        // 截断到 155 字符（留出余量）
+        if (seoDescription.length > 155) {
+            seoDescription = seoDescription.substring(0, 152) + '...';
+        }
+        // 如果太短，补充站点信息
+        if (seoDescription.length < 25) {
+            seoDescription = (config.title || '星苒鸭博客') + ' - ' + seoDescription;
+        }
+        %>
+        <meta name="description" content="<%= seoDescription %>">
         <% }%>
             <meta name="author" content="<%= theme.info.author || config.author || 'defaultone Team' %>">
             <!-- preconnect -->
@@ -67,35 +81,49 @@
                                                                         <meta name="theme-color"
                                                                             content="<%= theme.colors.primary %>">
                                                                         <%- favicon_tag(theme.defaults.favicon) %>
-                                                                            <!--- Page Info-->
-                                                                            <% let title=page.title; if (is_archive()) {
-                                                                                title=__('archive'); if (is_month()) {
-                                                                                title +=': ' + page.year + '/' +
-                                                                                page.month; } else if (is_year()) {
-                                                                                title +=': ' + page.year; } } else if
-                                                                                (is_category()) { title=__('category')
-                                                                                + ': ' + page.category; } else if
-                                                                                (is_tag()) { title=__('tag') + ': ' +
-                                                                                page.tag; } else { title=__(page.title);
-                                                                                } %>
-                                                                                <title>
-                                                                                    <% if (title) { %>
-                                                                                        <%= title %> | <%=
-                                                                                                theme.info.title ||
-                                                                                                config.title
-                                                                                                || 'defaultone Theme' %>
-                                                                                                <% } else { %>
-                                                                                                    <%= theme.info.title
-                                                                                                        || config.title
-                                                                                                        || 'defaultone Theme'
-                                                                                                        %> - <%=
-                                                                                                            theme.info.subtitle
-                                                                                                            ||
-                                                                                                            config.subtitle
-                                                                                                            || 'defaultone Your Hexo Journey.'
-                                                                                                            %>
-                                                                                                            <% } %>
-                                                                                </title>
+                                                                            <!--- Page Info (SEO优化：标题限制70字符内) -->
+                                                                            <%
+                                                                            let pageTitle = page.title;
+                                                                            if (is_archive()) {
+                                                                                pageTitle = __('archive');
+                                                                                if (is_month()) {
+                                                                                    pageTitle += ': ' + page.year + '/' + page.month;
+                                                                                } else if (is_year()) {
+                                                                                    pageTitle += ': ' + page.year;
+                                                                                }
+                                                                            } else if (is_category()) {
+                                                                                pageTitle = __('category') + ': ' + page.category;
+                                                                            } else if (is_tag()) {
+                                                                                pageTitle = __('tag') + ': ' + page.tag;
+                                                                            } else {
+                                                                                pageTitle = __(page.title);
+                                                                            }
+
+                                                                            // SEO优化：构建完整标题并限制长度
+                                                                            let siteName = theme.info.title || config.title || '星苒鸭博客';
+                                                                            let fullTitle = '';
+                                                                            if (pageTitle) {
+                                                                                // 计算站点名称部分长度（包含分隔符）
+                                                                                let sitePartLength = (' | ' + siteName).length;
+                                                                                let maxPageTitleLength = 70 - sitePartLength;
+                                                                                // 如果页面标题过长，截断
+                                                                                if (pageTitle.length > maxPageTitleLength) {
+                                                                                    pageTitle = pageTitle.substring(0, maxPageTitleLength - 3) + '...';
+                                                                                }
+                                                                                fullTitle = pageTitle + ' | ' + siteName;
+                                                                            } else {
+                                                                                let subtitle = theme.info.subtitle || config.subtitle || '';
+                                                                                if (subtitle) {
+                                                                                    fullTitle = siteName + ' - ' + subtitle;
+                                                                                    if (fullTitle.length > 70) {
+                                                                                        fullTitle = fullTitle.substring(0, 67) + '...';
+                                                                                    }
+                                                                                } else {
+                                                                                    fullTitle = siteName;
+                                                                                }
+                                                                            }
+                                                                            %>
+                                                                                <title><%= fullTitle %></title>
 
                                                                                 <%- renderCSS('fonts/Chillax/chillax.css')
                                                                                     %>

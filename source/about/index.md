@@ -2,7 +2,6 @@
 title: 关于我
 date: 2025-04-09 16:23:59
 ---
-
 <div align="center">
   <h1>Hi there 👋, I'm xingranya/星苒鸭</h1>
   <h3>A passionate developer from China</h3>
@@ -16,7 +15,7 @@ date: 2025-04-09 16:23:59
 - 🌱 正在学习 **Java, Spring Boot, Vue3, MyBatis, MySQL, Kotlin**
 - 🤔 对 **各类有趣的计算机相关问题** 保持好奇
 - 💬 欢迎交流 **Android/Windows/Mac OS、KSU/Magisk 模块、系统优化与美化、装机**
-- 📫 邮箱: <a href="mailto:xingranya@outlook.jp">xingranya@outlook.jp</a>
+- 📫 邮箱: `<a href="mailto:xingranya@outlook.jp">`xingranya@outlook.jp`</a>`
 
 <br>
 
@@ -35,7 +34,7 @@ date: 2025-04-09 16:23:59
   </div>
   <div style="background-color: var(--background-color-transparent-80, rgba(255,255,255,0.8)); border: 1px solid var(--border-color, #e1e1e1); border-radius: 8px; padding: 15px; box-shadow: 0 2px 4px rgba(0,0,0,0.05);">
     <b>微信</b>
-    <div style="color: var(--text-color, #555); font-size: 14px; margin-top: 5px;">Xingranyaya</div>
+    <div style="color: var(--text-color, #555); font-size: 14px; margin-top: 5px;">xingranya666</div>
   </div>
   <div style="background-color: var(--background-color-transparent-80, rgba(255,255,255,0.8)); border: 1px solid var(--border-color, #e1e1e1); border-radius: 8px; padding: 15px; box-shadow: 0 2px 4px rgba(0,0,0,0.05);">
     <b>个人站点</b>

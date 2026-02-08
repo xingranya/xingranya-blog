@@ -11,12 +11,12 @@
 			<a href="<%= f.link %>">
 				<div class="content rounded-lg redefine-box-shadow-flat">
 					<div class="thumbnail rounded-t-lg h-32 md:h-44 overflow-hidden">
-						<img class="rounded-t-lg object-cover w-full h-full" src="<%= f.thumbnail %>" />
+						<img class="rounded-t-lg object-cover w-full h-full" src="<%= f.thumbnail %>" alt="<%= f.name %> 缩略图" />
 					</div>
 					<div class="avainfo flex flex-row items-center gap-1 sm:gap-2 overflow-hidden min-w-0">
 						<div class="avatar h-16 w-16 rounded-bl-lg bg-third-background-color">
 							<% if (f.avatar) { %>
-							<img class="rounded-bl-lg h-16 w-16 max-w-none" src="<%= f.avatar %>" onerror="this.style.display='none'">
+							<img class="rounded-bl-lg h-16 w-16 max-w-none" src="<%= f.avatar %>" alt="<%= f.name %> 头像" onerror="this.style.display='none'">
 							<% } else { %>
 							<i class="fa-solid fa-user-group"></i>
 							<% } %>
@@ -39,7 +39,7 @@
 				<div class="flex flex-row items-center gap-1 sm:gap-2 overflow-hidden min-w-0 rounded-lg shadow-redefine-flat">
 					<div class="h-16 w-16 rounded-bl-lg bg-third-background-color">
 						<% if (f.avatar) { %>
-						<img class="rounded-l-lg h-16 w-16 max-w-none" src="<%= f.avatar %>" onerror="this.style.display='none'">
+						<img class="rounded-l-lg h-16 w-16 max-w-none" src="<%= f.avatar %>" alt="<%= f.name %> 头像" onerror="this.style.display='none'">
 						<% } else { %>
 						<i class="fa-solid fa-user-group"></i>
 						<% } %>
