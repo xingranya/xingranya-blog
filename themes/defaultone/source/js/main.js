@@ -54,7 +54,7 @@ export const main = {
     initScrollTopBottom();
     initBookmarkNav();
 
-    if (theme.effects.particles === true) {
+    if (theme.effects && theme.effects.particles === true) {
       initParticles();
     }
 
