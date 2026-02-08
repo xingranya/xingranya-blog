@@ -62,7 +62,7 @@
                 <div class="<%- display %> p-3 bg-gray-300/50 dark:bg-gray-500/40 backdrop-blur-lg border border-white/20 dark:border-gray-500/30 group rounded-full cursor-pointer flex justify-center items-center aspect-square h-full shadow-redefine-flat hover:shadow-redefine-flat-hover transition-shadow" onclick="scrollToMain()" >
                     <i class="fa-solid fa-arrow-down fa-fw fa-lg group-hover:translate-y-1 transition-transform"></i>
                 </div>
-                <div class="social-contacts px-6 py-3 bg-gray-300/50 dark:bg-gray-500/40 backdrop-blur-lg border border-white/20 dark:border-gray-500/30 shadow-redefine-flat rounded-full flex flex-row flex-wrap justify-center gap-3 sm:gap-4 items-center">
+                <div class="social-contacts px-3 sm:px-6 py-2 sm:py-3 bg-gray-300/50 dark:bg-gray-500/40 backdrop-blur-lg border border-white/20 dark:border-gray-500/30 shadow-redefine-flat rounded-full flex flex-row flex-nowrap justify-center gap-1.5 sm:gap-4 items-center">
                     <% for (const key in theme.home_banner.social_links.links) { %>
                         <% if(theme.home_banner.social_links.links[key]) { %>
                             <% if(key === 'email') { %>
