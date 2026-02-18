@@ -41,7 +41,7 @@ hexo.on('generateAfter', function() {
   const data = JSON.stringify({
     host: host,
     key: key,
-    urlList: urls.slice(0, 10000) // 最多 10000 个
+    urlList: urls.slice(0, 10000)
   });
 
   const options = {
@@ -55,15 +55,24 @@ hexo.on('generateAfter', function() {
     }
   };
 
+  let responded = false;
+
   const req = https.request(options, (res) => {
+    responded = true;
     if (res.statusCode === 200 || res.statusCode === 202) {
       hexo.log.info(`IndexNow: 成功提交 ${urls.length} 个 URL 到 Bing`);
     } else {
       hexo.log.warn(`IndexNow: 提交失败，状态码 ${res.statusCode}`);
     }
+    // 消费响应数据，防止内存泄漏
+    res.resume();
   });
 
   req.on('error', (e) => {
+    // 如果已经收到成功响应，忽略连接关闭错误
+    if (responded && (e.code === 'ECONNRESET' || e.code === 'EPIPE')) {
+      return;
+    }
     hexo.log.error(`IndexNow: 提交出错 - ${e.message}`);
   });
 
