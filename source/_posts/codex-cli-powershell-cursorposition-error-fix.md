@@ -1,5 +1,5 @@
 ---
-title: Codex CLI 在 PowerShell 中报错「Exception setting CursorPosition: 句柄无效」的修复记录
+title: "Codex CLI 在 PowerShell 中报错「Exception setting CursorPosition: 句柄无效」的修复记录"
 date: "2026-03-01 00:02:13"
 banner: 修复codex命令报错问题
 cover: "https://img1.tucang.cc/api/image/show/0af3a2559741390b6b7e1722824472cd"
