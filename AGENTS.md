@@ -74,3 +74,12 @@ If modifying theme styles or scripts, you may need to check `themes/defaultone/p
 
 - **Live2D**: Configured in `_config.yml` under `live2d`. Do not remove unless requested.
 - **Theme Config**: When reading theme config, note that `hexo.theme.config` is often patched in `themes/defaultone/scripts/data-handle.js`.
+
+
+<claude-mem-context>
+# Memory Context
+
+# [xingranya-blog] recent context, 2026-05-01 5:50pm GMT+8
+
+No previous sessions found.
+</claude-mem-context>
