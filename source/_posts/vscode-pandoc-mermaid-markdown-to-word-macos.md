@@ -2,7 +2,7 @@
 title: "VS Code 中将含 Mermaid 图形的 Markdown 文档转换为 Word（macOS 版）"
 date: "2026-05-01 17:55:52"
 banner: 把 Mermaid 图从代码块自动变成 Word 里的图片
-cover: ""
+cover: "https://img1.tucang.cc/api/image/show/dfec925a314fe34369ae801f69d33a22"
 categories:
   - 效率工具
 tags:
@@ -39,7 +39,7 @@ brew install pandoc
 
 也可以使用官方安装包：
 
-1. 访问 <https://pandoc.org/installing.html>
+1. 访问 [https://pandoc.org/installing.html](https://pandoc.org/installing.html)
 2. 下载 macOS 安装包，也就是 `.pkg` 文件
 3. 运行安装包完成安装
 
@@ -67,7 +67,7 @@ brew install node
 
 也可以从 Node.js 官网下载安装：
 
-1. 访问 <https://nodejs.org/>
+1. 访问 [https://nodejs.org/](https://nodejs.org/)
 2. 下载 LTS 版本
 3. 运行安装包完成安装
 
@@ -188,15 +188,15 @@ VS Code 会调用 Pandoc 转换当前 Markdown 文件，并在同目录下生成
 
 Mermaid 对一些符号比较敏感，尤其是中文、冒号、感叹号、引号混用时，建议给节点文本加上引号。
 
-| 错误写法 | 正确写法 |
-| --- | --- |
-| `S: 状态: 描述` | `S: "状态: 描述"` |
-| `A[你好！]` | `A["你好！"]` |
+| 错误写法            | 正确写法                |
+| ------------------- | ----------------------- |
+| `S: 状态: 描述`     | `S: "状态: 描述"`       |
+| `A[你好！]`         | `A["你好！"]`           |
 | `A->B: 消息"hello"` | `A->B: "消息\"hello\""` |
 
 如果转换时报 Mermaid 语法错误，可以先把代码贴到 Mermaid Live Editor 验证：
 
-<https://mermaid.live/>
+[https://mermaid.live/](https://mermaid.live/)
 
 ---
 
@@ -238,11 +238,11 @@ done
 
 ## 常见错误排查
 
-| 错误信息 | 解决方案 |
-| --- | --- |
-| `pandoc: command not found` | 重新安装 Pandoc，并重启终端或 VS Code |
-| `mermaid-filter: command not found` | 在 VS Code 任务中使用 `mermaid-filter` 的绝对路径 |
-| `Parse error on line X` | Mermaid 语法错误，先用 <https://mermaid.live/> 修正 |
+| 错误信息                            | 解决方案                                                                  |
+| ----------------------------------- | ------------------------------------------------------------------------- |
+| `pandoc: command not found`         | 重新安装 Pandoc，并重启终端或 VS Code                                     |
+| `mermaid-filter: command not found` | 在 VS Code 任务中使用 `mermaid-filter` 的绝对路径                         |
+| `Parse error on line X`             | Mermaid 语法错误，先用[https://mermaid.live/](https://mermaid.live/) 修正 |
 
 ---
 
