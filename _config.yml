@@ -105,7 +105,7 @@ sitemap:
 
 # Hexo Admin
 admin:
-  username: admin
+  username: ''
   password_hash: ''
   secret: 'my secret'
 
@@ -115,14 +115,11 @@ deploy:
   type: ''
 live2d:
   enable: true
-  scriptFrom: local
-  pluginRootPath: live2dw/
-  pluginJsPath: lib/
-  pluginModelPath: assets/
-  tagMode: false
   log: false
   model:
-    use: live2d-widget-model-wanko
+    jsonPath: /live2dw/assets/wanko.model.json
+  script:
+    src: /live2dw/lib/L2Dwidget.min.js
   display:
     position: right
     width: 150

@@ -64,22 +64,23 @@
                 </div>
                 <div class="social-contacts px-3 sm:px-6 py-2 sm:py-3 bg-gray-300/50 dark:bg-gray-500/40 backdrop-blur-lg border border-white/20 dark:border-gray-500/30 shadow-redefine-flat rounded-full flex flex-row flex-nowrap justify-center gap-1.5 sm:gap-4 items-center">
                     <% for (const key in theme.home_banner.social_links.links) { %>
-                        <% if(theme.home_banner.social_links.links[key]) { %>
+                        <% const socialLink = theme.home_banner.social_links.links[key]; %>
+                        <% if(socialLink) { %>
                             <% if(key === 'email') { %>
                                 <span class="social-contact-item <%= key %> ">
-                                    <a href="mailto:<%- theme.home_banner.social_links.links[key] %>">
+                                    <a href="<%- /^mailto:/i.test(socialLink) ? socialLink : 'mailto:' + socialLink %>">
                                         <i class="fa-solid fa-fw fa-at fa-lg"></i>
                                     </a>
                                 </span>
                             <% } else if(key.includes("fa-")) { %>
                                 <span class="social-contact-item">
-                                    <a target="_blank" href="<%- theme.home_banner.social_links.links[key] %>">
+                                    <a target="_blank" href="<%- socialLink %>">
                                         <i class="<%= key %> fa-fw fa-lg"></i>
                                     </a>
                                 </span>
                             <% } else { %>
                                 <span class="social-contact-item <%= key %>">
-                                    <a target="_blank" href="<%- theme.home_banner.social_links.links[key] %>">
+                                    <a target="_blank" href="<%- socialLink %>">
                                         <i class="fa-brands fa-fw fa-lg fa-<%= key %>"></i>
                                     </a>
                                 </span>
@@ -140,72 +141,72 @@
     
     <script>
         const scrollToMain = ()=> {
-            console.log('scroll');
             const target = document.querySelector('.main-content-container');
             target.scrollIntoView({ behavior: 'smooth'});
         }
 
         document.addEventListener('DOMContentLoaded', () => {
-            // Toast Notification Creation - Enhanced version
-            const toast = document.createElement('div');
-            toast.id = 'toast-notification';
-            toast.className = 'fixed top-20 left-1/2 -translate-x-1/2 bg-white/90 dark:bg-gray-800/90 backdrop-blur-lg border border-white/30 dark:border-gray-600/50 px-6 py-4 rounded-2xl shadow-2xl transform transition-all duration-300 opacity-0 pointer-events-none z-[9999] flex items-center gap-3 min-w-[300px] justify-center';
-            toast.innerHTML = `
-                <i class="fa-solid fa-circle-check text-green-500 text-xl"></i>
-                <span class="text-sm font-medium text-gray-800 dark:text-gray-100" id="toast-message">Notification</span>
-                <button onclick="hideToast()" class="ml-2 text-gray-400 hover:text-gray-600 dark:hover:text-gray-200">
-                    <i class="fa-solid fa-times"></i>
-                </button>
-            `;
-            document.body.appendChild(toast);
-            
-            const toastMsg = toast.querySelector('#toast-message');
+            let toast = null;
+            let toastMsg = null;
             let toastTimer;
 
+            const ensureToast = () => {
+                if (toast) {
+                    return;
+                }
+
+                toast = document.createElement('div');
+                toast.id = 'toast-notification';
+                toast.className = 'fixed top-20 left-1/2 -translate-x-1/2 bg-white/90 dark:bg-gray-800/90 backdrop-blur-lg border border-white/30 dark:border-gray-600/50 px-6 py-4 rounded-2xl shadow-2xl transform transition-all duration-300 opacity-0 pointer-events-none z-[9999] flex items-center gap-3 min-w-[300px] justify-center';
+                toast.innerHTML = `
+                    <i class="fa-solid fa-circle-check text-green-500 text-xl"></i>
+                    <span class="text-sm font-medium text-gray-800 dark:text-gray-100" id="toast-message"></span>
+                    <button onclick="hideToast()" class="ml-2 text-gray-400 hover:text-gray-600 dark:hover:text-gray-200">
+                        <i class="fa-solid fa-times"></i>
+                    </button>
+                `;
+                document.body.appendChild(toast);
+                toastMsg = toast.querySelector('#toast-message');
+            };
+
             const showToast = (message) => {
+                ensureToast();
                 toastMsg.textContent = message;
                 toast.classList.remove('opacity-0', 'translate-y-4', 'scale-95');
                 toast.classList.add('opacity-100', 'translate-y-0', 'scale-100');
                 
-                // Clear any existing timer
                 if (toastTimer) clearTimeout(toastTimer);
                 
-                // Auto hide after 4 seconds
                 toastTimer = setTimeout(() => {
                     hideToast();
                 }, 4000);
             };
             
             const hideToast = () => {
+                if (!toast) {
+                    return;
+                }
+
                 toast.classList.remove('opacity-100', 'translate-y-0', 'scale-100');
                 toast.classList.add('opacity-0', 'translate-y-4', 'scale-95');
                 if (toastTimer) clearTimeout(toastTimer);
             };
             
-            // Make hideToast globally available
             window.hideToast = hideToast;
 
-            // Email Copy Functionality - Enhanced version
             const initEmailCopy = () => {
-                // Multiple selectors to catch all email links including Google
                 const emailSelectors = [
                     '.social-contacts a[href*="mailto:"]',
                     '.social-contact-item.email a',
                     '.social-contact-item.google a',
-                    'a[href*="@"]', // Catch any link containing @ symbol
+                    'a[href*="@"]',
                     'a[href^="mailto:"]'
                 ];
                 
-                console.log('Looking for email links with selectors:', emailSelectors);
-                
                 emailSelectors.forEach(selector => {
                     const links = document.querySelectorAll(selector);
-                    console.log(`Found ${links.length} links with selector: ${selector}`);
-                    links.forEach((link, index) => {
-                        console.log(`Link ${index}:`, link.href, link.className);
-                        // Remove existing event listeners to prevent duplicates
+                    links.forEach((link) => {
                         link.removeEventListener('click', handleEmailClick);
-                        // Add new event listener
                         link.addEventListener('click', handleEmailClick);
                     });
                 });
@@ -217,35 +218,26 @@
                 
                 const linkElement = e.target.closest('a');
                 let email = linkElement.getAttribute('href');
-                console.log('Original email href:', email);
                 
-                // Clean up the email address - handle various formats
                 email = email.replace(/^(mailto:)+/gi, '').trim();
                 
-                // Handle special case for Google which might have different structure
                 if (email.includes('@')) {
-                    // Extract just the email part if there's extra text
                     const emailMatch = email.match(/([a-zA-Z0-9._%+-]+@[a-zA-Z0-9.-]+\.[a-zA-Z]{2,})/);
                     if (emailMatch) {
                         email = emailMatch[1];
                     }
                 }
                 
-                console.log('Final cleaned email:', email);
-                
-                // Validate email format
                 const emailRegex = /^[^\s@]+@[^\s@]+\.[^\s@]+$/;
                 if (!emailRegex.test(email)) {
                     showToast('❌ 无效的邮箱地址格式');
                     return;
                 }
                 
-                // Try to copy to clipboard
                 if (navigator.clipboard && window.isSecureContext) {
                     navigator.clipboard.writeText(email)
                         .then(() => {
                             showToast(`已复制邮箱地址: ${email}`);
-                            console.log('Email copied successfully:', email);
                         })
                         .catch(err => {
                             console.error('Clipboard API failed:', err);
@@ -270,7 +262,6 @@
                     const successful = document.execCommand('copy');
                     if (successful) {
                         showToast(`已复制邮箱地址: ${text}`);
-                        console.log('Fallback copy successful:', text);
                     } else {
                         throw new Error('Copy command failed');
                     }
@@ -282,31 +273,18 @@
                 }
             };
             
-            // Initialize email copy functionality
-            console.log('Initializing email copy functionality...');
             initEmailCopy();
-            
-            // Debug: Log all email links found
-            setTimeout(() => {
-                const allEmailLinks = document.querySelectorAll('a[href*="mailto:"]');
-                console.log('Found email links:', allEmailLinks.length);
-                allEmailLinks.forEach((link, index) => {
-                    console.log(`Link ${index}:`, link.href);
-                });
-            }, 500);
-            
-            // Re-initialize after DOM updates (for SPA navigation)
+
             if (typeof swup !== 'undefined') {
                 try {
                     swup.hooks.on('page:view', () => {
                         setTimeout(initEmailCopy, 100);
                     });
                 } catch (e) {
-                    console.log('Swup not available, using traditional page load');
+                    setTimeout(initEmailCopy, 100);
                 }
             }
 
-            // QR Code Download Functionality
             window.downloadImage = (url, filename) => {
                 fetch(url)
                     .then(response => response.blob())

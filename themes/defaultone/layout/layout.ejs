@@ -1,5 +1,5 @@
 <!DOCTYPE html>
-<html lang="<%= config.language %>">
+<html lang="<%= config.language %>" class="redefine-style-loading">
 <%- partial('components/header/head') %>
 
 	<body>
@@ -15,11 +15,8 @@
 								<script>
 									document.addEventListener('DOMContentLoaded', function () {
 										const mainDiv = document.getElementById("particles-js");
-										console.log("Particles.js initialization started");
-										console.log("Main div:", mainDiv);
 
-										if (mainDiv) {
-											console.log("Initializing particles.js");
+										if (mainDiv && typeof particlesJS === "function") {
 											particlesJS("particles-js", {
 												"particles": {
 													"number": {
@@ -124,9 +121,6 @@
 												},
 												"retina_detect": true
 											});
-											console.log("Particles.js initialization completed");
-										} else {
-											console.log("Particles.js container not found");
 										}
 									});
 								</script>

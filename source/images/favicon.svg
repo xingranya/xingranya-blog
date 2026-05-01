@@ -1,0 +1,41 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 512 512" role="img" aria-labelledby="title desc">
+  <title id="title">星苒鸭博客图标</title>
+  <desc id="desc">粉色圆角背景上的圆润小鸭与星芒图标</desc>
+  <defs>
+    <linearGradient id="bg" x1="80" y1="58" x2="434" y2="454" gradientUnits="userSpaceOnUse">
+      <stop offset="0" stop-color="#ffdfeb"/>
+      <stop offset="0.5" stop-color="#ffc0cf"/>
+      <stop offset="1" stop-color="#ff79ad"/>
+    </linearGradient>
+    <radialGradient id="glow" cx="0" cy="0" r="1" gradientTransform="matrix(168 0 0 132 290 328)" gradientUnits="userSpaceOnUse">
+      <stop offset="0" stop-color="#ffffff" stop-opacity="0.5"/>
+      <stop offset="1" stop-color="#ffffff" stop-opacity="0"/>
+    </radialGradient>
+    <linearGradient id="duck" x1="212" y1="164" x2="330" y2="420" gradientUnits="userSpaceOnUse">
+      <stop offset="0" stop-color="#fffdf2"/>
+      <stop offset="1" stop-color="#ffefb7"/>
+    </linearGradient>
+    <linearGradient id="beak" x1="352" y1="225" x2="444" y2="266" gradientUnits="userSpaceOnUse">
+      <stop offset="0" stop-color="#ffb341"/>
+      <stop offset="1" stop-color="#ff9128"/>
+    </linearGradient>
+    <filter id="shadow" x="-18%" y="-18%" width="136%" height="136%" color-interpolation-filters="sRGB">
+      <feDropShadow dx="0" dy="16" stdDeviation="17" flood-color="#b53a67" flood-opacity="0.24"/>
+    </filter>
+  </defs>
+  <rect width="512" height="512" rx="112" fill="url(#bg)"/>
+  <circle cx="388" cy="126" r="54" fill="#fff7fb" opacity="0.34"/>
+  <ellipse cx="294" cy="340" rx="176" ry="136" fill="url(#glow)"/>
+  <path fill="#fffafd" d="M112 164l17 38 38 17-38 17-17 38-17-38-38-17 38-17 17-38z" opacity="0.92"/>
+  <path fill="#fffafd" d="M402 324l10 23 23 10-23 10-10 23-10-23-23-10 23-10 10-23z" opacity="0.75"/>
+  <g filter="url(#shadow)">
+    <path fill="url(#duck)" d="M128 344c0-53 41-97 96-112 8-49 49-85 100-85 57 0 103 45 103 101 0 13-2 25-7 37 34 16 56 47 56 84 0 60-54 105-132 105h-91c-73 0-125-54-125-130z"/>
+    <path fill="#fff7d5" d="M128 344c0 70 55 111 128 111h88c62 0 111-28 126-73 4 53-48 92-126 92h-91c-73 0-125-54-125-130z" opacity="0.72"/>
+    <path fill="#ffd0dc" d="M257 241c0-41 26-76 63-90-52 2-94 44-96 96-1 31 13 58 34 77-1-26-1-55-1-83z"/>
+    <path fill="url(#beak)" d="M399 236c35 0 69 13 95 37-25 23-61 34-102 28 8-20 11-43 7-65z"/>
+    <path fill="#fff2be" d="M179 329c28 34 84 47 129 22-17 46-78 71-128 44-21-12-34-31-35-52 9-10 21-15 34-14z" opacity="0.68"/>
+    <circle cx="340" cy="222" r="18" fill="#392331"/>
+    <circle cx="347" cy="215" r="7" fill="#fffdf7"/>
+    <circle cx="365" cy="251" r="13" fill="#ffc5d3" opacity="0.58"/>
+  </g>
+</svg>

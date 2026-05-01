@@ -6,6 +6,10 @@ const { version } = require("../../package.json");
 const https = require("https");
 
 hexo.on("ready", async () => {
+  if (!hexo.theme.config.global || hexo.theme.config.global.version_check !== true) {
+    return;
+  }
+
   const timeout = 3000;
 
   async function fetchRedefineInfo() {

@@ -14,7 +14,9 @@ info:
 # 文档: https://redefine-docs.ohevan.com/basic/defaults
 defaults:
   # 网站图标 Favicon
-  favicon: /images/favicon.svg
+  favicon: /images/favicon.svg?v=20260501
+  # 网站图标 PNG 兜底
+  favicon_png: /images/favicon.png?v=20260501
   # 站点 Logo
   logo: /images/avatar-0.jpg
   # 站点头像
@@ -37,6 +39,8 @@ colors:
 # 站点个性化 >>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>> start
 # 文档: https://redefine-docs.ohevan.com/basic/global
 global:
+  # 是否检查主题新版本
+  version_check: false
   # 自定义全局字体
   fonts:
     # 中文字体

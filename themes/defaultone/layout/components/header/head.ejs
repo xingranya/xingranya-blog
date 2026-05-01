@@ -1,6 +1,117 @@
 <head>
     <meta charset="utf-8">
     <meta name="viewport" content="width=device-width, initial-scale=1">
+    <style>
+        html.redefine-style-loading {
+            background: var(--redefine-loading-background, #202124);
+        }
+
+        html.redefine-style-loading body {
+            visibility: hidden;
+        }
+
+        html.redefine-style-loading * {
+            transition: none !important;
+        }
+
+        @media (prefers-color-scheme: light) {
+            html.redefine-style-loading {
+                background: var(--redefine-loading-background, #fff);
+            }
+        }
+    </style>
+    <noscript>
+        <style>
+            html.redefine-style-loading body {
+                visibility: visible;
+            }
+        </style>
+    </noscript>
+    <script>
+        (function () {
+            var root = document.documentElement;
+            var fallbackTimer;
+
+            function setLoadingBackground() {
+                try {
+                    var themeStatus = JSON.parse(localStorage.getItem('REDEFINE-THEME-STATUS') || '{}');
+                    var isDark = themeStatus && themeStatus.isDark;
+
+                    if (isDark === undefined || isDark === null) {
+                        isDark = window.matchMedia && window.matchMedia('(prefers-color-scheme: dark)').matches;
+                    }
+
+                    root.style.setProperty('--redefine-loading-background', isDark ? '#202124' : '#fff');
+                } catch (error) {
+                    root.style.setProperty('--redefine-loading-background', '#202124');
+                }
+            }
+
+            window.redefineReleaseStyleLoading = function () {
+                clearTimeout(fallbackTimer);
+                root.classList.remove('redefine-style-loading');
+                root.style.removeProperty('--redefine-loading-background');
+            };
+
+            window.redefineCriticalStyleReady = function (style) {
+                if (style) {
+                    style.setAttribute('data-redefine-style-loaded', 'true');
+                }
+
+                if (window.redefineReleaseWhenCriticalStylesReady) {
+                    window.redefineReleaseWhenCriticalStylesReady();
+                }
+            };
+
+            window.redefineReleaseWhenCriticalStylesReady = function () {
+                var styles = document.querySelectorAll('link[data-redefine-critical-style]');
+                var expectedCount = window.redefineCriticalStyleExpectedCount || 0;
+
+                if (expectedCount && styles.length < expectedCount) {
+                    return;
+                }
+
+                if (!expectedCount && !styles.length) {
+                    window.redefineReleaseStyleLoading();
+                    return;
+                }
+
+                for (var i = 0; i < styles.length; i++) {
+                    var style = styles[i];
+
+                    if (style.getAttribute('data-redefine-style-loaded') === 'true') {
+                        continue;
+                    }
+
+                    if (style.sheet) {
+                        style.setAttribute('data-redefine-style-loaded', 'true');
+                        continue;
+                    }
+
+                    return;
+                }
+
+                window.redefineReleaseStyleLoading();
+            };
+
+            setLoadingBackground();
+            root.classList.add('redefine-style-loading');
+            fallbackTimer = setTimeout(window.redefineReleaseStyleLoading, 5000);
+            document.addEventListener('DOMContentLoaded', window.redefineReleaseWhenCriticalStylesReady);
+        })();
+    </script>
+    <script>
+        window.redefineCriticalStyleExpectedCount = 2;
+    </script>
+    <%- css('css/style').replace('<link', '<link data-redefine-critical-style onload="window.redefineCriticalStyleReady&&window.redefineCriticalStyleReady(this)" onerror="window.redefineCriticalStyleReady&&window.redefineCriticalStyleReady(this)"') %>
+    <% if (theme.developer && theme.developer.enable) { %>
+        <%- css('css/build/tailwind.css').replace('<link', '<link data-redefine-critical-style onload="window.redefineCriticalStyleReady&&window.redefineCriticalStyleReady(this)" onerror="window.redefineCriticalStyleReady&&window.redefineCriticalStyleReady(this)"') %>
+    <% } else { %>
+        <%- renderCSS('css/build/tailwind.css').replace('<link', '<link data-redefine-critical-style onload="window.redefineCriticalStyleReady&&window.redefineCriticalStyleReady(this)" onerror="window.redefineCriticalStyleReady&&window.redefineCriticalStyleReady(this)"') %>
+    <% } %>
+    <script>
+        window.redefineReleaseWhenCriticalStylesReady&&window.redefineReleaseWhenCriticalStylesReady();
+    </script>
     <meta name="keywords" content="<%= page.keywords || config.keywords || 'Hexo Theme defaultone' %>">
     <% if (!theme.global.open_graph) { %>
         <%
@@ -27,8 +138,8 @@
             <!-- <link
                 href="https://fonts.googleapis.com/css2?family=Source+Sans+Pro:ital,wght@0,400;0,500;0,600;0,700;1,400;1,500;1,600;1,700&display=swap"
                 rel="stylesheet"> -->
-            <%- renderJS('libs/particles.min.js') %>
-            <%- renderJS('libs/cursor-effects.js') %>
+            <%- renderJS('libs/particles.min.js').replace('<script', '<script defer') %>
+            <%- renderJS('libs/cursor-effects.js').replace('<script', '<script defer') %>
 
             <% if (theme.cdn.enable) { %>
                 <% const provider=theme.cdn.provider; %>
@@ -73,14 +184,17 @@
                                                                     </script>
                                                                     <% } %>
                                                                         <!--- Icon Part-->
-                                                                        <link rel="icon" type="image/png"
+                                                                        <link rel="icon" type="image/svg+xml"
                                                                             href="<%= url_for(theme.defaults.favicon) %>"
-                                                                            sizes="192x192">
+                                                                            sizes="any">
+                                                                        <link rel="icon" type="image/png"
+                                                                            href="<%= url_for(theme.defaults.favicon_png || theme.defaults.favicon) %>"
+                                                                            sizes="512x512">
                                                                         <link rel="apple-touch-icon" sizes="180x180"
-                                                                            href="<%= url_for(theme.defaults.favicon) %>">
+                                                                            href="<%= url_for(theme.defaults.favicon_png || theme.defaults.favicon) %>">
                                                                         <meta name="theme-color"
                                                                             content="<%= theme.colors.primary %>">
-                                                                        <%- favicon_tag(theme.defaults.favicon) %>
+                                                                        <%- favicon_tag(theme.defaults.favicon_png || theme.defaults.favicon) %>
                                                                             <!--- Page Info (SEO优化：标题限制70字符内) -->
                                                                             <%
                                                                             let pageTitle = page.title;
@@ -146,23 +260,6 @@
                                                                                                                 <% } }%>
                                                                                                                     <% }
                                                                                                                         }%>
-
-                                                                                                                        <%- css('css/style')
-                                                                                                                            %>
-
-                                                                                                                            <% if
-                                                                                                                                (theme.developer
-                                                                                                                                &&
-                                                                                                                                theme.developer.enable)
-                                                                                                                                {%>
-                                                                                                                                <%- css('css/build/tailwind.css')
-                                                                                                                                    %>
-                                                                                                                                    <% } else
-                                                                                                                                        {%>
-                                                                                                                                        <%- renderCSS('css/build/tailwind.css')
-                                                                                                                                            %>
-                                                                                                                                            <% }
-                                                                                                                                                %>
 
                                                                                                                                                 <%- renderCSS('fonts/GeistMono/geist-mono.css')
                                                                                                                                                     %>

@@ -4,9 +4,17 @@
   "private": true,
   "scripts": {
     "build": "hexo generate",
+    "build:theme": "cd themes/defaultone && ../../node_modules/.bin/tailwindcss -i source/css/tailwind.source.css -o source/css/build/tailwind.css --minify && node source/js/build.js",
+    "build:all": "npm run build:theme && npm run build",
     "clean": "hexo clean",
     "deploy": "hexo deploy",
-    "server": "hexo server"
+    "server": "hexo server",
+    "admin:local": "HEXO_ADMIN=true hexo server -i 127.0.0.1",
+    "audit:prod": "npm audit --omit=dev",
+    "audit:all": "npm audit"
+  },
+  "engines": {
+    "node": ">=22 <25"
   },
   "hexo": {
     "version": "7.3.0"
@@ -14,23 +22,25 @@
   "dependencies": {
     "cursor-effects": "^1.0.17",
     "hexo": "^7.3.0",
-    "hexo-admin": "^2.3.0",
     "hexo-cli": "^4.3.2",
     "hexo-generator-archive": "^2.0.0",
     "hexo-generator-category": "^2.0.0",
     "hexo-generator-index": "^4.0.0",
     "hexo-generator-sitemap": "^3.0.1",
     "hexo-generator-tag": "^2.0.0",
-    "hexo-helper-live2d": "^3.1.0",
     "hexo-renderer-ejs": "^2.0.0",
     "hexo-renderer-marked": "^7.0.0",
     "hexo-renderer-stylus": "^3.0.1",
     "hexo-server": "^3.0.0",
     "hexo-theme-landscape": "^1.0.0",
     "hexo-wordcount": "^6.0.1",
-    "live2d-widget-model-chitose": "^1.0.5",
-    "live2d-widget-model-gf": "^1.0.5",
-    "live2d-widget-model-wanko": "^1.0.5",
     "particles.js": "^2.0.0"
+  },
+  "devDependencies": {
+    "admin-local": "npm:hexo-admin@^2.3.0",
+    "glob-promise": "6.0.7",
+    "postcss": "8.4.47",
+    "tailwindcss": "3.4.14",
+    "terser": "5.36.0"
   }
 }
