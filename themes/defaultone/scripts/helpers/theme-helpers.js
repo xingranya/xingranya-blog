@@ -3,8 +3,7 @@
 "use strict";
 
 const url = require("url");
-const { version } = require("../../package.json");
-const themeVersion = version;
+const { version: themeVersion } = require("../../package.json");
 
 hexo.extend.helper.register("isHomePagePagination", function (pagePath, route) {
   if (pagePath.length > 5 && route === "/") {

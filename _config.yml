@@ -6,7 +6,7 @@
 title: 星苒鸭 · 博客
 subtitle: ''
 description: 星苒鸭 xingranya · 个人博客与作品集
-keywords:
+keywords: 星苒鸭, xingranya, 技术博客, 个人博客, Hexo, 前端开发, 运维, AI, 编程实践
 author: xingranya
 language: zh-CN
 timezone: ''
@@ -102,6 +102,13 @@ theme: defaultone
 # Sitemap
 sitemap:
   path: sitemap.xml
+
+# Local Search
+search:
+  path: search.xml
+  field: post
+  content: true
+  format: html
 
 # Hexo Admin
 admin:

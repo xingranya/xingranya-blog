@@ -11,52 +11,50 @@ export const config = {
   usrHitokotoAPI: theme.home_banner.subtitle.hitokoto.api,
 };
 
-export default function initTyped(id) {
-  const {
-    usrTypeSpeed,
-    usrBackSpeed,
-    usrBackDelay,
-    usrStartDelay,
-    usrLoop,
-    usrSmartBackspace,
-    usrHitokotoAPI,
-  } = config;
-
-  function typing(dataList) {
-    const st = new Typed("#" + id, {
-      strings: [dataList],
-      typeSpeed: usrTypeSpeed || 100,
-      smartBackspace: usrSmartBackspace || false,
-      backSpeed: usrBackSpeed || 80,
-      backDelay: usrBackDelay || 1500,
-      loop: usrLoop || false,
-      startDelay: usrStartDelay || 500,
-    });
+function createTyped(id, strings, options) {
+  if (!document.getElementById(id) || !strings || strings.length === 0) {
+    return;
   }
 
+  new Typed('#' + id, {
+    strings,
+    typeSpeed: options.usrTypeSpeed || 100,
+    smartBackspace: options.usrSmartBackspace || false,
+    backSpeed: options.usrBackSpeed || 80,
+    backDelay: options.usrBackDelay || 1500,
+    loop: options.usrLoop || false,
+    startDelay: options.usrStartDelay || 500,
+  });
+}
+
+export default function initTyped(id) {
+  const options = {
+    usrTypeSpeed: config.usrTypeSpeed,
+    usrBackSpeed: config.usrBackSpeed,
+    usrBackDelay: config.usrBackDelay,
+    usrStartDelay: config.usrStartDelay,
+    usrLoop: config.usrLoop,
+    usrSmartBackspace: config.usrSmartBackspace,
+    usrHitokotoAPI: config.usrHitokotoAPI,
+  };
+
+  const sentenceList = [...theme.home_banner.subtitle.text];
+
   if (theme.home_banner.subtitle.hitokoto.enable) {
-    fetch(usrHitokotoAPI)
+    fetch(options.usrHitokotoAPI)
       .then((response) => response.json())
       .then((data) => {
         if (data.from_who && theme.home_banner.subtitle.hitokoto.show_author) {
-          typing(data.hitokoto + "——" + data.from_who);
+          createTyped(id, [data.hitokoto + '——' + data.from_who], options);
         } else {
-          typing(data.hitokoto);
+          createTyped(id, [data.hitokoto], options);
         }
       })
-      .catch(console.error);
-  } else {
-    const sentenceList = [...theme.home_banner.subtitle.text];
-    if (document.getElementById(id)) {
-      const st = new Typed("#" + id, {
-        strings: sentenceList,
-        typeSpeed: usrTypeSpeed || 100,
-        smartBackspace: usrSmartBackspace || false,
-        backSpeed: usrBackSpeed || 80,
-        backDelay: usrBackDelay || 1500,
-        loop: usrLoop || false,
-        startDelay: usrStartDelay || 500,
+      .catch((error) => {
+        console.error(error);
+        createTyped(id, sentenceList, options);
       });
-    }
+  } else {
+    createTyped(id, sentenceList, options);
   }
 }

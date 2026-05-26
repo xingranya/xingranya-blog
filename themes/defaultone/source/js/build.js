@@ -6,6 +6,7 @@ const glob = require("glob-promise");
 const THEME_ROOT = path.join(__dirname, "../..");
 const SOURCE_DIR = path.join(THEME_ROOT, "source/js");
 const BUILD_DIR = path.join(THEME_ROOT, "source/js/build");
+const LIB_PATTERNS = [`${SOURCE_DIR}/libs/**/*`];
 const IGNORE_PATTERNS = [
   path.join(SOURCE_DIR, "libs/**"),
   path.join(BUILD_DIR, "**"),
@@ -62,15 +63,18 @@ async function processFile(file) {
     const relativePath = path.relative(SOURCE_DIR, file);
     const buildPath = path.join(BUILD_DIR, relativePath);
     const buildDirPath = path.dirname(buildPath);
+    const shouldWriteSourceMap = path.dirname(relativePath) === ".";
 
     // Update source map options for this specific file
     const fileSpecificOptions = {
       ...minifyOptions,
-      sourceMap: {
-        ...minifyOptions.sourceMap,
-        filename: path.basename(file),
-        url: `${path.basename(file)}.map`,
-      },
+      sourceMap: shouldWriteSourceMap
+        ? {
+            ...minifyOptions.sourceMap,
+            filename: path.basename(file),
+            url: `${path.basename(file)}.map`,
+          }
+        : false,
     };
 
     const minified = await minify(code, fileSpecificOptions);
@@ -97,7 +101,11 @@ async function minifyJS() {
     await ensureDirectoryExists(BUILD_DIR);
 
     // Get lib files to copy
-    const libFiles = await glob(`${SOURCE_DIR}/libs/**/*.js`);
+    const libFiles = (await Promise.all(
+      LIB_PATTERNS.map((pattern) => glob(pattern, { nodir: true })),
+    ))
+      .flat()
+      .sort();
     
     // Get JS files to minify (excluding libs and other ignored patterns)
     const files = await glob(`${SOURCE_DIR}/**/*.js`, {

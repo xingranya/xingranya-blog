@@ -7,7 +7,7 @@
         }
 
         html.redefine-style-loading body {
-            visibility: hidden;
+            visibility: visible;
         }
 
         html.redefine-style-loading * {
@@ -112,7 +112,7 @@
     <script>
         window.redefineReleaseWhenCriticalStylesReady&&window.redefineReleaseWhenCriticalStylesReady();
     </script>
-    <meta name="keywords" content="<%= page.keywords || config.keywords || 'Hexo Theme defaultone' %>">
+    <meta name="keywords" content="<%= page.keywords || config.keywords || config.title || '星苒鸭博客' %>">
     <% if (!theme.global.open_graph) { %>
         <%
         // SEO优化：确保 description 长度在 25-160 字符之间

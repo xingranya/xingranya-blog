@@ -1,7 +1,6 @@
 <% if(
         theme.comment.system === 'gitalk'
         && theme.comment.config.gitalk.clientID
-        && theme.comment.config.gitalk.clientSecret
         && theme.comment.config.gitalk.owner
         && theme.comment.config.gitalk.repo
 ) { %>
@@ -21,7 +20,6 @@
             try {
                 Gitalk && new Gitalk({
                     clientID: '<%= theme.comment.config.gitalk.clientID %>',
-                    clientSecret: '<%= theme.comment.config.gitalk.clientSecret %>',
                     repo: '<%= theme.comment.config.gitalk.repo %>',
                     owner: '<%= theme.comment.config.gitalk.owner %>',
                     admin: ['<%= theme.comment.config.gitalk.owner %>'],

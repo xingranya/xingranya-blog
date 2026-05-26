@@ -5,3 +5,7 @@ db.json
 Thumbs.db
 # Tailwind CSS 测试产物
 themes/defaultone/test-output.css
+# 主题构建 sourcemap 产物
+themes/defaultone/source/js/build/layouts/*.map
+themes/defaultone/source/js/build/plugins/*.map
+themes/defaultone/source/js/build/tools/*.map
