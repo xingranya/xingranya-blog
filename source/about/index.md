@@ -1,6 +1,6 @@
 ---
 title: 关于我
-date: 2025-04-09 16:23:59
+date: 2026-06-27 12:53:46
 ---
 <div align="center">
   <img src="https://capsule-render.vercel.app/api?type=waving&height=260&color=gradient&customColorList=12,20,27,30&text=%E6%98%9F%E8%8B%92%E9%B8%AD%20%7C%20xingranya&fontSize=48&fontColor=ffffff&fontAlignY=38&desc=%E7%83%AD%E7%88%B1%E4%BB%A3%E7%A0%81%20%E2%80%A2%20%E6%8C%81%E7%BB%AD%E6%8A%98%E8%85%BE%20%E2%80%A2%20%E4%BA%AB%E5%8F%97%E5%88%9B%E9%80%A0&descSize=16&descAlignY=58&animation=fadeIn" width="100%" />
@@ -16,7 +16,7 @@ date: 2025-04-09 16:23:59
 <img src="https://readme-typing-svg.demolab.com?font=JetBrains+Mono&size=14&duration=2200&pause=500&color=F093FB&center=true&vCenter=true&width=900&lines=%E2%9A%A1+Java+%7C+Spring+Boot+%7C+Vue3+%7C+Node.js+%7C+Kotlin+%7C+MySQL+%7C+Redis+%7C+MyBatis+%7C+Git+%7C+Maven+%7C+Gradle+%E2%9A%A1" alt="Tech Stack Marquee" />
 
 <h1>👋 你好，我是 <b>星苒鸭</b>（xingranya）</h1>
-  <p>🎓 计算机科学与技术本科生 · 💻 全栈开发爱好者 · 🚀 开源实践者</p>
+  <p>🎓 计算机科学与技术本科生 · 💻 全栈开发爱好者</p>
 
 <p>
     <a href="https://xingranya.cn" target="_blank"><img src="https://img.shields.io/badge/🌐%20Website-xingranya.cn-0A66C2?style=for-the-badge&logo=google-chrome&logoColor=white" alt="Website" /></a>
@@ -31,15 +31,10 @@ date: 2025-04-09 16:23:59
 ## ✨ 关于我
 
 我喜欢捣鼓一些新颖的产品,不管是软件还是电子产品,同类里面性价比最高的永远是好的。🙂
-相比炫技，我更在意代码是否 **清晰、稳定、可维护**；相比堆功能，我更关注是否真正解决问题。🔧
 
-平时主要围绕 **Java / Spring Boot / Vue3 / Node.js** 做全栈实践，也会持续折腾系统优化、效率工具和自动化流程。⚙️
+平时主要围绕 **Java / Rust / Vue3 / Node.js / React** 做全栈实践，也会持续折腾系统优化、效率工具和自动化流程。⚙️
 
-- 🔭 当前主攻：**Java 后端工程化 + Vue3 前端实践 + Node.js 工具化**
-- 🌱 近期学习：**系统架构、容器化部署、性能优化、Kotlin 生态**
-- 🧠 技术偏好：**简洁设计、模块化、可读性优先、渐进式优化**
-- 🛠️ 开发习惯：**先跑通、再抽象、最后打磨体验**
-- 🤝 合作方向：**有技术挑战、能真实创造价值的项目**
+- 🤝 喜欢研究：**有技术挑战、能真实创造价值的项目**
 - 📬 联系方式：`xingranya@outlook.jp`
 - 🌐 个人网站：`https://xingranya.cn`
 
@@ -51,12 +46,8 @@ date: 2025-04-09 16:23:59
 
 - 🥈 **2025 全国大学生计算机设计大赛（中南赛区）省级二等奖**
 - 🥈 **2025 第二届 CACC 算法大赛区域赛二等奖**
-
-这些经历让我更加明白：
-
-- 📌 需求理解与任务拆解
-- 📌 团队协作与沟通推进
-- 📌 在压力下保持代码质量与交付稳定性
+- 🏅 **2026 全国大学生计算机设计大赛（中南赛区）省级一等奖且推国赛**
+- 🥉 **2026 第十四届"泰迪杯"数据挖掘挑战赛全国三等奖兼湖北赛区二等奖**
 
 ---
 
@@ -99,12 +90,6 @@ date: 2025-04-09 16:23:59
   <img src="https://img.shields.io/badge/Linux-FCC624?style=flat-square&logo=linux&logoColor=black" alt="Linux" />
 </p>
 
-📌 对我来说，技术栈不只是“会用”，更是：
-
-- 能否组合成稳定方案
-- 能否沉淀为可维护结构
-- 能否在迭代中持续优化体验与性能
-
 ---
 
 ## 📊 GitHub 统计
@@ -126,41 +111,44 @@ date: 2025-04-09 16:23:59
   <img src="https://github-readme-activity-graph.vercel.app/graph?username=xingranya&theme=github-compact&hide_border=true" width="95%" alt="Activity Graph" />
 </div>
 
-📎 说明：第三方卡片服务偶尔会出现缓存延迟或访问抖动，刷新页面通常可恢复显示。🔄
+📎 tips：第三方卡片服务偶尔会出现缓存延迟或访问抖动，刷新页面通常可恢复显示。🔄
 
 ---
 
 ## 🚀 精选项目
 
 <div align="center">
-  <a href="https://github.com/xingranya/daily_stock_analysis">
-    <img src="https://github-readme-stats.vercel.app/api/pin/?username=xingranya&repo=daily_stock_analysis&hide_border=true&theme=transparent" width="49%" alt="daily_stock_analysis" />
+  <a href="https://github.com/xingranya/OQQWall_rust">
+    <img src="https://github-readme-stats.vercel.app/api/pin/?username=xingranya&repo=OQQWall_rust&hide_border=true&theme=transparent" width="49%" alt="OQQWall_rust" />
   </a>
-  <a href="https://github.com/xingranya/xingranya-blog">
-    <img src="https://github-readme-stats.vercel.app/api/pin/?username=xingranya&repo=xingranya-blog&hide_border=true&theme=transparent" width="49%" alt="xingranya-blog" />
+  <a href="https://github.com/xingranya/SPlayer-Next">
+    <img src="https://github-readme-stats.vercel.app/api/pin/?username=xingranya&repo=SPlayer-Next&hide_border=true&theme=transparent" width="49%" alt="SPlayer-Next" />
   </a>
-  <a href="https://github.com/xingranya/JingWenWall">
-    <img src="https://github-readme-stats.vercel.app/api/pin/?username=xingranya&repo=JingWenWall&hide_border=true&theme=transparent" width="49%" alt="JingWenWall" />
+  <a href="https://github.com/xingranya/nosleep-mac">
+    <img src="https://github-readme-stats.vercel.app/api/pin/?username=xingranya&repo=nosleep-mac&hide_border=true&theme=transparent" width="49%" alt="nosleep-mac" />
   </a>
-  <a href="https://github.com/xingranya/SmartTech">
-    <img src="https://github-readme-stats.vercel.app/api/pin/?username=xingranya&repo=SmartTech&hide_border=true&theme=transparent" width="49%" alt="SmartTech" />
+  <a href="https://github.com/xingranya/CC-Statusline-Builder">
+    <img src="https://github-readme-stats.vercel.app/api/pin/?username=xingranya&repo=CC-Statusline-Builder&hide_border=true&theme=transparent" width="49%" alt="CC-Statusline-Builder" />
   </a>
 </div>
 
 ### 🧩 项目方向（持续迭代中）
 
-- 📝 **xingranya-blog**：个人内容平台与前后端联动实现
-- 🧱 **JingWenWall**：聚合场景下的校园小程序交互和结构打磨
-- 💡 **SmartTech**：技术探索与场景化功能实现
+- 📝 **xingranya-blog**：个人内容平台，持续打磨博客展示、内容沉淀与前端体验。
+- 🧱 **JingWenWall**：聚合场景下的校园小程序交互和结构打磨。
+- 🔧 **OQQWall_rust**：参与审核后台、发布流程与多架构构建优化，提升项目交付稳定性。
+- 🧩 **SPlayer-Next**：参与 macOS 端界面细节修复，改善灵动岛刘海区域对齐体验。
+- 🤖 **chaoxing-agent-skill**：补充 Playwright CLI CAPTCHA 处理方案，增强通用 Agent 自动化能力。
 
 ---
 
 ## 🧭 最近在做什么
 
-- 🧪 把“可跑通”升级成“可维护、可扩展、可复用”
-- 📚 梳理 Java + Spring Boot + Vue3 + Node.js 的完整实践链路
-- 🧰 沉淀脚手架、自动化脚本与个人效率工具
-- 🤝 欢迎在 Issues 或邮件交流技术问题和实现细节
+- **OQQWall_rust**：合并多架构构建与手动发布流程、支持手动填写发布更新日志、修复审核后台核心交互并提升审计可读性。
+- **SPlayer-Next**：修复 macOS 灵动岛刘海对齐问题，优化桌面端显示细节。
+- **chaoxing-agent-skill**：添加 Playwright CLI CAPTCHA 解决方案，支持更通用的 Agent 工作流。
+- 📚 继续完善 Java + Quasar Vue3 + Node.js 的完整实践链路，沉淀脚手架、自动化脚本与个人效率工具。
+- 🤝 欢迎在 Issues 或邮件交流技术问题、开源协作与实现细节。
 
 ---
 
@@ -189,17 +177,6 @@ date: 2025-04-09 16:23:59
 </div>
 
 ---
-
-## 📜 开源贡献
-
-<!-- 动态更新贡献列表（可配合 Actions 自动写入） -->
-
-<!-- CONTRIB-LIST:START -->
-
-- OQQWall项目的网页审核功能完整实现
-- 🌟 欢迎交流项目优化、工程化实践与技术思路
-
-<!-- CONTRIB-LIST:END -->
 
 <div align="center">
   <p>
