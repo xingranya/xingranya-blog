@@ -1,0 +1,221 @@
+{
+  "schemaVersion": 2,
+  "generatedAt": "2026-06-27T07:58:02Z",
+  "title": "Design System: 星苒鸭 · 博客",
+  "extensions": {
+    "colorMeta": {
+      "primary-blush": {
+        "role": "primary",
+        "displayName": "星苒粉",
+        "canonical": "#FFC0CB",
+        "tonalRamp": ["#4a2730", "#6f3a48", "#985264", "#c66e82", "#e790a2", "#ffc0cb", "#ffd6dd", "#fff0f3"]
+      },
+      "navbar-warm": {
+        "role": "secondary",
+        "displayName": "导航暖橙",
+        "canonical": "#f78736",
+        "tonalRamp": ["#3d2110", "#663719", "#934f24", "#c96d31", "#f78736", "#ffab6f", "#ffd0ad", "#fff1e8"]
+      },
+      "navbar-cool": {
+        "role": "secondary",
+        "displayName": "导航冷蓝",
+        "canonical": "#367df7",
+        "tonalRamp": ["#102243", "#17366d", "#214d9e", "#2c66d0", "#367df7", "#74a5ff", "#b6d0ff", "#edf4ff"]
+      },
+      "dark-bg": {
+        "role": "neutral",
+        "displayName": "夜间背景",
+        "canonical": "#202124",
+        "tonalRamp": ["#121316", "#202124", "#2b2d31", "#3b3d42", "#5a5d64", "#858891", "#bebec6", "#f5f5f5"]
+      },
+      "light-bg": {
+        "role": "neutral",
+        "displayName": "白昼背景",
+        "canonical": "#ffffff",
+        "tonalRamp": ["#25282a", "#373D3F", "#555d60", "#7a8285", "#a9afb1", "#d8dcde", "#f4f5f5", "#ffffff"]
+      }
+    },
+    "typographyMeta": {
+      "display": {
+        "displayName": "主页展示标题",
+        "purpose": "只用于首页首屏标题。"
+      },
+      "headline": {
+        "displayName": "文章卡标题",
+        "purpose": "首页文章卡片标题和强层级标题。"
+      },
+      "body": {
+        "displayName": "阅读正文",
+        "purpose": "文章正文、摘要、普通页面内容。"
+      },
+      "label": {
+        "displayName": "元信息标签",
+        "purpose": "日期、分类、标签、侧边栏链接和辅助信息。"
+      },
+      "mono": {
+        "displayName": "代码与编辑器",
+        "purpose": "只用于代码块和写作编辑器。"
+      }
+    },
+    "shadows": [
+      {
+        "name": "standard-container",
+        "value": "var(--shadow-color-2) 0px 6px 24px 0px, var(--shadow-color-1) 0px 0px 0px 1px",
+        "purpose": "首页文章卡片和侧边栏主容器。"
+      },
+      {
+        "name": "flat-container",
+        "value": "var(--shadow-color-2) 0px 1px 4px 0px, var(--shadow-color-1) 0px 0px 0px 1px",
+        "purpose": "社交按钮、侧边工具、代码块和次级卡片。"
+      },
+      {
+        "name": "hero-glass",
+        "value": "backdrop-filter: blur(24px); background: rgba(0, 0, 0, 0.3)",
+        "purpose": "首页首屏标题面板和社交联系胶囊。"
+      }
+    ],
+    "motion": [
+      {
+        "name": "state-transition",
+        "value": "200ms ease",
+        "purpose": "前台 hover、阴影、颜色和轻位移反馈。"
+      },
+      {
+        "name": "hero-fade",
+        "value": "transition-fade / transition-fade-down",
+        "purpose": "首页首屏内容进入，不用于正文阅读区。"
+      }
+    ],
+    "breakpoints": [
+      {
+        "name": "mobile",
+        "value": "640px"
+      },
+      {
+        "name": "tablet",
+        "value": "768px"
+      },
+      {
+        "name": "content",
+        "value": "1000px"
+      },
+      {
+        "name": "home-navbar",
+        "value": "1200px"
+      }
+    ]
+  },
+  "components": [
+    {
+      "name": "Home Hero Panel",
+      "kind": "custom",
+      "refersTo": "hero-panel",
+      "description": "首页首屏标题面板，只用于固定横幅图上。",
+      "html": "<section class=\"ds-hero-panel\"><h1>星苒鸭 · 博客</h1><p>Hi there, I'm xingranya / 星苒鸭</p></section>",
+      "css": ".ds-hero-panel { display: flex; flex-direction: column; align-items: center; justify-content: center; gap: 12px; padding: 32px 24px; border: 1px solid rgba(255,255,255,0.2); border-radius: 24px; background: rgba(0,0,0,0.3); color: #f5f5f5; font-family: 'Source Sans Pro', -apple-system, BlinkMacSystemFont, 'Segoe UI', sans-serif; text-align: center; box-shadow: 0 25px 50px rgba(0,0,0,0.25); backdrop-filter: blur(24px); } .ds-hero-panel h1 { margin: 0; font-size: 2.8rem; line-height: 1.2; font-weight: 600; letter-spacing: 0; } .ds-hero-panel p { margin: 0; font-size: 1.25rem; line-height: 1.4; }"
+    },
+    {
+      "name": "Social Dock",
+      "kind": "nav",
+      "refersTo": "nav-link",
+      "description": "首页底部社交链接胶囊，承担个人识别和外部入口。",
+      "html": "<nav class=\"ds-social-dock\"><a href=\"#\">GitHub</a><a href=\"#\">Bilibili</a><a href=\"#\">Email</a></nav>",
+      "css": ".ds-social-dock { display: inline-flex; align-items: center; gap: 16px; padding: 12px 24px; border: 1px solid rgba(255,255,255,0.2); border-radius: 999px; background: rgba(107,114,128,0.4); color: #f5f5f5; font-family: 'Source Sans Pro', -apple-system, BlinkMacSystemFont, 'Segoe UI', sans-serif; box-shadow: var(--redefine-box-shadow-flat, 0 1px 4px rgba(0,0,0,0.12)); backdrop-filter: blur(16px); } .ds-social-dock a { color: inherit; text-decoration: none; font-weight: 600; transition: color 200ms ease, transform 200ms ease; } .ds-social-dock a:hover, .ds-social-dock a:focus-visible { color: #FFC0CB; transform: translateY(-1px); outline: none; }"
+    },
+    {
+      "name": "Article Card",
+      "kind": "card",
+      "refersTo": "article-card",
+      "description": "首页文章列表的核心信息单元，可带 16:9 缩略图。",
+      "html": "<article class=\"ds-article-card\"><div class=\"ds-article-card__image\"></div><div class=\"ds-article-card__body\"><h2>一篇技术笔记标题</h2><p>摘要说明问题、方案和上下文，保持信息密度。</p><a href=\"#\">阅读全文</a></div></article>",
+      "css": ".ds-article-card { overflow: hidden; border-radius: 18px; background: var(--background-color-transparent-80, rgba(32,33,36,0.8)); color: var(--default-text-color, #bebec6); font-family: 'Source Sans Pro', -apple-system, BlinkMacSystemFont, 'Segoe UI', sans-serif; box-shadow: var(--redefine-box-shadow, 0 6px 24px rgba(0,0,0,0.08)); transition: box-shadow 200ms ease, transform 200ms ease; } .ds-article-card:hover { box-shadow: var(--redefine-box-shadow-hover, 0 6px 24px rgba(0,0,0,0.12)); transform: scale(1.015); } .ds-article-card__image { aspect-ratio: 16 / 9; background: linear-gradient(135deg, #367df7, #FFC0CB); } .ds-article-card__body { display: flex; flex-direction: column; gap: 20px; padding: 28px; } .ds-article-card h2 { margin: 0; color: var(--second-text-color, #f5f5f5); font-size: 1.4rem; line-height: 1.5; font-weight: 600; } .ds-article-card p { margin: 0; line-height: 1.5; } .ds-article-card a { color: var(--third-text-color, #bebec6); text-decoration: none; font-weight: 600; } .ds-article-card a:hover, .ds-article-card a:focus-visible { color: #FFC0CB; outline: none; }"
+    },
+    {
+      "name": "Sidebar Card",
+      "kind": "card",
+      "refersTo": "sidebar-card",
+      "description": "首页侧边栏信息和链接容器。",
+      "html": "<aside class=\"ds-sidebar-card\"><strong>星苒鸭 · 博客</strong><a href=\"#\">归档</a><a href=\"#\">分类</a></aside>",
+      "css": ".ds-sidebar-card { width: 240px; display: grid; gap: 10px; padding: 20px; border-radius: 18px; background: var(--background-color-transparent-80, rgba(32,33,36,0.8)); color: var(--second-text-color, #f5f5f5); font-family: 'Source Sans Pro', -apple-system, BlinkMacSystemFont, 'Segoe UI', sans-serif; box-shadow: var(--redefine-box-shadow, 0 6px 24px rgba(0,0,0,0.08)); } .ds-sidebar-card strong { text-align: center; font-size: 1.2rem; font-weight: 600; } .ds-sidebar-card a { display: flex; justify-content: center; padding: 5px 0; border-radius: 9px; color: inherit; text-decoration: none; font-weight: 500; transition: color 200ms ease, background-color 200ms ease; } .ds-sidebar-card a:hover, .ds-sidebar-card a:focus-visible { color: #FFC0CB; background: var(--second-background-color, rgba(255,255,255,0.06)); outline: none; }"
+    },
+    {
+      "name": "Meta Chip",
+      "kind": "chip",
+      "refersTo": "nav-link",
+      "description": "文章日期、分类、标签和置顶标识的低噪声信息片。",
+      "html": "<span class=\"ds-meta-chip\">标签 · AI</span>",
+      "css": ".ds-meta-chip { display: inline-flex; align-items: center; min-height: 24px; padding: 2px 10px; border: 1px solid var(--border-color, rgba(255,255,255,0.08)); border-radius: 14px; background: var(--background-color-transparent-15, rgba(255,255,255,0.15)); color: var(--third-text-color, #898989); font-family: 'Source Sans Pro', -apple-system, BlinkMacSystemFont, 'Segoe UI', sans-serif; font-size: 0.7rem; font-weight: 500; letter-spacing: 0.5px; }"
+    },
+    {
+      "name": "Read More Link",
+      "kind": "button",
+      "refersTo": "read-more",
+      "description": "文章卡片底部的阅读入口，不做大按钮。",
+      "html": "<a class=\"ds-read-more\" href=\"#\">阅读全文 <span>›</span></a>",
+      "css": ".ds-read-more { display: inline-flex; align-items: center; gap: 6px; color: var(--third-text-color, #898989); font-family: 'Source Sans Pro', -apple-system, BlinkMacSystemFont, 'Segoe UI', sans-serif; font-size: 0.92rem; font-weight: 600; text-decoration: none; transition: color 200ms ease, transform 200ms ease; } .ds-read-more:hover, .ds-read-more:focus-visible { color: #FFC0CB; transform: translateX(2px); outline: none; }"
+    }
+  ],
+  "narrative": {
+    "northStar": "夜间工作台上的温热笔记",
+    "overview": "这套视觉系统只服务博客前台：主页、文章列表、文章阅读页、标签/分类/归档和个人展示页。它的核心气质来自 PRODUCT.md 的三词关键词：专业、简洁、有温度。默认暗色模式是主体验，亮色模式是补充；整体应该像夜里打开的一本技术笔记，信息清楚、边界克制，但仍能看见个人表达。",
+    "keyCharacteristics": [
+      "暗色优先，亮色兼容；不要反过来设计。",
+      "内容宽度收束在 1000px 附近，保持可读密度。",
+      "粉色主色只做少量识别与 hover 强调，不能铺满页面。",
+      "首屏可以有图片和轻毛玻璃，文章正文必须安静。",
+      "动效只做进入、hover、滚动反馈；不能做满屏粒子和 3D 喧宾夺主。"
+    ],
+    "rules": [
+      {
+        "name": "The Pink Signature Rule",
+        "body": "星苒粉只出现在重点、链接和状态里；一个屏幕里粉色面积超过 10% 就已经过量。",
+        "section": "colors"
+      },
+      {
+        "name": "The Dark First Rule",
+        "body": "新增前台页面先按暗色模式验收，再检查亮色模式；暗色不能是亮色的机械反相。",
+        "section": "colors"
+      },
+      {
+        "name": "The No Cream Rule",
+        "body": "禁止把“有温度”翻译成奶油色背景、米色卡片或泛黄纸感；温度来自图片、排版节奏和个人文案。",
+        "section": "colors"
+      },
+      {
+        "name": "The Readability First Rule",
+        "body": "技术文章正文永远优先可读；不要用展示字、超轻字重、过紧字距来牺牲阅读。",
+        "section": "typography"
+      },
+      {
+        "name": "The One Family Rule",
+        "body": "前台界面默认只用 Source Sans Pro 和系统 fallback；不要新增相近的几何 sans 或装饰 serif。",
+        "section": "typography"
+      },
+      {
+        "name": "The Quiet Surface Rule",
+        "body": "文章阅读区不能使用厚重投影；如果阴影比内容更抢眼，立刻降级为 flat 或去掉。",
+        "section": "elevation"
+      },
+      {
+        "name": "The Glass Only At The Door Rule",
+        "body": "毛玻璃只允许在主页首屏和二维码浮层出现；文章正文、归档和普通列表不要使用玻璃拟态。",
+        "section": "elevation"
+      }
+    ],
+    "dos": [
+      "Do 先按暗色模式检查主页、文章卡和正文，再补亮色模式。",
+      "Do 使用真实图片承载首页第一印象；首屏不要退化成纯色块。",
+      "Do 保持正文可读，技术内容的代码块、标题层级、TOC 和搜索优先级高于装饰。",
+      "Do 使用星苒粉做少量识别和 hover，不要把它扩展成整页粉色主题。",
+      "Do 让侧边栏、文章卡、分页和阅读更多保持同一种轻容器语言。",
+      "Do 支持 prefers-reduced-motion，动效要能被关闭或降级。"
+    ],
+    "donts": [
+      "Don't 做过度花哨的个人主页（满屏粒子特效、3D 动画喧宾夺主）。",
+      "Don't 做千篇一律的 AI 生成风格（奶油色背景、千篇一律的卡片网格、无意义的渐变文字）。",
+      "Don't 做信息密度过低的极简博客（大量留白但内容稀薄）。",
+      "Don't 做纯技术文档站风格（缺少个人辨识度）。",
+      "Don't 使用渐变文字、侧边彩条、斜纹背景、手绘涂鸦 SVG 或 32px 以上卡片圆角。"
+    ]
+  }
+}
