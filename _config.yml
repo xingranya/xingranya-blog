@@ -55,6 +55,11 @@ prismjs:
   line_number: true
   tab_replace: ''
 
+# 文章扩展字段
+metadata:
+  banner: ''
+  cover: ''
+
 # 首页设置
 # path: 博客首页的根路径（默认 ''）
 # per_page: 每页文章数量（0 表示不分页）
@@ -115,6 +120,7 @@ admin:
   username: ''
   password_hash: ''
   secret: 'my secret'
+  deployCommand: ./bin/admin-publish
 
 # 部署
 ## 文档: https://hexo.io/docs/one-command-deployment

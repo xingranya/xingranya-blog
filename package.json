@@ -10,6 +10,8 @@
     "deploy": "hexo deploy",
     "server": "hexo server",
     "admin:local": "HEXO_ADMIN=true hexo server -i 127.0.0.1",
+    "post:check": "node scripts/validate-posts.js",
+    "publish": "node scripts/admin-publish.js",
     "audit:prod": "npm audit --omit=dev",
     "audit:all": "npm audit"
   },
