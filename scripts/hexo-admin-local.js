@@ -15,7 +15,6 @@ if (process.env.HEXO_ADMIN === 'true') {
   }
 
   const adminPackageDir = path.dirname(require.resolve('admin-local/package.json'));
-  const updateAdminContent = require(path.join(adminPackageDir, 'update'));
   const adminWwwDir = path.join(adminPackageDir, 'www');
   const adminUiDir = path.join(hexo.base_dir, 'admin-ui');
   const tucangConfigPath = path.join(hexo.base_dir, '.admin-tucang.yml');
@@ -841,16 +840,29 @@ if (process.env.HEXO_ADMIN === 'true') {
     if (req.method !== 'POST') return sendError(res, 405, '请求方法不支持。');
     if (!req.body) return sendError(res, 400, '没有收到要保存的内容。');
 
-    updateAdminContent(model, id, req.body, function (error, item) {
-      if (error) return sendError(res, 400, error);
-      if (!item) return sendError(res, 404, '没有找到要保存的内容。');
+    const item = hexo.model(model).get(id);
+    if (!item) return sendError(res, 404, '没有找到要保存的内容。');
 
-      const key = model === 'Page' ? 'page' : 'post';
-      sendJson(res, 200, {
-        [key]: addIsDraft(item),
-        tagsCategoriesAndMetadata: tagsCategoriesAndMetadata()
+    try {
+      const sourcePath = postSourcePath(item);
+      const raw = fs.readFileSync(sourcePath, 'utf8');
+      const nextRaw = updateRawMarkdown(raw, req.body || {});
+
+      fs.writeFileSync(sourcePath, nextRaw, 'utf8');
+      hexo.source.process([item.source]).then(function () {
+        const nextItem = hexo.model(model).get(id) || item;
+        const key = model === 'Page' ? 'page' : 'post';
+
+        sendJson(res, 200, {
+          [key]: model === 'Page' ? nextItem : addIsDraft(nextItem),
+          tagsCategoriesAndMetadata: tagsCategoriesAndMetadata()
+        });
+      }).catch(function (error) {
+        sendError(res, 500, error.message || '刷新内容失败。');
       });
-    }, hexo);
+    } catch (error) {
+      sendError(res, 400, error.message || '保存内容失败。');
+    }
   }
 
   function isReservedAdminRoute(value) {
@@ -901,6 +913,129 @@ if (process.env.HEXO_ADMIN === 'true') {
 
     res.setHeader('Content-Type', 'text/html; charset=utf-8');
     res.end(html);
+  }
+
+  function postSourcePath(post) {
+    return post.full_source || path.join(hexo.source_dir, post.source);
+  }
+
+  function splitMarkdownFrontMatter(raw) {
+    const match = String(raw || '').match(/^(---\r?\n)([\s\S]*?)(\r?\n---[ \t]*\r?\n?)([\s\S]*)$/);
+    if (!match) {
+      throw new Error('文章 front-matter 格式无效：文件必须以 --- 开头，并用 --- 结束。');
+    }
+
+    return {
+      open: match[1],
+      yaml: match[2],
+      close: match[3],
+      content: match[4]
+    };
+  }
+
+  function yamlEol(text) {
+    return String(text || '').indexOf('\r\n') >= 0 ? '\r\n' : '\n';
+  }
+
+  function escapeYamlScalar(value, quote) {
+    const text = String(value ?? '');
+    if (quote === '"') return `"${text.replace(/\\/g, '\\\\').replace(/"/g, '\\"')}"`;
+    if (quote === "'") return `'${text.replace(/'/g, "''")}'`;
+    if (/[:#\[\]{},&*!|>'"%@`]|^\s|\s$/.test(text)) return `"${text.replace(/\\/g, '\\\\').replace(/"/g, '\\"')}"`;
+    return text;
+  }
+
+  function existingYamlScalarQuote(line) {
+    const value = String(line || '').replace(/^[^:]+:\s*/, '').trim();
+    if (value.startsWith('"')) return '"';
+    if (value.startsWith("'")) return "'";
+    return '';
+  }
+
+  function findYamlKeyLine(lines, key) {
+    const pattern = new RegExp(`^${key.replace(/[.*+?^${}()|[\]\\]/g, '\\$&')}\\s*:`);
+    return lines.findIndex(function (line) {
+      return pattern.test(line);
+    });
+  }
+
+  function replaceYamlBlock(yamlText, key, replacement) {
+    const eol = yamlEol(yamlText);
+    const lines = String(yamlText || '').split(/\r?\n/);
+    const start = findYamlKeyLine(lines, key);
+
+    if (start < 0) {
+      const insertIndex = lines.length && lines[lines.length - 1] === '' ? lines.length - 1 : lines.length;
+      lines.splice(insertIndex, 0, replacement);
+      return lines.join(eol);
+    }
+
+    let end = start + 1;
+    while (end < lines.length && (/^\s+/.test(lines[end]) || lines[end].trim() === '')) {
+      end += 1;
+    }
+    lines.splice(start, end - start, replacement);
+    return lines.join(eol);
+  }
+
+  function getYamlScalarLine(yamlText, key) {
+    const lines = String(yamlText || '').split(/\r?\n/);
+    const index = findYamlKeyLine(lines, key);
+    return index >= 0 ? lines[index] : '';
+  }
+
+  function sameMinuteButDateLostSeconds(currentLine, nextValue) {
+    const current = String(currentLine || '').replace(/^[^:]+:\s*/, '').trim().replace(/^['"]|['"]$/g, '');
+    const next = String(nextValue || '').trim().replace(/^['"]|['"]$/g, '');
+    const currentMatch = current.match(/^(\d{4}-\d{2}-\d{2}[ T]\d{2}:\d{2}):([0-5]\d)$/);
+    const nextMatch = next.match(/^(\d{4}-\d{2}-\d{2}[ T]\d{2}:\d{2}):([0-5]\d)$/);
+    return Boolean(currentMatch && nextMatch && currentMatch[1] === nextMatch[1] && currentMatch[2] !== '00' && nextMatch[2] === '00');
+  }
+
+  function setYamlScalar(yamlText, key, value) {
+    if (key === 'date' && sameMinuteButDateLostSeconds(getYamlScalarLine(yamlText, key), value)) {
+      return yamlText;
+    }
+
+    const currentLine = getYamlScalarLine(yamlText, key);
+    const quote = existingYamlScalarQuote(currentLine);
+    return replaceYamlBlock(yamlText, key, `${key}: ${escapeYamlScalar(value, quote)}`);
+  }
+
+  function setYamlList(yamlText, key, value) {
+    const list = Array.isArray(value) ? value : String(value || '').split(',').map(function (item) {
+      return item.trim();
+    }).filter(Boolean);
+    const block = [`${key}:`].concat(list.map(function (item) {
+      return `  - ${escapeYamlScalar(item, '')}`;
+    })).join(yamlEol(yamlText));
+    return replaceYamlBlock(yamlText, key, block);
+  }
+
+  function updateRawMarkdown(raw, update) {
+    const parts = splitMarkdownFrontMatter(raw);
+    let yamlText = parts.yaml;
+    const scalarFields = ['title', 'date', 'author'];
+
+    Object.keys(hexo.config.metadata || {}).forEach(function (key) {
+      scalarFields.push(key);
+    });
+
+    scalarFields.forEach(function (key) {
+      if (Object.prototype.hasOwnProperty.call(update, key)) {
+        yamlText = setYamlScalar(yamlText, key, update[key]);
+      }
+    });
+
+    if (Object.prototype.hasOwnProperty.call(update, 'categories')) {
+      yamlText = setYamlList(yamlText, 'categories', update.categories);
+    }
+    if (Object.prototype.hasOwnProperty.call(update, 'tags')) {
+      yamlText = setYamlList(yamlText, 'tags', update.tags);
+    }
+
+    const content = Object.prototype.hasOwnProperty.call(update, '_content') ? String(update._content || '') : parts.content;
+    return `${parts.open}${yamlText}${parts.close}${content}`;
   }
 
   hexo.extend.filter.register('server_middleware', function (app) {

@@ -137,9 +137,19 @@
       '<div class="admin-upload-list"></div>';
     document.body.appendChild(center);
 
+    function syncUploadCenterToggle() {
+      var collapsed = center.classList.contains('admin-upload-center--collapsed');
+      var button = center.querySelector('button');
+      button.textContent = collapsed ? '上传' : '收起';
+      button.setAttribute('aria-label', collapsed ? '展开上传任务' : '收起上传任务');
+    }
+    center._syncUploadCenterToggle = syncUploadCenterToggle;
+
     center.querySelector('button').addEventListener('click', function () {
       center.classList.toggle('admin-upload-center--collapsed');
+      syncUploadCenterToggle();
     });
+    syncUploadCenterToggle();
 
     return center;
   }
@@ -162,6 +172,7 @@
     item.querySelector('.admin-upload-detail').textContent = detail || '';
     list.prepend(item);
     center.classList.remove('admin-upload-center--collapsed');
+    if (center._syncUploadCenterToggle) center._syncUploadCenterToggle();
 
     function update(percent, status, type) {
       var nextPercent = Math.max(0, Math.min(100, Math.round(percent || 0)));
@@ -178,6 +189,7 @@
         setTimeout(function () {
           if (item.parentElement) item.remove();
           if (!list.children.length) center.classList.add('admin-upload-center--collapsed');
+          if (center._syncUploadCenterToggle) center._syncUploadCenterToggle();
         }, 7000);
       },
       fail: function (status) {
