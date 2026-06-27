@@ -204,6 +204,22 @@ comments: false
     line-height: 1.8;
   }
 
+  .project-meta {
+    display: flex;
+    flex-wrap: wrap;
+    gap: 8px 14px;
+    margin-top: 12px;
+    color: var(--project-muted);
+    font-size: 12px;
+    line-height: 1.5;
+  }
+
+  .project-meta span {
+    display: inline-flex;
+    align-items: center;
+    gap: 6px;
+  }
+
   .project-detail-list {
     display: grid;
     gap: 6px;
@@ -237,7 +253,8 @@ comments: false
     padding-top: 13px;
   }
 
-  .project-tags {
+  .project-tags,
+  .project-links {
     display: flex;
     flex-wrap: wrap;
     gap: 6px;
@@ -270,38 +287,54 @@ comments: false
     text-decoration: underline;
   }
 
-  .project-lab {
+  .project-pr-list {
     display: grid;
-    grid-template-columns: repeat(2, minmax(0, 1fr));
-    gap: 14px;
+    gap: 10px;
   }
 
-  .project-lab-item {
+  .project-pr-item {
+    display: grid;
+    grid-template-columns: minmax(150px, .6fr) minmax(0, 1.4fr) auto;
+    gap: 12px;
+    align-items: center;
     border: 1px solid var(--project-line);
     border-radius: 8px;
-    padding: 16px;
-    background: linear-gradient(180deg, var(--project-surface), var(--background-color-transparent));
-  }
-
-  .project-lab-item h3 {
-    margin: 0;
-    color: var(--project-strong);
-    font-size: 17px;
-    line-height: 1.35;
-  }
-
-  .project-lab-item p {
-    margin: 8px 0 0;
+    padding: 14px 16px;
     color: var(--project-muted);
-    font-size: 14px;
-    line-height: 1.75;
+    background: var(--project-surface);
+    text-decoration: none;
+    transition: transform .2s ease, border-color .2s ease, color .2s ease;
   }
 
-  .project-lab-links {
-    display: flex;
-    flex-wrap: wrap;
-    gap: 12px;
-    margin-top: 12px;
+  .project-pr-item:hover {
+    transform: translateY(-2px);
+    border-color: var(--primary-color);
+    color: var(--project-muted);
+    text-decoration: none;
+  }
+
+  .project-pr-repo {
+    color: var(--primary-color);
+    font-size: 13px;
+    font-weight: 800;
+    line-height: 1.5;
+  }
+
+  .project-pr-title {
+    color: var(--project-strong);
+    font-size: 14px;
+    font-weight: 700;
+    line-height: 1.6;
+  }
+
+  .project-pr-status {
+    display: inline-flex;
+    align-items: center;
+    gap: 6px;
+    color: var(--project-muted);
+    font-size: 12px;
+    line-height: 1.5;
+    white-space: nowrap;
   }
 
   .project-note {
@@ -314,8 +347,7 @@ comments: false
 
   @media (max-width: 768px) {
     .project-intro,
-    .project-grid,
-    .project-lab {
+    .project-grid {
       grid-template-columns: 1fr;
     }
 
@@ -331,6 +363,11 @@ comments: false
     .project-card {
       min-height: auto;
     }
+
+    .project-pr-item {
+      grid-template-columns: 1fr;
+      gap: 6px;
+    }
   }
 </style>
 
@@ -339,8 +376,8 @@ comments: false
 <section class="project-intro">
   <div>
     <span class="project-kicker"><i class="fa-brands fa-github"></i> GitHub @xingranya</span>
-    <p class="project-lead">项目按应用场景和交付形态整理，方便快速查看作品范围与源码。</p>
-    <p class="project-copy">内容覆盖医疗 AI、文本数字化、生态协作、交易系统、个人博客与数据分析等方向。每个项目保留清晰的定位说明、技术标签和仓库入口，便于了解实现思路与当前完成度。</p>
+    <p class="project-lead">这些项目记录了我在 Web 应用、小程序、桌面工具与开源社区中的实践。</p>
+    <p class="project-copy">每个项目都附有源码入口，欢迎查看实现细节。</p>
     <div class="project-actions">
       <a class="project-action" href="https://github.com/xingranya" target="_blank" rel="noopener">
         <i class="fa-brands fa-github"></i> 查看 GitHub 主页
@@ -352,28 +389,189 @@ comments: false
   </div>
   <div class="project-index" aria-label="项目概览">
     <div class="project-index-item">
-      <strong>10</strong>
-      <span>当前展示项目</span>
+      <strong>13</strong>
+      <span>公开项目</span>
     </div>
     <div class="project-index-item">
-      <strong>Vue / TS / Java / Python</strong>
-      <span>主要工程栈</span>
+      <strong>6</strong>
+      <span>开源贡献</span>
     </div>
     <div class="project-index-item">
-      <strong>AI 应用 + Web 工程</strong>
-      <span>近期重点方向</span>
+      <strong>TypeScript / Vue / Rust / Swift / Java</strong>
+      <span>主要技术栈</span>
     </div>
   </div>
 </section>
 
 <section class="project-section-head">
   <div>
-    <h2 class="project-section-title">重点项目</h2>
-    <p class="project-section-desc">这些仓库覆盖较完整的应用场景，包含页面交付、业务流程和功能模块设计，适合作为主要作品入口。</p>
+    <h2 class="project-section-title">项目作品与开源贡献</h2>
+    <p class="project-section-desc">按项目类型和贡献内容整理，优先收录仍在维护、可查看源码或已有上游合并记录的仓库。</p>
   </div>
 </section>
 
 <section class="project-grid">
+  <article class="project-card">
+    <div>
+      <div class="project-card-header">
+        <div>
+          <h3 class="project-name">SPlayer-Next</h3>
+          <p class="project-type">跨平台桌面音乐播放器 · 开源贡献</p>
+        </div>
+        <span class="project-icon"><i class="fa-solid fa-music"></i></span>
+      </div>
+      <p class="project-desc">跨平台桌面音乐播放器，支持歌词显示和多格式音频播放。我参与了 macOS 端显示细节修复，改善带刘海屏设备上的界面对齐。</p>
+      <div class="project-meta">
+        <span><i class="fa-solid fa-code"></i> TypeScript</span>
+        <span><i class="fa-solid fa-clock"></i> 2026-06-22</span>
+        <span><i class="fa-solid fa-star"></i> 1</span>
+      </div>
+      <ul class="project-detail-list">
+        <li><i class="fa-solid fa-circle"></i><span>修复 macOS 刘海区域的窗口对齐问题，相关改动已合并到上游项目。</span></li>
+        <li><i class="fa-solid fa-circle"></i><span>关注桌面端播放体验、界面适配和细节一致性。</span></li>
+      </ul>
+    </div>
+    <div class="project-card-footer">
+      <div class="project-tags">
+        <span class="project-tag">TypeScript</span>
+        <span class="project-tag">桌面应用</span>
+        <span class="project-tag">PR</span>
+      </div>
+      <div class="project-links">
+        <a class="project-link" href="https://github.com/xingranya/SPlayer-Next" target="_blank" rel="noopener">仓库 <i class="fa-brands fa-github"></i></a>
+        <a class="project-link" href="https://github.com/SPlayer-Dev/SPlayer-Next/pull/44" target="_blank" rel="noopener">贡献记录 <i class="fa-solid fa-code-pull-request"></i></a>
+      </div>
+    </div>
+  </article>
+
+  <article class="project-card">
+    <div>
+      <div class="project-card-header">
+        <div>
+          <h3 class="project-name">OQQWall_rust</h3>
+          <p class="project-type">QQ 校园墙 Rust 方案 · 开源贡献</p>
+        </div>
+        <span class="project-icon"><i class="fa-brands fa-rust"></i></span>
+      </div>
+      <p class="project-desc">QQ 校园墙的 Rust 实现。我参与发布流程、审核后台交互和后台信息展示等工程化改进。</p>
+      <div class="project-meta">
+        <span><i class="fa-solid fa-code"></i> Rust</span>
+        <span><i class="fa-solid fa-clock"></i> 2026-06-15</span>
+        <span><i class="fa-solid fa-code-pull-request"></i> 多次贡献</span>
+      </div>
+      <ul class="project-detail-list">
+        <li><i class="fa-solid fa-circle"></i><span>整理多架构构建与手动发布流程，提升版本发布的可控性。</span></li>
+        <li><i class="fa-solid fa-circle"></i><span>修复审核后台关键交互，让管理操作和记录展示更清晰。</span></li>
+      </ul>
+    </div>
+    <div class="project-card-footer">
+      <div class="project-tags">
+        <span class="project-tag">Rust</span>
+        <span class="project-tag">GitHub Actions</span>
+        <span class="project-tag">PR</span>
+      </div>
+      <div class="project-links">
+        <a class="project-link" href="https://github.com/xingranya/OQQWall_rust" target="_blank" rel="noopener">仓库 <i class="fa-brands fa-github"></i></a>
+        <a class="project-link" href="https://github.com/gfhdhytghd/OQQWall_rust/pull/6" target="_blank" rel="noopener">贡献记录 <i class="fa-solid fa-code-pull-request"></i></a>
+      </div>
+    </div>
+  </article>
+
+  <article class="project-card">
+    <div>
+      <div class="project-card-header">
+        <div>
+          <h3 class="project-name">CervixDetectAI_wx</h3>
+          <p class="project-type">宫颈智能诊断小程序端</p>
+        </div>
+        <span class="project-icon"><i class="fa-solid fa-mobile-screen-button"></i></span>
+      </div>
+      <p class="project-desc">面向移动端使用场景的小程序项目，围绕用户入口、病例/影像流程和智能问答体验做端侧组织。</p>
+      <div class="project-meta">
+        <span><i class="fa-solid fa-code"></i> JavaScript</span>
+        <span><i class="fa-solid fa-clock"></i> 2026-06-18</span>
+      </div>
+      <ul class="project-detail-list">
+        <li><i class="fa-solid fa-circle"></i><span>承接 CervixDetectAI 的移动端访问、资料展示和交互入口。</span></li>
+        <li><i class="fa-solid fa-circle"></i><span>围绕授权流程、端侧体验和真机兼容性持续完善。</span></li>
+      </ul>
+    </div>
+    <div class="project-card-footer">
+      <div class="project-tags">
+        <span class="project-tag">小程序</span>
+        <span class="project-tag">JavaScript</span>
+        <span class="project-tag">医疗 AI</span>
+      </div>
+      <a class="project-link" href="https://github.com/xingranya/CervixDetectAI_wx" target="_blank" rel="noopener">
+        查看源码 <i class="fa-solid fa-arrow-right"></i>
+      </a>
+    </div>
+  </article>
+
+  <article class="project-card">
+    <div>
+      <div class="project-card-header">
+        <div>
+          <h3 class="project-name">chaoxing-agent-skill</h3>
+          <p class="project-type">学习通自动化技能 · 开源贡献</p>
+        </div>
+        <span class="project-icon"><i class="fa-solid fa-robot"></i></span>
+      </div>
+      <p class="project-desc">面向学习通课程任务的自动化技能。我补充了浏览器自动化场景下的验证码处理方案，完善了使用说明。</p>
+      <div class="project-meta">
+        <span><i class="fa-solid fa-code"></i> Python</span>
+        <span><i class="fa-solid fa-clock"></i> 2026-06-17</span>
+      </div>
+      <ul class="project-detail-list">
+        <li><i class="fa-solid fa-circle"></i><span>补充 Playwright CLI 场景下的验证码处理路径，相关改动已合并。</span></li>
+        <li><i class="fa-solid fa-circle"></i><span>覆盖课程扫描、任务处理和自动化执行说明。</span></li>
+      </ul>
+    </div>
+    <div class="project-card-footer">
+      <div class="project-tags">
+        <span class="project-tag">Python</span>
+        <span class="project-tag">自动化</span>
+        <span class="project-tag">PR</span>
+      </div>
+      <div class="project-links">
+        <a class="project-link" href="https://github.com/xingranya/chaoxing-agent-skill" target="_blank" rel="noopener">仓库 <i class="fa-brands fa-github"></i></a>
+        <a class="project-link" href="https://github.com/iwillwill-ALLWILL/chaoxing-agent-skill/pull/1" target="_blank" rel="noopener">贡献记录 <i class="fa-solid fa-code-pull-request"></i></a>
+      </div>
+    </div>
+  </article>
+
+  <article class="project-card">
+    <div>
+      <div class="project-card-header">
+        <div>
+          <h3 class="project-name">nosleep-mac</h3>
+          <p class="project-type">macOS 合盖不休眠工具</p>
+        </div>
+        <span class="project-icon"><i class="fa-solid fa-laptop"></i></span>
+      </div>
+      <p class="project-desc">MacBook 合盖后保持运行的菜单栏工具，围绕睡眠控制、状态提示、诊断菜单和 DMG 发版流程打磨。</p>
+      <div class="project-meta">
+        <span><i class="fa-solid fa-code"></i> Swift</span>
+        <span><i class="fa-solid fa-clock"></i> 2026-06-06</span>
+        <span><i class="fa-solid fa-star"></i> 2</span>
+      </div>
+      <ul class="project-detail-list">
+        <li><i class="fa-solid fa-circle"></i><span>面向真实 macOS 使用场景，关注权限、常驻和系统状态一致性。</span></li>
+        <li><i class="fa-solid fa-circle"></i><span>包含菜单栏交互、诊断入口和安装包发布流程。</span></li>
+      </ul>
+    </div>
+    <div class="project-card-footer">
+      <div class="project-tags">
+        <span class="project-tag">Swift</span>
+        <span class="project-tag">macOS</span>
+        <span class="project-tag">工具</span>
+      </div>
+      <a class="project-link" href="https://github.com/xingranya/nosleep-mac" target="_blank" rel="noopener">
+        查看源码 <i class="fa-solid fa-arrow-right"></i>
+      </a>
+    </div>
+  </article>
+
   <article class="project-card">
     <div>
       <div class="project-card-header">
@@ -383,18 +581,86 @@ comments: false
         </div>
         <span class="project-icon"><i class="fa-solid fa-notes-medical"></i></span>
       </div>
-      <p class="project-desc">面向宫颈癌辅助筛查场景的前端应用，聚焦影像提交、检测结果展示和筛查流程呈现。</p>
+      <p class="project-desc">面向宫颈癌辅助筛查场景的 Web 应用，聚焦病例管理、影像提交、检测结果展示和报告流程。</p>
+      <div class="project-meta">
+        <span><i class="fa-solid fa-code"></i> Vue</span>
+        <span><i class="fa-solid fa-clock"></i> 2026-05-28</span>
+        <span><i class="fa-solid fa-star"></i> 3</span>
+      </div>
       <ul class="project-detail-list">
-        <li><i class="fa-solid fa-circle"></i><span>覆盖检测结果页面、业务状态展示和关键操作入口。</span></li>
-        <li><i class="fa-solid fa-circle"></i><span>可扩展病例管理、报告导出和多角色权限能力。</span></li>
+        <li><i class="fa-solid fa-circle"></i><span>覆盖检测结果页、权限入口、患者信息和报告展示链路。</span></li>
+        <li><i class="fa-solid fa-circle"></i><span>围绕报告导出、订阅计划和部署流程完善产品体验。</span></li>
       </ul>
     </div>
     <div class="project-card-footer">
       <div class="project-tags">
         <span class="project-tag">Vue</span>
         <span class="project-tag">AI 医疗</span>
+        <span class="project-tag">Web</span>
       </div>
       <a class="project-link" href="https://github.com/xingranya/CervixDetectAI" target="_blank" rel="noopener">
+        查看源码 <i class="fa-solid fa-arrow-right"></i>
+      </a>
+    </div>
+  </article>
+
+  <article class="project-card">
+    <div>
+      <div class="project-card-header">
+        <div>
+          <h3 class="project-name">xingranya-blog</h3>
+          <p class="project-type">个人内容平台</p>
+        </div>
+        <span class="project-icon"><i class="fa-solid fa-pen-nib"></i></span>
+      </div>
+      <p class="project-desc">本博客的源码仓库，基于 Hexo 和自定义主题维护文章发布、作品展示、导航结构和部署流程。</p>
+      <div class="project-meta">
+        <span><i class="fa-solid fa-code"></i> JavaScript</span>
+        <span><i class="fa-solid fa-clock"></i> 2026-05-26</span>
+        <span><i class="fa-solid fa-star"></i> 1</span>
+      </div>
+      <ul class="project-detail-list">
+        <li><i class="fa-solid fa-circle"></i><span>作为作品集、技术文章和个人主页的统一入口。</span></li>
+        <li><i class="fa-solid fa-circle"></i><span>持续优化页面样式、构建脚本和内容发布体验。</span></li>
+      </ul>
+    </div>
+    <div class="project-card-footer">
+      <div class="project-tags">
+        <span class="project-tag">Hexo</span>
+        <span class="project-tag">JavaScript</span>
+        <span class="project-tag">博客</span>
+      </div>
+      <a class="project-link" href="https://github.com/xingranya/xingranya-blog" target="_blank" rel="noopener">
+        查看源码 <i class="fa-solid fa-arrow-right"></i>
+      </a>
+    </div>
+  </article>
+
+  <article class="project-card">
+    <div>
+      <div class="project-card-header">
+        <div>
+          <h3 class="project-name">openreel-video</h3>
+          <p class="project-type">浏览器端视频编辑器</p>
+        </div>
+        <span class="project-icon"><i class="fa-solid fa-film"></i></span>
+      </div>
+      <p class="project-desc">开源浏览器视频编辑器方向项目，关注无安装、无上传、无水印的本地化剪辑体验。</p>
+      <div class="project-meta">
+        <span><i class="fa-solid fa-code"></i> TypeScript</span>
+        <span><i class="fa-solid fa-clock"></i> 2026-05-09</span>
+      </div>
+      <ul class="project-detail-list">
+        <li><i class="fa-solid fa-circle"></i><span>关注 Web 多媒体编辑、时间轴交互和素材处理架构。</span></li>
+        <li><i class="fa-solid fa-circle"></i><span>用于探索浏览器端创作工具的工程实现方式。</span></li>
+      </ul>
+    </div>
+    <div class="project-card-footer">
+      <div class="project-tags">
+        <span class="project-tag">TypeScript</span>
+        <span class="project-tag">视频编辑</span>
+      </div>
+      <a class="project-link" href="https://github.com/xingranya/openreel-video" target="_blank" rel="noopener">
         查看源码 <i class="fa-solid fa-arrow-right"></i>
       </a>
     </div>
@@ -409,10 +675,15 @@ comments: false
         </div>
         <span class="project-icon"><i class="fa-solid fa-house-medical"></i></span>
       </div>
-      <p class="project-desc">CervixDetectAI 的项目展示主页，用于呈现项目背景、核心能力、应用价值和访问入口。</p>
+      <p class="project-desc">CervixDetectAI 的展示主页，用于呈现项目背景、核心能力、应用价值和访问入口。</p>
+      <div class="project-meta">
+        <span><i class="fa-solid fa-code"></i> Vue</span>
+        <span><i class="fa-solid fa-clock"></i> 2026-04-30</span>
+        <span><i class="fa-solid fa-star"></i> 1</span>
+      </div>
       <ul class="project-detail-list">
-        <li><i class="fa-solid fa-circle"></i><span>面向访问者组织项目信息，降低理解成本。</span></li>
-        <li><i class="fa-solid fa-circle"></i><span>适合承载案例截图、演示视频和部署入口。</span></li>
+        <li><i class="fa-solid fa-circle"></i><span>帮助访问者快速了解项目背景、能力边界和使用入口。</span></li>
+        <li><i class="fa-solid fa-circle"></i><span>承载项目介绍、案例展示和在线访问路径。</span></li>
       </ul>
     </div>
     <div class="project-card-footer">
@@ -435,10 +706,14 @@ comments: false
         </div>
         <span class="project-icon"><i class="fa-solid fa-file-signature"></i></span>
       </div>
-      <p class="project-desc">面向文本整理和知识产权材料处理的工具型项目，聚焦资料录入、结构化呈现和流程化管理。</p>
+      <p class="project-desc">面向文本整理和知识产权材料处理的工具型项目，聚焦资料录入、结构化呈现和流程管理。</p>
+      <div class="project-meta">
+        <span><i class="fa-solid fa-code"></i> TypeScript</span>
+        <span><i class="fa-solid fa-clock"></i> 2026-04-22</span>
+      </div>
       <ul class="project-detail-list">
-        <li><i class="fa-solid fa-circle"></i><span>包含表单、材料管理、状态追踪等业务组件方向。</span></li>
-        <li><i class="fa-solid fa-circle"></i><span>可扩展 OCR 识别、文件导出和审核流程。</span></li>
+        <li><i class="fa-solid fa-circle"></i><span>包含表单录入、材料管理和状态追踪等业务组件。</span></li>
+        <li><i class="fa-solid fa-circle"></i><span>围绕 OCR 识别、文件导出和审核流程组织功能。</span></li>
       </ul>
     </div>
     <div class="project-card-footer">
@@ -462,9 +737,13 @@ comments: false
         <span class="project-icon"><i class="fa-solid fa-leaf"></i></span>
       </div>
       <p class="project-desc">围绕环保与协作主题搭建的 Vue 应用，将议题信息、行动入口和参与流程整合到线上页面。</p>
+      <div class="project-meta">
+        <span><i class="fa-solid fa-code"></i> Vue</span>
+        <span><i class="fa-solid fa-clock"></i> 2026-04-16</span>
+      </div>
       <ul class="project-detail-list">
         <li><i class="fa-solid fa-circle"></i><span>支持内容展示、任务入口和活动信息组织。</span></li>
-        <li><i class="fa-solid fa-circle"></i><span>可扩展报名、积分和数据看板能力。</span></li>
+        <li><i class="fa-solid fa-circle"></i><span>围绕参与流程、积分反馈和数据展示搭建页面结构。</span></li>
       </ul>
     </div>
     <div class="project-card-footer">
@@ -488,9 +767,14 @@ comments: false
         <span class="project-icon"><i class="fa-solid fa-store"></i></span>
       </div>
       <p class="project-desc">面向校园或社区场景的二手交易系统，围绕商品发布、浏览检索、交易流转和后台管理设计。</p>
+      <div class="project-meta">
+        <span><i class="fa-solid fa-code"></i> Java</span>
+        <span><i class="fa-solid fa-clock"></i> 2026-04-15</span>
+        <span><i class="fa-solid fa-star"></i> 2</span>
+      </div>
       <ul class="project-detail-list">
         <li><i class="fa-solid fa-circle"></i><span>覆盖领域建模、接口组织和交易状态管理。</span></li>
-        <li><i class="fa-solid fa-circle"></i><span>可扩展支付模拟、消息通知和风控规则。</span></li>
+        <li><i class="fa-solid fa-circle"></i><span>围绕商品流转、消息通知和后台管理组织业务流程。</span></li>
       </ul>
     </div>
     <div class="project-card-footer">
@@ -508,109 +792,78 @@ comments: false
     <div>
       <div class="project-card-header">
         <div>
-          <h3 class="project-name">SmartTech</h3>
-          <p class="project-type">智能技术原型</p>
+          <h3 class="project-name">CC-Statusline-Builder</h3>
+          <p class="project-type">状态栏配置工具 · 已合并 PR</p>
         </div>
-        <span class="project-icon"><i class="fa-solid fa-microchip"></i></span>
+        <span class="project-icon"><i class="fa-solid fa-terminal"></i></span>
       </div>
-      <p class="project-desc">用于智能技术场景验证的 TypeScript 项目，聚焦页面结构、功能模块和交互流程搭建。</p>
+      <p class="project-desc">用于 Claude Code 状态栏可视化配置的网页工具。我参与了跨平台路径处理修复，提升 Windows 环境下的安装可靠性。</p>
+      <div class="project-meta">
+        <span><i class="fa-solid fa-code"></i> HTML</span>
+        <span><i class="fa-solid fa-clock"></i> 2026-02-24</span>
+        <span><i class="fa-solid fa-star"></i> 11</span>
+      </div>
       <ul class="project-detail-list">
-        <li><i class="fa-solid fa-circle"></i><span>强调原型落地速度与模块化组织方式。</span></li>
-        <li><i class="fa-solid fa-circle"></i><span>可沉淀为组件集合或演示平台。</span></li>
+        <li><i class="fa-solid fa-circle"></i><span>修复 Windows 路径配置问题，相关改动已合并到上游项目。</span></li>
+        <li><i class="fa-solid fa-circle"></i><span>关注开发工具在不同系统环境下的可用性。</span></li>
       </ul>
     </div>
     <div class="project-card-footer">
       <div class="project-tags">
-        <span class="project-tag">TypeScript</span>
-        <span class="project-tag">原型验证</span>
+        <span class="project-tag">HTML</span>
+        <span class="project-tag">开发工具</span>
+        <span class="project-tag">PR</span>
       </div>
-      <a class="project-link" href="https://github.com/xingranya/SmartTech" target="_blank" rel="noopener">
-        查看源码 <i class="fa-solid fa-arrow-right"></i>
-      </a>
-    </div>
-  </article>
-
-  <article class="project-card">
-    <div>
-      <div class="project-card-header">
-        <div>
-          <h3 class="project-name">xingranya-blog</h3>
-          <p class="project-type">个人内容平台</p>
-        </div>
-        <span class="project-icon"><i class="fa-solid fa-pen-nib"></i></span>
+      <div class="project-links">
+        <a class="project-link" href="https://github.com/xingranya/CC-Statusline-Builder" target="_blank" rel="noopener">仓库 <i class="fa-brands fa-github"></i></a>
+        <a class="project-link" href="https://github.com/denki-san/CC-Statusline-Builder/pull/1" target="_blank" rel="noopener">贡献记录 <i class="fa-solid fa-code-pull-request"></i></a>
       </div>
-      <p class="project-desc">当前博客的源码仓库，基于 Hexo 和自定义主题维护文章发布、页面展示、导航结构和部署流程。</p>
-      <ul class="project-detail-list">
-        <li><i class="fa-solid fa-circle"></i><span>作为作品展示、技术复盘和个人主页入口。</span></li>
-        <li><i class="fa-solid fa-circle"></i><span>持续维护页面样式、内容结构和构建流程。</span></li>
-      </ul>
-    </div>
-    <div class="project-card-footer">
-      <div class="project-tags">
-        <span class="project-tag">Hexo</span>
-        <span class="project-tag">JavaScript</span>
-      </div>
-      <a class="project-link" href="https://github.com/xingranya/xingranya-blog" target="_blank" rel="noopener">
-        查看源码 <i class="fa-solid fa-arrow-right"></i>
-      </a>
-    </div>
-  </article>
-
-  <article class="project-card">
-    <div>
-      <div class="project-card-header">
-        <div>
-          <h3 class="project-name">daily_stock_analysis</h3>
-          <p class="project-type">自动化股票分析</p>
-        </div>
-        <span class="project-icon"><i class="fa-solid fa-chart-line"></i></span>
-      </div>
-      <p class="project-desc">LLM 驱动的行情与新闻分析项目，整合数据源聚合、自动化任务和多渠道结果推送。</p>
-      <ul class="project-detail-list">
-        <li><i class="fa-solid fa-circle"></i><span>覆盖数据流处理、提示词组织和定时运行链路。</span></li>
-        <li><i class="fa-solid fa-circle"></i><span>可扩展回测、风险提示和可视化仪表盘。</span></li>
-      </ul>
-    </div>
-    <div class="project-card-footer">
-      <div class="project-tags">
-        <span class="project-tag">Python</span>
-        <span class="project-tag">LLM</span>
-      </div>
-      <a class="project-link" href="https://github.com/xingranya/daily_stock_analysis" target="_blank" rel="noopener">
-        查看源码 <i class="fa-solid fa-arrow-right"></i>
-      </a>
     </div>
   </article>
 </section>
 
 <section class="project-section-head">
   <div>
-    <h2 class="project-section-title">实验与文章</h2>
-    <p class="project-section-desc">这部分收录带有文章说明的小型作品，便于查看实现过程和最终效果。</p>
+    <h2 class="project-section-title">开源贡献记录</h2>
+    <p class="project-section-desc">收录已经合并到上游仓库的主要贡献，便于查看具体改动和讨论记录。</p>
   </div>
 </section>
 
-<section class="project-lab">
-  <article class="project-lab-item">
-    <h3>物理模拟 Web 网页</h3>
-    <p>用 HTML、CSS 和 JavaScript 把运动、碰撞等物理现象做成可观察的浏览器实验。</p>
-    <div class="project-lab-links">
-      <a class="project-link" href="/physics-simulation-web-page/">阅读文章 <i class="fa-solid fa-arrow-right"></i></a>
-      <a class="project-link" href="https://github.com/xingranya/xingranya-physics-simulation-web-page" target="_blank" rel="noopener">查看源码 <i class="fa-brands fa-github"></i></a>
-    </div>
-  </article>
-
-  <article class="project-lab-item">
-    <h3>纯 CSS 圣诞树</h3>
-    <p>完全依靠 CSS 绘制和动效组合完成的节日作品，呈现图形层级、光效和动画节奏。</p>
-    <div class="project-lab-links">
-      <a class="project-link" href="/css-christmas-tree/">阅读文章 <i class="fa-solid fa-arrow-right"></i></a>
-    </div>
-  </article>
+<section class="project-pr-list" aria-label="已合并 PR 记录">
+  <a class="project-pr-item" href="https://github.com/SPlayer-Dev/SPlayer-Next/pull/44" target="_blank" rel="noopener">
+    <span class="project-pr-repo">SPlayer-Next #44</span>
+    <span class="project-pr-title">修复 macOS 刘海屏窗口对齐</span>
+    <span class="project-pr-status"><i class="fa-solid fa-code-pull-request"></i> 已合并 · 2026-06-22</span>
+  </a>
+  <a class="project-pr-item" href="https://github.com/iwillwill-ALLWILL/chaoxing-agent-skill/pull/1" target="_blank" rel="noopener">
+    <span class="project-pr-repo">chaoxing-agent-skill #1</span>
+    <span class="project-pr-title">补充 Playwright CLI 验证码处理方案</span>
+    <span class="project-pr-status"><i class="fa-solid fa-code-pull-request"></i> 已合并 · 2026-06-17</span>
+  </a>
+  <a class="project-pr-item" href="https://github.com/gfhdhytghd/OQQWall_rust/pull/6" target="_blank" rel="noopener">
+    <span class="project-pr-repo">OQQWall_rust #6</span>
+    <span class="project-pr-title">支持手动填写发布更新日志</span>
+    <span class="project-pr-status"><i class="fa-solid fa-code-pull-request"></i> 已合并 · 2026-06-22</span>
+  </a>
+  <a class="project-pr-item" href="https://github.com/gfhdhytghd/OQQWall_rust/pull/5" target="_blank" rel="noopener">
+    <span class="project-pr-repo">OQQWall_rust #5</span>
+    <span class="project-pr-title">恢复审核后台交互并优化记录展示</span>
+    <span class="project-pr-status"><i class="fa-solid fa-code-pull-request"></i> 已合并 · 2026-06-15</span>
+  </a>
+  <a class="project-pr-item" href="https://github.com/gfhdhytghd/OQQWall_rust/pull/3" target="_blank" rel="noopener">
+    <span class="project-pr-repo">OQQWall_rust #3</span>
+    <span class="project-pr-title">合并多架构构建与手动发布流程</span>
+    <span class="project-pr-status"><i class="fa-solid fa-code-pull-request"></i> 已合并 · 2026-06-15</span>
+  </a>
+  <a class="project-pr-item" href="https://github.com/denki-san/CC-Statusline-Builder/pull/1" target="_blank" rel="noopener">
+    <span class="project-pr-repo">CC-Statusline-Builder #1</span>
+    <span class="project-pr-title">修复 Windows 路径配置问题</span>
+    <span class="project-pr-status"><i class="fa-solid fa-code-pull-request"></i> 已合并 · 2026-02-21</span>
+  </a>
 </section>
 
 <section class="project-note">
-  页面会按项目完成度持续更新：完整应用进入“重点项目”，小型实验和配套文章进入“实验与文章”。每个条目优先保留项目定位、技术栈和源码入口。
+  更多项目和贡献会随仓库更新持续补充。完整源码和讨论记录可通过每个条目的 GitHub 链接查看。
 </section>
 
 </div>

@@ -30,6 +30,15 @@ export const navbarShrink = {
   },
 
   togglenavbarDrawerShow() {
+    const updateDrawerButtonState = () => {
+      const menuButton = document.querySelector(".navbar-bar");
+      if (menuButton) {
+        const isOpen = document.body.classList.contains("navbar-drawer-show");
+        menuButton.setAttribute("aria-expanded", String(isOpen));
+        menuButton.setAttribute("aria-label", isOpen ? "关闭菜单" : "打开菜单");
+      }
+    };
+
     const domList = [
       document.querySelector(".window-mask"),
       document.querySelector(".navbar-bar"),
@@ -45,10 +54,12 @@ export const navbarShrink = {
     }
 
     domList.forEach((v) => {
+      if (!v) return;
       if (!v.dataset.navbarInitialized) {
         v.dataset.navbarInitialized = 1;
         v.addEventListener("click", () => {
           document.body.classList.toggle("navbar-drawer-show");
+          updateDrawerButtonState();
         });
       }
     });
@@ -60,8 +71,11 @@ export const navbarShrink = {
       logoTitleDom.dataset.navbarInitialized = 1;
       logoTitleDom.addEventListener("click", () => {
         document.body.classList.remove("navbar-drawer-show");
+        updateDrawerButtonState();
       });
     }
+
+    updateDrawerButtonState();
   },
 
   toggleSubmenu() {
@@ -75,42 +89,42 @@ export const navbarShrink = {
           const target = document.querySelector(
             '[data-target="' + this.getAttribute("navbar-data-toggle") + '"]',
           );
+          if (!target) return;
+
           const submenuItems = target.children; // Get submenu items
           const icon = this.querySelector(".fa-chevron-right");
+          const isVisible = !target.classList.contains("hidden");
+          this.setAttribute("aria-expanded", String(!isVisible));
 
-          if (target) {
-            const isVisible = !target.classList.contains("hidden");
+          if (icon) {
+            icon.classList.toggle("icon-rotated", !isVisible);
+          }
 
-            if (icon) {
-              icon.classList.toggle("icon-rotated", !isVisible);
-            }
+          if (isVisible) {
+            // Animate to hide (reverse stagger effect)
+            anime({
+              targets: submenuItems,
+              opacity: 0,
+              translateY: -10,
+              duration: 300,
+              easing: "easeInQuart",
+              delay: anime.stagger(80, { start: 20, direction: "reverse" }),
+              complete: function () {
+                target.classList.add("hidden");
+              },
+            });
+          } else {
+            // Animate to show with stagger effect
+            target.classList.remove("hidden");
 
-            if (isVisible) {
-              // Animate to hide (reverse stagger effect)
-              anime({
-                targets: submenuItems,
-                opacity: 0,
-                translateY: -10,
-                duration: 300,
-                easing: "easeInQuart",
-                delay: anime.stagger(80, { start: 20, direction: "reverse" }),
-                complete: function () {
-                  target.classList.add("hidden");
-                },
-              });
-            } else {
-              // Animate to show with stagger effect
-              target.classList.remove("hidden");
-
-              anime({
-                targets: submenuItems,
-                opacity: [0, 1],
-                translateY: [10, 0],
-                duration: 300,
-                easing: "easeOutQuart",
-                delay: anime.stagger(80, { start: 20 }),
-              });
-            }
+            anime({
+              targets: submenuItems,
+              opacity: [0, 1],
+              translateY: [10, 0],
+              duration: 300,
+              easing: "easeOutQuart",
+              delay: anime.stagger(80, { start: 20 }),
+            });
           }
         });
       }
