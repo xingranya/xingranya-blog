@@ -1,10 +1,7 @@
 export default function initParticles() {
   const mainDiv = document.getElementById("particles-js");
-  console.log("Particles.js initialization started");
-  console.log("Main div:", mainDiv);
 
   if (mainDiv) {
-    console.log("Initializing particles.js");
     particlesJS("particles-js", {
       "particles": {
         "number": {
@@ -109,8 +106,5 @@ export default function initParticles() {
       },
       "retina_detect": true
     });
-    console.log("Particles.js initialization completed");
-  } else {
-    console.log("Particles.js container not found");
   }
 }

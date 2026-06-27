@@ -130,11 +130,20 @@ $logo-image-box-width = 34px
               display block
               padding 5px
 
-            a .fa-chevron-down
+            .navbar-action
+              display flex
+              align-items center
+              justify-content center
+              padding 5px
+              color var(--default-text-color)
+              font inherit
+
+            a .fa-chevron-down,
+            .navbar-action .fa-chevron-down
               transform rotate(0deg)
               transition transform 0.3s ease
 
-            a, .active
+            a, .navbar-action, .active
               &::after
                 content ''
                 position absolute
@@ -151,14 +160,15 @@ $logo-image-box-width = 34px
                 .navbar-shrink &
                   bottom -($navbar-shrink-height / 2 - 17)
 
-            &:hover a .fa-chevron-down
+            &:hover a .fa-chevron-down,
+            &:hover .navbar-action .fa-chevron-down
               transform rotate(180deg)
 
             &:hover .has-dropdown
               &::after
                 display none !important
 
-            &:hover a, .active
+            &:hover a, &:hover .navbar-action, &:focus-within a, &:focus-within .navbar-action, .active
               &::after
                 transform translate3d(-50%, 0, 0)
                 opacity 1
@@ -222,6 +232,17 @@ $logo-image-box-width = 34px
             5px
           )
 
+        .navbar-list .navbar-item:focus-within .sub-menu
+          max-height 500px
+          transition-t('all', '0', '0.2', 'ease')
+          redefine-container(
+            false,
+            0,
+            0,
+            10px,
+            5px
+          )
+
       .mobile
         display flex
         justify-content space-between
@@ -236,6 +257,7 @@ $logo-image-box-width = 34px
           width 20px
           height 20px
           color var(--default-text-color)
+          background transparent
 
           i
             color var(--default-text-color)

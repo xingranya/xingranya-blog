@@ -119,6 +119,13 @@ button
   cursor pointer
   background transparent
 
+a:focus-visible,
+button:focus-visible,
+[tabindex]:focus-visible
+  outline 2px solid var(--primary-color)
+  outline-offset 3px
+  border-radius $redefine-border-radius-small
+
 .btn
   display inline-block
   position relative
@@ -164,6 +171,5 @@ button
 // ======================================================================
 .clear
   clear both
-
 
 

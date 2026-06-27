@@ -15,9 +15,7 @@
                 </a>
             <% } %>
             <a class="logo-title" href="<%= config.root %>">
-                <%- is_home() ? '<h1>' : '' %>
                 <%= theme.info.title || config.title || 'Redefine Theme' %>
-                <%- is_home() ? '</h1>' : '' %>
             </a>
         </div>
 
@@ -64,8 +62,10 @@
                             </li>
                     <% } } %>
                     <% if (theme.navbar.search.enable === true) { %>
-                        <li class="navbar-item search search-popup-trigger">
-                            <i class="fa-solid fa-magnifying-glass"></i>
+                        <li class="navbar-item search">
+                            <button type="button" class="navbar-action search-popup-trigger" aria-label="打开搜索">
+                                <i class="fa-solid fa-magnifying-glass" aria-hidden="true"></i>
+                            </button>
                         </li>
                     <% } %>
                 </ul>
@@ -73,18 +73,17 @@
             <!-- Mobile -->
             <div class="mobile">
                 <% if (theme.navbar.search.enable === true) { %>
-                    <div class="icon-item search search-popup-trigger"><i class="fa-solid fa-magnifying-glass"></i>
-                    </div>
+                    <button type="button" class="icon-item search search-popup-trigger" aria-label="打开搜索"><i class="fa-solid fa-magnifying-glass" aria-hidden="true"></i></button>
                 <% } %>
-                <div class="icon-item navbar-bar">
+                <button type="button" class="icon-item navbar-bar" aria-label="打开菜单" aria-controls="site-mobile-nav" aria-expanded="false">
                     <div class="navbar-bar-middle"></div>
-                </div>
+                </button>
             </div>
         </div>
     </div>
 
     <!-- Mobile sheet -->
-    <div class="navbar-drawer h-dvh w-full absolute top-0 left-0 bg-background-color flex flex-col justify-between">
+    <div id="site-mobile-nav" class="navbar-drawer h-dvh w-full absolute top-0 left-0 bg-background-color flex flex-col justify-between">
         <ul class="drawer-navbar-list flex flex-col px-4 justify-center items-start">
             <% for (let i in theme.navbar.links) { %>
                 <% if (theme.navbar.links[i].path !== 'none') { %>
@@ -106,8 +105,10 @@
 
                     <li class="<%= drawerNavbarItemClass %> text-base my-1.5 flex flex-col w-full">
                         <% if (hasSubmenus) {%>
-                        <div class="py-1.5 px-2 flex flex-row items-center justify-between gap-1 hover:!text-primary active:!text-primary cursor-pointer text-2xl font-semibold group border-b border-border-color hover:border-primary w-full <%= isActive ? 'active' : '' %>"
+                        <button type="button" class="py-1.5 px-2 flex flex-row items-center justify-between gap-1 hover:!text-primary active:!text-primary cursor-pointer text-2xl font-semibold group border-b border-border-color hover:border-primary w-full text-left <%= isActive ? 'active' : '' %>"
                              navbar-data-toggle="submenu-<%= i %>"
+                             aria-controls="submenu-<%= i %>"
+                             aria-expanded="false"
                         >
                             <span>
                                 <%= linkText %>
@@ -115,7 +116,7 @@
                             <% if (iconClass) { %>
                                 <i class="fa-solid fa-chevron-right fa-sm fa-fw transition-all"></i>
                             <% } %>
-                        </div>
+                        </button>
                         <% } else { %>
                         <a class="py-1.5 px-2 flex flex-row items-center justify-between gap-1 hover:!text-primary active:!text-primary text-2xl font-semibold group border-b border-border-color hover:border-primary w-full <%= isActive ? 'active' : '' %>"
                            href="<%= linkPath %>"
@@ -130,7 +131,7 @@
                         <% } %>
 
                         <% if (hasSubmenus) { %>
-                            <div class="flex-col items-start px-2 py-2 hidden" data-target="submenu-<%= i %>">
+                            <div id="submenu-<%= i %>" class="flex-col items-start px-2 py-2 hidden" data-target="submenu-<%= i %>">
                                 <% for (var submenu in linkData.submenus) { %>
                                     <div class="drawer-navbar-item text-base flex flex-col justify-center items-start hover:underline active:underline hover:underline-offset-1 rounded-3xl">
                                         <a class=" text-third-text-color text-xl"
@@ -166,4 +167,3 @@
     <div class="window-mask"></div>
 
 </header>
-

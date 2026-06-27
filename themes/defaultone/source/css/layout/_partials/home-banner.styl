@@ -12,6 +12,10 @@ $home-banner-icon-size = 1.6rem
   //background var(--home-banner-img) center center / cover no-repeat
   transition filter 0.3s ease
 
+  &.is-blurred
+    filter blur(15px)
+    -webkit-filter blur(15px)
+
 .home-banner-container
   font-family 'Chillax-Variable', sans-serif
   position relative
@@ -43,6 +47,15 @@ $home-banner-icon-size = 1.6rem
       max-width 90%
       display inline-block
       white-space normal
+      text-wrap balance
+
+      .home-banner-title
+        margin 0
+        font inherit
+        line-height inherit
+        color inherit
+        letter-spacing 0
+        text-wrap balance
 
       p
         margin 0
@@ -71,3 +84,18 @@ $home-banner-icon-size = 1.6rem
         max-width 95%
         font-size: $title-font-size * 0.75
         padding 16px 24px
+
+.social-contact-item-qr
+  .social-qr-trigger
+    display inline-flex
+    align-items center
+    justify-content center
+    min-width 32px
+    min-height 32px
+    color inherit
+
+  &.is-open
+    .social-qr-container
+      visibility visible
+      opacity 1
+      transform translateY(0)

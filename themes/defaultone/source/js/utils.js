@@ -25,6 +25,7 @@ export default function initUtils() {
     pjaxProgressBarTimer: null,
     prevScrollValue: 0,
     fontSizeLevel: 0,
+    isHomeBannerBlurred: false,
     triggerViewHeight: 0.5 * window.innerHeight,
 
     isHasScrollProgressBar: theme.global.scroll_progress.bar === true,
@@ -144,12 +145,16 @@ export default function initUtils() {
         location.pathname === config.root
       ) {
         const scrollY = window.scrollY || window.pageYOffset;
-        const blurValue = scrollY >= this.triggerViewHeight ? 15 : 0;
+        const shouldBlur = scrollY >= this.triggerViewHeight;
+        if (shouldBlur === this.isHomeBannerBlurred) return;
+        this.isHomeBannerBlurred = shouldBlur;
 
         try {
           requestAnimationFrame(() => {
-            this.homeBannerBackground_dom.style.filter = `blur(${blurValue}px)`;
-            this.homeBannerBackground_dom.style.webkitFilter = `blur(${blurValue}px)`;
+            this.homeBannerBackground_dom.classList.toggle(
+              "is-blurred",
+              shouldBlur,
+            );
           });
         } catch (e) {
           // Handle or log the error properly
@@ -376,4 +381,3 @@ export default function initUtils() {
   // image viewer handle
   imageViewer();
 }
-console.log(12345);
