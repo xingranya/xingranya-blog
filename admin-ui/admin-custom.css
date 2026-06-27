@@ -951,6 +951,142 @@ textarea:focus-visible,
   color: var(--admin-danger);
 }
 
+.admin-upload-center {
+  position: fixed;
+  right: 18px;
+  bottom: 78px;
+  z-index: 10009;
+  width: min(420px, calc(100vw - 36px));
+  overflow: hidden;
+  border: 1px solid var(--admin-border-strong);
+  border-radius: 14px;
+  background: var(--admin-panel-solid);
+  box-shadow: var(--admin-shadow-strong);
+  font-family: var(--admin-font);
+}
+
+.admin-upload-center-head {
+  display: flex;
+  justify-content: space-between;
+  gap: 12px;
+  align-items: center;
+  padding: 12px 14px;
+  border-bottom: 1px solid var(--admin-border);
+  background: var(--admin-panel-strong);
+}
+
+.admin-upload-center-head strong {
+  display: block;
+  color: var(--admin-text);
+  font-size: 14px;
+}
+
+.admin-upload-center-head span {
+  display: block;
+  margin-top: 2px;
+  color: var(--admin-muted);
+  font-size: 12px;
+}
+
+.admin-upload-center-head button {
+  min-height: 30px;
+  padding: 0 10px;
+  border: 0;
+  border-radius: 8px;
+  color: var(--admin-accent);
+  background: var(--admin-accent-softer);
+  font-family: var(--admin-font);
+  font-weight: 800;
+  cursor: pointer;
+}
+
+.admin-upload-list {
+  display: grid;
+  gap: 10px;
+  max-height: 320px;
+  overflow: auto;
+  padding: 12px;
+}
+
+.admin-upload-center--collapsed .admin-upload-list {
+  display: none;
+}
+
+.admin-upload-task {
+  display: grid;
+  gap: 7px;
+  padding: 12px;
+  border: 1px solid var(--admin-border);
+  border-radius: 12px;
+  background: #fff;
+}
+
+.admin-upload-task-top {
+  display: flex;
+  justify-content: space-between;
+  gap: 10px;
+  align-items: center;
+}
+
+.admin-upload-task-top strong {
+  min-width: 0;
+  overflow: hidden;
+  color: var(--admin-text);
+  font-size: 14px;
+  text-overflow: ellipsis;
+  white-space: nowrap;
+}
+
+.admin-upload-percent {
+  color: var(--admin-accent);
+  font-size: 12px;
+  font-weight: 800;
+  font-variant-numeric: tabular-nums;
+}
+
+.admin-upload-detail,
+.admin-upload-status {
+  margin: 0;
+  color: var(--admin-muted);
+  font-size: 12px;
+  line-height: 1.4;
+  word-break: break-all;
+}
+
+.admin-upload-progress {
+  height: 8px;
+  overflow: hidden;
+  border-radius: 999px;
+  background: var(--admin-panel-muted);
+}
+
+.admin-upload-progress span {
+  display: block;
+  width: 0;
+  height: 100%;
+  border-radius: inherit;
+  background: linear-gradient(90deg, var(--admin-accent), var(--admin-warm));
+  transition: width 180ms ease;
+}
+
+.admin-upload-task--success .admin-upload-progress span {
+  background: linear-gradient(90deg, var(--admin-accent), #36a26f);
+}
+
+.admin-upload-task--error {
+  border-color: var(--admin-danger-border);
+  background: var(--admin-danger-soft);
+}
+
+.admin-upload-task--error .admin-upload-percent,
+.admin-upload-task--error .admin-upload-status {
+  color: var(--admin-danger);
+}
+
+.admin-upload-task--error .admin-upload-progress span {
+  background: var(--admin-danger);
+}
+
 .admin-wallpaper-open {
   position: absolute;
   top: 10px;

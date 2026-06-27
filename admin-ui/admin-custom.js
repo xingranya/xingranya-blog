@@ -108,11 +108,136 @@
     }, 3600);
   }
 
-  function blobToDataUrl(blob) {
+  function formatBytes(bytes) {
+    var value = Number(bytes || 0);
+    if (value < 1024) return value + ' B';
+    if (value < 1024 * 1024) return (value / 1024).toFixed(1) + ' KB';
+    return (value / 1024 / 1024).toFixed(2) + ' MB';
+  }
+
+  function purposeLabel(purpose) {
+    if (purpose === 'cover') return '封面图';
+    if (purpose === 'wallpaper') return '壁纸';
+    if (purpose === 'link') return '友情链接图片';
+    return '文章图片';
+  }
+
+  function ensureUploadCenter() {
+    var center = document.querySelector('.admin-upload-center');
+    if (center) return center;
+
+    center = document.createElement('section');
+    center.className = 'admin-upload-center';
+    center.setAttribute('aria-live', 'polite');
+    center.innerHTML = '' +
+      '<div class="admin-upload-center-head">' +
+        '<div><strong>上传任务</strong><span>图片会自动压缩到 5MB 内</span></div>' +
+        '<button type="button" aria-label="收起上传任务">收起</button>' +
+      '</div>' +
+      '<div class="admin-upload-list"></div>';
+    document.body.appendChild(center);
+
+    center.querySelector('button').addEventListener('click', function () {
+      center.classList.toggle('admin-upload-center--collapsed');
+    });
+
+    return center;
+  }
+
+  function createUploadTask(title, detail) {
+    var center = ensureUploadCenter();
+    var list = center.querySelector('.admin-upload-list');
+    var item = document.createElement('article');
+    item.className = 'admin-upload-task';
+    item.innerHTML = '' +
+      '<div class="admin-upload-task-top">' +
+        '<strong></strong>' +
+        '<span class="admin-upload-percent">0%</span>' +
+      '</div>' +
+      '<p class="admin-upload-detail"></p>' +
+      '<div class="admin-upload-progress" aria-hidden="true"><span></span></div>' +
+      '<div class="admin-upload-status">等待开始...</div>';
+
+    item.querySelector('strong').textContent = title;
+    item.querySelector('.admin-upload-detail').textContent = detail || '';
+    list.prepend(item);
+    center.classList.remove('admin-upload-center--collapsed');
+
+    function update(percent, status, type) {
+      var nextPercent = Math.max(0, Math.min(100, Math.round(percent || 0)));
+      item.className = 'admin-upload-task admin-upload-task--' + (type || 'running');
+      item.querySelector('.admin-upload-percent').textContent = nextPercent + '%';
+      item.querySelector('.admin-upload-progress span').style.width = nextPercent + '%';
+      item.querySelector('.admin-upload-status').textContent = status || '';
+    }
+
+    return {
+      update: update,
+      done: function (status) {
+        update(100, status || '完成', 'success');
+        setTimeout(function () {
+          if (item.parentElement) item.remove();
+          if (!list.children.length) center.classList.add('admin-upload-center--collapsed');
+        }, 7000);
+      },
+      fail: function (status) {
+        update(100, status || '上传失败', 'error');
+      }
+    };
+  }
+
+  function notifyUploadStatus(options, message, percent, task, type) {
+    if (options && options.onStatus) options.onStatus(message);
+    if (task) task.update(percent, message, type);
+  }
+
+  function postJsonWithProgress(url, payload, onProgress) {
+    return new Promise(function (resolve, reject) {
+      var xhr = new XMLHttpRequest();
+      xhr.open('POST', API_BASE + url, true);
+      xhr.setRequestHeader('Content-Type', 'application/json');
+
+      xhr.upload.onprogress = function (event) {
+        if (event.lengthComputable && onProgress) {
+          onProgress(event.loaded / event.total);
+        }
+      };
+
+      xhr.onload = function () {
+        var data = {};
+        try {
+          data = xhr.responseText ? JSON.parse(xhr.responseText) : {};
+        } catch (error) {
+          reject(new Error('后台返回内容无法解析。'));
+          return;
+        }
+
+        if (xhr.status < 200 || xhr.status >= 300 || data.success === false) {
+          reject(new Error(data.error || data.msg || '请求失败。'));
+          return;
+        }
+
+        resolve(data);
+      };
+
+      xhr.onerror = function () {
+        reject(new Error('网络请求失败。'));
+      };
+
+      xhr.send(JSON.stringify(payload));
+    });
+  }
+
+  function blobToDataUrl(blob, onProgress) {
     return new Promise(function (resolve, reject) {
       var reader = new FileReader();
       reader.onload = function (event) {
         resolve(event.target.result);
+      };
+      reader.onprogress = function (event) {
+        if (event.lengthComputable && onProgress) {
+          onProgress(event.loaded / event.total);
+        }
       };
       reader.onerror = function () {
         reject(new Error('读取图片失败。'));
@@ -210,33 +335,57 @@
 
   function uploadImage(file, purpose, options) {
     var uploadOptions = options || {};
-    if (uploadOptions.onStatus) uploadOptions.onStatus(file.size > MAX_IMAGE_BYTES ? '正在压缩图片...' : '正在准备上传...');
+    var label = purposeLabel(purpose);
+    var task = uploadOptions.task || createUploadTask(label + '上传', (file && file.name ? file.name : '图片') + ' · ' + formatBytes(file && file.size));
+    notifyUploadStatus(uploadOptions, file.size > MAX_IMAGE_BYTES ? '正在压缩图片...' : '正在准备上传...', 8, task);
 
     return compressImage(file).then(function (readyFile) {
-      if (uploadOptions.onStatus) uploadOptions.onStatus('正在上传到图仓...');
-      return blobToDataUrl(readyFile).then(function (dataUrl) {
-        return requestJson('/tucang/upload', {
-          method: 'POST',
-          body: JSON.stringify({
+      notifyUploadStatus(uploadOptions, readyFile.size !== file.size ? '压缩完成：' + formatBytes(readyFile.size) : '图片无需压缩。', 30, task);
+      notifyUploadStatus(uploadOptions, '正在读取图片文件...', 38, task);
+      return blobToDataUrl(readyFile, function (ratio) {
+        task.update(38 + ratio * 18, '正在读取图片文件...');
+      }).then(function (dataUrl) {
+        notifyUploadStatus(uploadOptions, '正在上传到本地后台...', 60, task);
+        return postJsonWithProgress('/tucang/upload', {
             purpose: purpose || 'post',
             filename: readyFile.name || file.name || 'image.jpg',
             data: dataUrl
-          })
+          }, function (ratio) {
+            task.update(60 + ratio * 20, '正在上传到本地后台...');
+          }).then(function (result) {
+            task.update(90, '图仓处理中，等待返回链接...');
+            result._uploadTask = task;
+            if (!uploadOptions.deferDone) {
+              task.done('上传完成，已获得图床链接。');
+            }
+            return result;
         });
       });
+    }).catch(function (error) {
+      task.fail(error.message || '上传失败。');
+      throw error;
     });
   }
 
   function uploadImageUrl(url, purpose, options) {
     var uploadOptions = options || {};
-    if (uploadOptions.onStatus) uploadOptions.onStatus('正在从 URL 导入图仓...');
+    var task = uploadOptions.task || createUploadTask(purposeLabel(purpose) + ' URL 导入', url);
+    notifyUploadStatus(uploadOptions, '正在从 URL 导入图仓...', 20, task);
 
-    return requestJson('/tucang/upload', {
-      method: 'POST',
-      body: JSON.stringify({
+    return postJsonWithProgress('/tucang/upload', {
         purpose: purpose || 'wallpaper',
         url: url
-      })
+      }, function (ratio) {
+        task.update(20 + ratio * 45, '正在提交导入请求...');
+      }).then(function (result) {
+        result._uploadTask = task;
+        if (!uploadOptions.deferDone) {
+          task.done('导入完成，已获得图床链接。');
+        }
+        return result;
+      }).catch(function (error) {
+        task.fail(error.message || 'URL 导入失败。');
+        throw error;
     });
   }
 
@@ -434,17 +583,22 @@
     showToast('正在处理图片...', 'info');
 
     return uploadImage(file, 'post', {
+      deferDone: true,
       onStatus: function (message) {
         showToast(message, 'info');
       }
     }).then(function (result) {
+      var task = result._uploadTask;
       var alt = safeImageAlt(file.name);
       editor.replaceSelection(imageMarkdown(editor, alt, result.url), 'end', '+input');
       forceEditorPreview(editor);
+      if (task) task.update(94, '正在写入文章...');
       showToast('图片已上传，正在写入文章...', 'info');
       return saveCurrentPostContent(editor).then(function () {
+        if (task) task.done('图片已上传并写入文章。');
         showToast('图片已上传并写入文章。', 'success');
       }).catch(function (error) {
+        if (task) task.fail('图片已上传，但写入文章失败。');
         showToast('图片已上传，但写入文章失败：' + (error.message || '请手动保存。'), 'error');
       });
     }).catch(function (error) {
@@ -500,19 +654,26 @@
         button.disabled = true;
         button.textContent = '处理中...';
         uploadImage(file, 'cover', {
+          deferDone: true,
           onStatus: function (message) {
             showToast(message, 'info');
           }
         }).then(function (result) {
+          var task = result._uploadTask;
           var postId = currentPostId();
           setNativeValue(input, result.url);
           if (postId) {
+            if (task) task.update(94, '正在保存封面字段...');
             showToast('封面已上传，正在保存文章...', 'info');
             return requestJson('/posts/' + encodeURIComponent(postId), {
               method: 'POST',
               body: JSON.stringify({ cover: result.url })
+            }).then(function (data) {
+              if (task) task.done('封面图已上传并保存。');
+              return data;
             });
           }
+          if (task) task.done('封面图已上传并填写。');
           return result;
         }).then(function () {
           showToast('封面图已填写。', 'success');
