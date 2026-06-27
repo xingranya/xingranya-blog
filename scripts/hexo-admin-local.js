@@ -2,7 +2,9 @@
 
 if (process.env.HEXO_ADMIN === 'true') {
   const bodyParser = require('body-parser');
+  const FormData = require('form-data');
   const fs = require('fs');
+  const https = require('https');
   const path = require('path');
   const util = require('util');
   const yaml = require('js-yaml');
@@ -21,7 +23,10 @@ if (process.env.HEXO_ADMIN === 'true') {
   const linksDataPath = path.join(hexo.source_dir, '_data', 'links.yml');
   const hasAdminPassword = Boolean(hexo.config.admin && hexo.config.admin.username);
   const maxImageBytes = 5 * 1024 * 1024;
+  const maxUploadRequestBytes = maxImageBytes + 2 * 1024 * 1024;
   const tucangUploadUrl = 'https://api.tucang.cc/api/v1/upload';
+  const tucangUploadTimeoutMs = 120000;
+  const tucangUploadRetryLimit = 2;
 
   const adminAssets = {
     '/admin/admin-custom.css': {
@@ -92,20 +97,19 @@ if (process.env.HEXO_ADMIN === 'true') {
     };
   }
 
-  function dataUrlToImage(dataUrl, filename) {
-    const match = String(dataUrl || '').match(/^data:(image\/[a-zA-Z0-9.+-]+);base64,(.+)$/);
-    if (!match) {
-      throw new Error('只支持上传图片文件。');
-    }
-
-    const mimeType = match[1];
-    const buffer = Buffer.from(match[2], 'base64');
+  function safeImageFile(buffer, mimeType, filename) {
     const fallbackExt = mimeType.split('/')[1].replace('jpeg', 'jpg').replace('svg+xml', 'svg');
-    const safeFilename = String(filename || `image.${fallbackExt}`)
-      .replace(/[\\/:*?"<>|]+/g, '-')
+    const rawFilename = String(filename || `image.${fallbackExt}`).trim();
+    const rawExt = path.extname(rawFilename).replace('.', '').toLowerCase();
+    const ext = (rawExt || fallbackExt).replace(/[^a-z0-9]+/g, '') || fallbackExt;
+    const baseName = rawFilename
+      .replace(/\.[^.]+$/, '')
+      .normalize('NFKD')
+      .replace(/[^\w.-]+/g, '-')
+      .replace(/^-+|-+$/g, '')
       .replace(/^\.+/, '')
-      .trim() || `image.${fallbackExt}`;
-    const ext = (path.extname(safeFilename).replace('.', '') || fallbackExt).toLowerCase();
+      .slice(0, 80);
+    const safeFilename = `${baseName || 'image'}-${Date.now().toString(36)}.${ext}`;
 
     if (!buffer.length) {
       throw new Error('图片内容为空。');
@@ -115,12 +119,257 @@ if (process.env.HEXO_ADMIN === 'true') {
       throw new Error('图片仍超过 5MB，请重新选择或手动压缩。');
     }
 
-    return { buffer, mimeType, filename: safeFilename, ext };
+    return { buffer, mimeType, filename: safeFilename, ext, originalFilename: rawFilename };
+  }
+
+  function dataUrlToImage(dataUrl, filename) {
+    const match = String(dataUrl || '').match(/^data:(image\/[a-zA-Z0-9.+-]+);base64,(.+)$/);
+    if (!match) {
+      throw new Error('只支持上传图片文件。');
+    }
+
+    return safeImageFile(Buffer.from(match[2], 'base64'), match[1], filename);
   }
 
   function normalizePurpose(purpose) {
     if (purpose === 'cover' || purpose === 'wallpaper') return purpose;
     return 'post';
+  }
+
+  function wait(ms) {
+    return new Promise(function (resolve) {
+      setTimeout(resolve, ms);
+    });
+  }
+
+  function isRetryableUploadError(error) {
+    const message = String((error && (error.code || error.message)) || '');
+    return /socket hang up|ECONNRESET|ETIMEDOUT|timeout|超时|中断|EAI_AGAIN|ENOTFOUND|ECONNREFUSED|EPIPE/i.test(message);
+  }
+
+  function normalizeUploadNetworkError(error, retryCount) {
+    const cause = error && error.cause && (error.cause.message || error.cause.code);
+    const message = String(cause || (error && (error.code || error.message)) || '网络请求失败');
+    const triedText = retryCount > 0 ? `，已自动重试 ${retryCount} 次仍失败` : '';
+
+    if (/socket hang up|ECONNRESET|EPIPE/i.test(message)) {
+      return new Error(`图仓连接被中断${triedText}。请稍后再试。`);
+    }
+    if (/timeout|ETIMEDOUT/i.test(message)) {
+      return new Error(`图仓响应超时${triedText}。请稍后再试。`);
+    }
+    return new Error(`图仓连接失败${triedText}：${message}`);
+  }
+
+  function postMultipartOnce(url, fields, file) {
+    return new Promise(function (resolve, reject) {
+      const form = new FormData();
+
+      Object.keys(fields || {}).forEach(function (key) {
+        if (fields[key] !== undefined && fields[key] !== null && fields[key] !== '') {
+          form.append(key, String(fields[key]));
+        }
+      });
+
+      if (file) {
+        form.append('file', file.buffer, {
+          filename: file.filename,
+          contentType: file.mimeType || 'application/octet-stream',
+          knownLength: file.buffer.length
+        });
+      }
+
+      const target = new URL(url);
+      form.getLength(function (lengthError, length) {
+        const headers = Object.assign(form.getHeaders(), {
+          'Accept': 'application/json',
+          'User-Agent': 'HexoAdminTucangUploader/1.0',
+          'Connection': 'close'
+        });
+
+        if (!lengthError && length) {
+          headers['Content-Length'] = length;
+        }
+
+        const request = https.request({
+          method: 'POST',
+          protocol: target.protocol,
+          hostname: target.hostname,
+          port: target.port || 443,
+          path: `${target.pathname}${target.search}`,
+          timeout: tucangUploadTimeoutMs,
+          headers
+        }, function (response) {
+          const chunks = [];
+          response.on('data', function (chunk) {
+            chunks.push(chunk);
+          });
+          response.on('end', function () {
+            resolve({
+              ok: response.statusCode >= 200 && response.statusCode < 300,
+              status: response.statusCode,
+              text: Buffer.concat(chunks).toString('utf8')
+            });
+          });
+        });
+
+        request.on('timeout', function () {
+          request.destroy(new Error('图仓上传超时。'));
+        });
+        request.on('error', function (error) {
+          reject(error);
+        });
+        form.pipe(request);
+      });
+    });
+  }
+
+  function collectRequestBuffer(req) {
+    return new Promise(function (resolve, reject) {
+      const chunks = [];
+      let total = 0;
+
+      req.on('data', function (chunk) {
+        total += chunk.length;
+        if (total > maxUploadRequestBytes) {
+          reject(new Error('上传请求超过 5MB 限制，请重新选择或压缩图片。'));
+          req.destroy();
+          return;
+        }
+        chunks.push(chunk);
+      });
+
+      req.on('end', function () {
+        resolve(Buffer.concat(chunks));
+      });
+      req.on('error', reject);
+    });
+  }
+
+  function parseMultipartHeaders(rawHeaders) {
+    return String(rawHeaders || '').split(/\r\n/).reduce(function (headers, line) {
+      const index = line.indexOf(':');
+      if (index > 0) {
+        headers[line.slice(0, index).trim().toLowerCase()] = line.slice(index + 1).trim();
+      }
+      return headers;
+    }, {});
+  }
+
+  function parseContentDisposition(value) {
+    const result = {};
+    String(value || '').split(';').forEach(function (part) {
+      const index = part.indexOf('=');
+      if (index < 0) return;
+      const key = part.slice(0, index).trim().toLowerCase();
+      const rawValue = part.slice(index + 1).trim();
+      result[key] = rawValue.replace(/^"|"$/g, '');
+    });
+    return result;
+  }
+
+  function trimMultipartBody(buffer) {
+    let start = 0;
+    let end = buffer.length;
+
+    if (buffer.slice(start, start + 2).toString('binary') === '\r\n') start += 2;
+    if (buffer.slice(end - 2, end).toString('binary') === '\r\n') end -= 2;
+
+    return buffer.slice(start, end);
+  }
+
+  function parseMultipartBuffer(buffer, boundary) {
+    const delimiter = Buffer.from(`--${boundary}`, 'utf8');
+    const fields = {};
+    let file = null;
+    let cursor = buffer.indexOf(delimiter);
+
+    if (cursor < 0) {
+      throw new Error('上传表单格式无效。');
+    }
+
+    while (cursor >= 0) {
+      const nextCursor = buffer.indexOf(delimiter, cursor + delimiter.length);
+      if (nextCursor < 0) break;
+
+      const part = trimMultipartBody(buffer.slice(cursor + delimiter.length, nextCursor));
+      cursor = nextCursor;
+
+      if (!part.length || part.slice(0, 2).toString('binary') === '--') continue;
+
+      const headerEnd = part.indexOf(Buffer.from('\r\n\r\n', 'utf8'));
+      if (headerEnd < 0) continue;
+
+      const headers = parseMultipartHeaders(part.slice(0, headerEnd).toString('utf8'));
+      const disposition = parseContentDisposition(headers['content-disposition']);
+      const name = disposition.name;
+      const content = part.slice(headerEnd + 4);
+
+      if (!name) continue;
+
+      if (disposition.filename !== undefined) {
+        file = {
+          buffer: content,
+          filename: disposition.filename || 'image',
+          mimeType: headers['content-type'] || 'application/octet-stream'
+        };
+      } else {
+        fields[name] = content.toString('utf8');
+      }
+    }
+
+    return { fields, file };
+  }
+
+  async function readMultipartUpload(req) {
+    const contentType = String(req.headers['content-type'] || '');
+    const match = contentType.match(/boundary=(?:"([^"]+)"|([^;]+))/i);
+
+    if (!match) {
+      throw new Error('上传表单缺少 boundary。');
+    }
+
+    const parsed = parseMultipartBuffer(await collectRequestBuffer(req), match[1] || match[2]);
+
+    if (!parsed.file) {
+      return { body: parsed.fields, file: null };
+    }
+
+    if (!/^image\//.test(String(parsed.file.mimeType || ''))) {
+      throw new Error('只能上传图片文件。');
+    }
+
+    return {
+      body: parsed.fields,
+      file: safeImageFile(parsed.file.buffer, parsed.file.mimeType, parsed.file.filename)
+    };
+  }
+
+  async function postMultipart(url, fields, file) {
+    let lastError = null;
+    let retryCount = 0;
+
+    for (let attempt = 0; attempt <= tucangUploadRetryLimit; attempt += 1) {
+      try {
+        const response = await postMultipartOnce(url, fields, file);
+        if (response.status >= 500 && attempt < tucangUploadRetryLimit) {
+          lastError = new Error(`图仓服务暂时不可用，HTTP ${response.status}`);
+          retryCount += 1;
+          await wait(800 * (attempt + 1));
+          continue;
+        }
+        return response;
+      } catch (error) {
+        lastError = error;
+        if (attempt >= tucangUploadRetryLimit || !isRetryableUploadError(error)) {
+          break;
+        }
+        retryCount += 1;
+        await wait(800 * (attempt + 1));
+      }
+    }
+
+    throw normalizeUploadNetworkError(lastError, retryCount);
   }
 
   function normalizeMasonryItem(item) {
@@ -242,34 +491,42 @@ if (process.env.HEXO_ADMIN === 'true') {
     if (req.method !== 'POST') return sendError(res, 405, '请求方法不支持。');
 
     try {
-      const body = req.body || {};
+      const isMultipart = /^multipart\/form-data/i.test(String(req.headers['content-type'] || ''));
+      const incoming = isMultipart
+        ? await readMultipartUpload(req)
+        : { body: req.body || {}, file: null };
+      const body = incoming.body || {};
       const purpose = normalizePurpose(body.purpose);
       const config = readTucangConfig();
       const folderId = config.folders[purpose];
-      const form = new FormData();
       const url = String(body.url || '').trim();
+      const fields = { token: config.token };
+      let file = null;
 
-      form.append('token', config.token);
-
-      if (body.data) {
+      if (incoming.file) {
+        file = incoming.file;
+        fields.type = file.ext;
+      } else if (body.data) {
         const image = dataUrlToImage(body.data, body.filename);
-        form.append('file', new Blob([image.buffer], { type: image.mimeType }), image.filename);
-        form.append('type', image.ext);
+        file = image;
+        fields.type = image.ext;
       } else if (/^https?:\/\//.test(url)) {
-        form.append('url', url);
-        if (body.referer) form.append('referer', String(body.referer));
-        if (body.type) form.append('type', String(body.type).replace(/^\./, ''));
+        fields.url = url;
+        if (body.referer) fields.referer = String(body.referer);
+        if (body.type) fields.type = String(body.type).replace(/^\./, '');
       } else {
         throw new Error('请提供图片文件或图片 URL。');
       }
 
-      if (folderId) form.append('folderId', String(folderId));
+      if (folderId) fields.folderId = String(folderId);
 
-      const response = await fetch(tucangUploadUrl, {
-        method: 'POST',
-        body: form
-      });
-      const responseText = await response.text();
+      let response;
+      try {
+        response = await postMultipart(tucangUploadUrl, fields, file);
+      } catch (error) {
+        throw error;
+      }
+      const responseText = response.text;
       let payload;
 
       try {

@@ -131,7 +131,7 @@
     center.setAttribute('aria-live', 'polite');
     center.innerHTML = '' +
       '<div class="admin-upload-center-head">' +
-        '<div><strong>上传任务</strong><span>图片会自动压缩到 5MB 内</span></div>' +
+        '<div><strong>上传任务</strong><span>超过 5MB 才压缩，其他原图直传</span></div>' +
         '<button type="button" aria-label="收起上传任务">收起</button>' +
       '</div>' +
       '<div class="admin-upload-list"></div>';
@@ -224,8 +224,76 @@
         reject(new Error('网络请求失败。'));
       };
 
+      xhr.ontimeout = function () {
+        reject(new Error('请求超时，请稍后再试。'));
+      };
+
       xhr.send(JSON.stringify(payload));
     });
+  }
+
+  function parseUploadResponse(xhr, resolve, reject) {
+    var data = {};
+    try {
+      data = xhr.responseText ? JSON.parse(xhr.responseText) : {};
+    } catch (error) {
+      reject(new Error('后台返回内容无法解析。'));
+      return;
+    }
+
+    if (xhr.status < 200 || xhr.status >= 300 || data.success === false) {
+      reject(new Error(data.error || data.msg || '请求失败。'));
+      return;
+    }
+
+    resolve(data);
+  }
+
+  function postFormWithProgress(url, formData, onProgress) {
+    return new Promise(function (resolve, reject) {
+      var xhr = new XMLHttpRequest();
+      xhr.open('POST', API_BASE + url, true);
+
+      xhr.upload.onprogress = function (event) {
+        if (event.lengthComputable && onProgress) {
+          onProgress(event.loaded / event.total);
+        }
+      };
+
+      xhr.onload = function () {
+        parseUploadResponse(xhr, resolve, reject);
+      };
+
+      xhr.onerror = function () {
+        reject(new Error('网络请求失败。'));
+      };
+
+      xhr.ontimeout = function () {
+        reject(new Error('请求超时，请稍后再试。'));
+      };
+
+      xhr.send(formData);
+    });
+  }
+
+  function startUploadWaiting(task, options, baseMessage) {
+    var messages = [
+      baseMessage || '本地后台已收到，正在等待图仓返回链接...',
+      '图仓响应可能需要一点时间，仍在等待...',
+      '还在等待图仓返回，请不要关闭页面...'
+    ];
+    var index = 0;
+
+    if (task) task.update(82, messages[0]);
+    if (options && options.onStatus) options.onStatus(messages[0]);
+
+    return setInterval(function () {
+      index += 1;
+      var message = messages[index % messages.length];
+      var percent = Math.min(88, 82 + index);
+      if (task) task.update(percent, message);
+      if (options && options.onStatus) options.onStatus(message);
+    }, 4500);
   }
 
   function blobToDataUrl(blob, onProgress) {
@@ -272,10 +340,6 @@
     });
   }
 
-  function renameAsJpg(filename) {
-    return String(filename || 'image').replace(/\.[^.]+$/, '') + '.jpg';
-  }
-
   function makeFile(blob, filename, type) {
     try {
       return new File([blob], filename, { type: type || blob.type || 'image/jpeg' });
@@ -285,12 +349,26 @@
     }
   }
 
+  function filenameForMime(filename, mimeType) {
+    var name = String(filename || 'image').replace(/\.[^.]+$/, '');
+    if (mimeType === 'image/png') return name + '.png';
+    if (mimeType === 'image/webp') return name + '.webp';
+    if (mimeType === 'image/jpeg') return name + '.jpg';
+    return filename || 'image';
+  }
+
+  function shouldOptimizeImage(file) {
+    var type = String(file && file.type || '').toLowerCase();
+    if (!/^image\//.test(type)) return false;
+    return file.size > MAX_IMAGE_BYTES;
+  }
+
   function compressImage(file) {
     if (!file || !/^image\//.test(file.type || '')) {
       return Promise.reject(new Error('只能上传图片文件。'));
     }
 
-    if (file.size <= MAX_IMAGE_BYTES) {
+    if (!shouldOptimizeImage(file)) {
       return Promise.resolve(file);
     }
 
@@ -300,7 +378,10 @@
       var width = image.naturalWidth || image.width;
       var height = image.naturalHeight || image.height;
       var scale = 1;
-      var quality = 0.88;
+      var originalType = String(file.type || 'image/jpeg').toLowerCase();
+      var outputType = /^image\/(png|jpeg|jpg|webp)$/.test(originalType) ? originalType.replace('image/jpg', 'image/jpeg') : 'image/jpeg';
+      var supportsQuality = outputType === 'image/jpeg' || outputType === 'image/webp';
+      var quality = supportsQuality ? 0.92 : undefined;
       var attempts = 0;
 
       function tryCompress() {
@@ -310,19 +391,19 @@
         context.clearRect(0, 0, canvas.width, canvas.height);
         context.drawImage(image, 0, 0, canvas.width, canvas.height);
 
-        return canvasToBlob(canvas, 'image/jpeg', quality).then(function (blob) {
+        return canvasToBlob(canvas, outputType, quality).then(function (blob) {
           if (blob.size <= MAX_IMAGE_BYTES) {
-            return makeFile(blob, renameAsJpg(file.name), 'image/jpeg');
+            return makeFile(blob, filenameForMime(file.name, outputType), outputType);
           }
-          if (attempts >= 16 || canvas.width <= 360 || canvas.height <= 360) {
+          if (attempts >= 18 || canvas.width <= 420 || canvas.height <= 420) {
             throw new Error('图片超过 5MB，自动压缩后仍然过大。');
           }
 
-          if (quality > 0.5) {
-            quality -= 0.12;
+          if (supportsQuality && quality > 0.72) {
+            quality -= 0.06;
           } else {
-            scale *= 0.82;
-            quality = 0.82;
+            scale *= Math.max(0.78, Math.sqrt(MAX_IMAGE_BYTES / blob.size) * 0.96);
+            if (supportsQuality) quality = 0.86;
           }
 
           return tryCompress();
@@ -337,29 +418,35 @@
     var uploadOptions = options || {};
     var label = purposeLabel(purpose);
     var task = uploadOptions.task || createUploadTask(label + '上传', (file && file.name ? file.name : '图片') + ' · ' + formatBytes(file && file.size));
-    notifyUploadStatus(uploadOptions, file.size > MAX_IMAGE_BYTES ? '正在压缩图片...' : '正在准备上传...', 8, task);
+    notifyUploadStatus(uploadOptions, file.size > MAX_IMAGE_BYTES ? '图片超过 5MB，正在压缩到 5MB 内...' : '原图直传，不压缩。', 8, task);
 
     return compressImage(file).then(function (readyFile) {
-      notifyUploadStatus(uploadOptions, readyFile.size !== file.size ? '压缩完成：' + formatBytes(readyFile.size) : '图片无需压缩。', 30, task);
-      notifyUploadStatus(uploadOptions, '正在读取图片文件...', 38, task);
-      return blobToDataUrl(readyFile, function (ratio) {
-        task.update(38 + ratio * 18, '正在读取图片文件...');
-      }).then(function (dataUrl) {
-        notifyUploadStatus(uploadOptions, '正在上传到本地后台...', 60, task);
-        return postJsonWithProgress('/tucang/upload', {
-            purpose: purpose || 'post',
-            filename: readyFile.name || file.name || 'image.jpg',
-            data: dataUrl
-          }, function (ratio) {
-            task.update(60 + ratio * 20, '正在上传到本地后台...');
-          }).then(function (result) {
-            task.update(90, '图仓处理中，等待返回链接...');
-            result._uploadTask = task;
-            if (!uploadOptions.deferDone) {
-              task.done('上传完成，已获得图床链接。');
-            }
-            return result;
-        });
+      notifyUploadStatus(uploadOptions, readyFile.size !== file.size ? '压缩完成：' + formatBytes(readyFile.size) : '原图直传，不压缩。', 30, task);
+      var waitingTimer = null;
+      var formData = new FormData();
+      formData.append('purpose', purpose || 'post');
+      formData.append('file', readyFile, readyFile.name || file.name || 'image.jpg');
+
+      notifyUploadStatus(uploadOptions, '正在上传原始文件到本地后台...', 45, task);
+      return postFormWithProgress('/tucang/upload', formData, function (ratio) {
+        if (ratio >= 1) {
+          if (!waitingTimer) {
+            waitingTimer = startUploadWaiting(task, uploadOptions, '本地后台已收到文件，正在等待图仓返回链接...');
+          }
+        } else {
+          task.update(45 + ratio * 35, '正在上传原始文件到本地后台...');
+        }
+      }).then(function (result) {
+        if (waitingTimer) clearInterval(waitingTimer);
+        notifyUploadStatus(uploadOptions, '图床链接已返回。', 96, task);
+        result._uploadTask = task;
+        if (!uploadOptions.deferDone) {
+          task.done('上传完成，已获得图床链接。');
+        }
+        return result;
+      }).catch(function (error) {
+        if (waitingTimer) clearInterval(waitingTimer);
+        throw error;
       });
     }).catch(function (error) {
       task.fail(error.message || '上传失败。');
@@ -371,19 +458,28 @@
     var uploadOptions = options || {};
     var task = uploadOptions.task || createUploadTask(purposeLabel(purpose) + ' URL 导入', url);
     notifyUploadStatus(uploadOptions, '正在从 URL 导入图仓...', 20, task);
+    var waitingTimer = null;
 
     return postJsonWithProgress('/tucang/upload', {
         purpose: purpose || 'wallpaper',
         url: url
       }, function (ratio) {
-        task.update(20 + ratio * 45, '正在提交导入请求...');
+        if (ratio >= 1) {
+          if (!waitingTimer) {
+            waitingTimer = startUploadWaiting(task, uploadOptions, '导入请求已提交，正在等待图仓返回链接...');
+          }
+        } else {
+          task.update(20 + ratio * 45, '正在提交导入请求...');
+        }
       }).then(function (result) {
+        if (waitingTimer) clearInterval(waitingTimer);
         result._uploadTask = task;
         if (!uploadOptions.deferDone) {
           task.done('导入完成，已获得图床链接。');
         }
         return result;
       }).catch(function (error) {
+        if (waitingTimer) clearInterval(waitingTimer);
         task.fail(error.message || 'URL 导入失败。');
         throw error;
     });
