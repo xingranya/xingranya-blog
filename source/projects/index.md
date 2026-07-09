@@ -389,7 +389,7 @@ comments: false
   </div>
   <div class="project-index" aria-label="项目概览">
     <div class="project-index-item">
-      <strong>13</strong>
+      <strong>14</strong>
       <span>公开项目</span>
     </div>
     <div class="project-index-item">
@@ -397,7 +397,7 @@ comments: false
       <span>开源贡献</span>
     </div>
     <div class="project-index-item">
-      <strong>TypeScript / Vue / Rust / Swift / Java</strong>
+      <strong>TypeScript / Rust / Vue / Swift / Java</strong>
       <span>主要技术栈</span>
     </div>
   </div>
@@ -411,6 +411,43 @@ comments: false
 </section>
 
 <section class="project-grid">
+  <article class="project-card" style="grid-column:1/-1;">
+    <div>
+      <div class="project-card-header">
+        <div>
+          <h3 class="project-name">GSAT — GitHub Stars AI Tools</h3>
+          <p class="project-type">GitHub Stars 本地 AI 知识库 · 主要项目</p>
+        </div>
+        <span class="project-icon" style="padding:4px;overflow:hidden"><img src="https://gsat.xingranya.cn/icon.svg" alt="GSAT" style="width:30px;height:30px"></span>
+      </div>
+      <p class="project-desc">把 GitHub Stars 变成可搜索、可总结、可追问的本地 AI 知识库。同步 Stars 到本地 SQLite，AI 自动生成中文摘要和标签，支持自然语言搜索、标签网络、相似项目发现等能力。数据全程本地存储，支持多种 AI 服务提供商。</p>
+      <div class="project-meta">
+        <span><i class="fa-solid fa-code"></i> TypeScript / Rust</span>
+        <span><i class="fa-solid fa-clock"></i> 2026-07-09</span>
+        <span><i class="fa-solid fa-download"></i> macOS · Windows · Linux</span>
+      </div>
+      <ul class="project-detail-list">
+        <li><i class="fa-solid fa-circle"></i><span>Tauri 2 + React 19 + SQLite 架构，安装包体积小、内存占用低。</span></li>
+        <li><i class="fa-solid fa-circle"></i><span>支持 OpenAI、Anthropic、DeepSeek、Ollama 等十余种 AI 服务。</span></li>
+        <li><i class="fa-solid fa-circle"></i><span>Token 和 API Key 存在系统密钥链，所有数据本地可控。</span></li>
+      </ul>
+    </div>
+    <div class="project-card-footer">
+      <div class="project-tags">
+        <span class="project-tag">Tauri</span>
+        <span class="project-tag">Rust</span>
+        <span class="project-tag">React</span>
+        <span class="project-tag">AI</span>
+        <span class="project-tag">SQLite</span>
+      </div>
+      <div class="project-links">
+        <a class="project-link" href="https://gsat.xingranya.cn" target="_blank" rel="noopener">官网 <i class="fa-solid fa-arrow-right"></i></a>
+        <a class="project-link" href="https://github.com/xingranya/GitHub-Stars-AI-Tools/wiki" target="_blank" rel="noopener">文档 <i class="fa-solid fa-book"></i></a>
+        <a class="project-link" href="https://gsat.xingranya.cn/download" target="_blank" rel="noopener">下载 <i class="fa-solid fa-download"></i></a>
+      </div>
+    </div>
+  </article>
+
   <article class="project-card">
     <div>
       <div class="project-card-header">
