@@ -13,9 +13,10 @@ $logo-image-box-width = 34px
   display flex
   align-items center
   justify-content center
-  background $nav-color-bg
+  background var(--background-color-transparent-40)
   -webkit-backdrop-filter blur(18px) saturate(1.12)
   backdrop-filter blur(18px) saturate(1.12)
+  color var(--first-text-color)
   padding-top $scroll-progress-bar-height
   hover-style(
     false,
@@ -127,15 +128,20 @@ $logo-image-box-width = 34px
             color var(--default-text-color)
 
             a
-              display block
-              padding 5px
+              display inline-flex
+              min-height 44px
+              align-items center
+              padding 8px 10px
+              color var(--first-text-color)
 
             .navbar-action
               display flex
+              min-width 44px
+              min-height 44px
               align-items center
               justify-content center
-              padding 5px
-              color var(--default-text-color)
+              padding 8px
+              color var(--first-text-color)
               font inherit
 
             a .fa-chevron-down,
@@ -253,10 +259,12 @@ $logo-image-box-width = 34px
           position relative
           cursor pointer
           font-size 18px
-          margin-left 12px
-          width 20px
-          height 20px
-          color var(--default-text-color)
+          margin-left 8px
+          min-width 44px
+          min-height 44px
+          width 44px
+          height 44px
+          color var(--first-text-color)
           background transparent
 
           i
@@ -351,3 +359,6 @@ html.is-animating
   .transition-navbar
     max-width $navbar-width-pages !important
     transition max-width 0.2s ease-out
+
+body.navbar-shrink .navbar-container
+  background var(--background-color-transparent-80)

@@ -1,4 +1,5 @@
 <div class="home-content-container">
+    <h2 class="home-latest-heading"><%= __('recent_posts') %></h2>
     <ul class="home-article-list">
         <% page.posts.forEach(post => { %>
             <li class="home-article-item">
@@ -32,21 +33,19 @@
                     </div>
                 <% } %>
                 <div class="flex flex-col gap-5 px-7 pb-7 <%= post.thumbnail !== false && (post.thumbnail || post.cover || post.banner) ? "pt-5" : "pt-7" %>">
-                    <h3 class="home-article-title">
+                    <h2 class="home-article-title">
                         <a href="<%- url_for(post.path) %>">
                             <%= post.title %>
                         </a>
-                    </h3>
+                    </h2>
 
-                    <div class="home-article-content markdown-body">
-                        <% if (post.excerpt && post.excerpt == "false") { %>
-                        <% } else if (post.excerpt && post.excerpt !== "false") { %>
-                            <%- render(post.excerpt, "markdown") %>
-                        <% } else { %>
-                            <%
-                                const excerptLength = theme.home.excerpt_length || 200;
-                            %>
-                            <%- truncate(strip_html(post.content), {length: excerptLength}) %>
+                    <div class="home-article-content">
+                        <% if (post.excerpt && post.excerpt !== "false") { %>
+                            <% const excerptLength = theme.home.excerpt_length || 100; %>
+                            <p><%= truncate(strip_html(post.excerpt), {length: excerptLength}) %></p>
+                        <% } else if (!post.excerpt) { %>
+                            <% const excerptLength = theme.home.excerpt_length || 100; %>
+                            <p><%= truncate(strip_html(post.content), {length: excerptLength}) %></p>
                         <% } %>
                     </div>
 

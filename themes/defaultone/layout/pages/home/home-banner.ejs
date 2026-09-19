@@ -42,6 +42,7 @@
     <div class="content mt-8 flex flex-col justify-center items-center transition-fade-down">
         <div class="description flex flex-col justify-center items-center w-screen font-medium text-center backdrop-blur-2xl bg-black/30 dark:bg-white/20 px-6 py-8 rounded-2xl border border-white/20 dark:border-white/10 shadow-2xl text-2xl sm:text-3xl md:text-4xl lg:text-5xl">
             <h1 class="home-banner-title"><%- theme.home_banner.title || theme.style.first_screen.description || config.description %></h1>
+            <p class="home-banner-tagline text-base sm:text-lg md:text-xl font-medium opacity-95">实操教程与折腾笔记</p>
             <%# theme.style.first_screen.description is deprecated %>
             <% if (theme.home_banner.subtitle.length !== 0) { %>
                 <p class="text-base sm:text-lg md:text-xl"><i id="subtitle"></i></p>
@@ -55,29 +56,35 @@
             const display = theme.home_banner.social_links.style === "center" ? "hidden" : "flex";
         %>
         <div class="absolute bottom-0.5 flex <%- flexDirection %> <%- justify %> max-w-[1340px] items-center w-full px-8 sm:px-12">
-                <button type="button" class="home-scroll-trigger <%- display %> p-3 bg-gray-300/50 dark:bg-gray-500/40 backdrop-blur-lg border border-white/20 dark:border-gray-500/30 group rounded-full cursor-pointer justify-center items-center aspect-square h-full shadow-redefine-flat hover:shadow-redefine-flat-hover transition-shadow" aria-label="跳到文章列表">
-                    <i class="fa-solid fa-arrow-down fa-fw fa-lg group-hover:translate-y-1 transition-transform" aria-hidden="true"></i>
+                <button type="button" class="home-scroll-trigger home-chrome-glass <%- display %> min-h-[44px] px-4 py-2 group rounded-full cursor-pointer inline-flex justify-center items-center gap-2" aria-label="看文章">
+                    <i class="fa-solid fa-arrow-down fa-fw group-hover:translate-y-1 transition-transform" aria-hidden="true"></i>
+                    <span class="home-scroll-label">看文章</span>
                 </button>
-                <div class="social-contacts px-3 sm:px-6 py-2 sm:py-3 bg-gray-300/50 dark:bg-gray-500/40 backdrop-blur-lg border border-white/20 dark:border-gray-500/30 shadow-redefine-flat rounded-full flex flex-row flex-nowrap justify-center gap-1.5 sm:gap-4 items-center">
+                <div class="social-contacts home-chrome-glass px-3 sm:px-4 py-2 rounded-3xl flex flex-row flex-wrap justify-center gap-1 sm:gap-2 items-center max-w-full">
                     <% for (const key in theme.home_banner.social_links.links) { %>
                         <% const socialLink = theme.home_banner.social_links.links[key]; %>
                         <% if(socialLink) { %>
+                            <% const socialLabels = { github: 'GitHub', google: 'Gmail', telegram: 'Telegram', bilibili: '哔哩哔哩', twitter: 'X', email: '邮箱' }; %>
+                            <% const socialLabel = socialLabels[key] || key; %>
                             <% if(key === 'email') { %>
                                 <span class="social-contact-item <%= key %> ">
                                     <a href="<%- /^mailto:/i.test(socialLink) ? socialLink : 'mailto:' + socialLink %>" aria-label="复制邮箱地址">
-                                        <i class="fa-solid fa-fw fa-at fa-lg" aria-hidden="true"></i>
+                                        <i class="fa-solid fa-fw fa-at" aria-hidden="true"></i>
+                                        <span class="social-contact-label"><%= socialLabel %></span>
                                     </a>
                                 </span>
                             <% } else if(key.includes("fa-")) { %>
                                 <span class="social-contact-item">
-                                    <a target="_blank" rel="noopener noreferrer" href="<%- socialLink %>" aria-label="打开社交链接">
-                                        <i class="<%= key %> fa-fw fa-lg" aria-hidden="true"></i>
+                                    <a target="_blank" rel="noopener noreferrer" href="<%- socialLink %>" aria-label="打开<%= socialLabel %>">
+                                        <i class="<%= key %> fa-fw" aria-hidden="true"></i>
+                                        <span class="social-contact-label"><%= socialLabel %></span>
                                     </a>
                                 </span>
                             <% } else { %>
                                 <span class="social-contact-item <%= key %>">
-                                    <a target="_blank" rel="noopener noreferrer" href="<%- socialLink %>" aria-label="打开 <%= key %>">
-                                        <i class="fa-brands fa-fw fa-lg fa-<%= key %>" aria-hidden="true"></i>
+                                    <a target="_blank" rel="noopener noreferrer" href="<%- socialLink %>" aria-label="打开<%= socialLabel %>">
+                                        <i class="fa-brands fa-fw fa-<%= key %>" aria-hidden="true"></i>
+                                        <span class="social-contact-label"><%= socialLabel %></span>
                                     </a>
                                 </span>
                             <% } %>
@@ -100,12 +107,13 @@
                                 <% if(key.includes("fa-")) { %>
                                     <span class="social-contact-item-qr cursor-pointer group relative">
                                         <button type="button" class="social-qr-trigger" aria-label="显示二维码" aria-expanded="false">
-                                            <i class="<%= key %> fa-fw fa-lg" aria-hidden="true"></i>
+                                            <i class="<%= key %> fa-fw" aria-hidden="true"></i>
+                                            <span class="social-contact-label">二维码</span>
                                         </button>
                                             <div class="social-qr-container absolute h-auto w-64 backdrop-blur-2xl bg-white/90 dark:bg-gray-800/90 border border-white/20 dark:border-gray-500/30 overflow-hidden rounded-2xl bottom-0 mb-14 right-0 invisible group-hover:visible group-focus-within:visible opacity-0 group-hover:opacity-100 group-focus-within:opacity-100 translate-y-0.5 group-hover:translate-y-0 group-focus-within:translate-y-0 transition-all flex flex-col items-center pb-3 shadow-2xl z-50">
                                                 <img class="social-contacts-qr w-full"
                                                      src="<%- url_for(theme.home_banner.social_links.qrs[key]) %>" alt="二维码" width="256" height="256" loading="lazy" decoding="async"/>
-                                                <button type="button" data-download-image="<%- url_for(theme.home_banner.social_links.qrs[key]) %>" data-download-filename="qr-code-<%= key %>.png" class="mt-2 px-4 py-1.5 bg-blue-500 hover:bg-blue-600 text-white rounded-full text-sm transition-colors duration-200 flex items-center gap-1.5 shadow-md">
+                                                <button type="button" data-download-image="<%- url_for(theme.home_banner.social_links.qrs[key]) %>" data-download-filename="qr-code-<%= key %>.png" class="social-qr-download mt-2 min-h-[44px] px-4 py-2 rounded-full text-sm transition-colors duration-200 flex items-center gap-1.5">
                                                     <i class="fa-solid fa-download" aria-hidden="true"></i>
                                                     <span>下载</span>
                                                 </button>
@@ -113,13 +121,14 @@
                                     </span>
                                 <% } else { %>
                                     <span class="social-contact-item-qr <%= key %> cursor-pointer group relative">
-                                        <button type="button" class="social-qr-trigger" aria-label="显示 <%= key %> 二维码" aria-expanded="false">
-                                            <i class="fa-brands fa-fw fa-lg fa-<%= key %>" aria-hidden="true"></i>
+                                        <button type="button" class="social-qr-trigger" aria-label="显示 <%= key === 'weixin' ? '微信' : (key === 'qq' ? 'QQ' : key) %> 二维码" aria-expanded="false">
+                                            <i class="fa-brands fa-fw fa-<%= key %>" aria-hidden="true"></i>
+                                            <span class="social-contact-label"><%= key === 'weixin' ? '微信' : (key === 'qq' ? 'QQ' : key) %></span>
                                         </button>
                                             <div class="social-qr-container absolute h-auto w-64 backdrop-blur-2xl bg-white/90 dark:bg-gray-800/90 border border-white/20 dark:border-gray-500/30 overflow-hidden rounded-2xl bottom-0 mb-14 right-0 invisible group-hover:visible group-focus-within:visible opacity-0 group-hover:opacity-100 group-focus-within:opacity-100 translate-y-0.5 group-hover:translate-y-0 group-focus-within:translate-y-0 transition-all flex flex-col items-center pb-3 shadow-2xl z-50">
                                                 <img class="social-contacts-qr w-full"
                                                      src="<%- url_for(theme.home_banner.social_links.qrs[key]) %>" alt="<%= key %> 二维码" width="256" height="256" loading="lazy" decoding="async"/>
-                                                <button type="button" data-download-image="<%- url_for(theme.home_banner.social_links.qrs[key]) %>" data-download-filename="qr-code-<%= key %>.png" class="mt-2 px-4 py-1.5 bg-blue-500 hover:bg-blue-600 text-white rounded-full text-sm transition-colors duration-200 flex items-center gap-1.5 shadow-md">
+                                                <button type="button" data-download-image="<%- url_for(theme.home_banner.social_links.qrs[key]) %>" data-download-filename="qr-code-<%= key %>.png" class="social-qr-download mt-2 min-h-[44px] px-4 py-2 rounded-full text-sm transition-colors duration-200 flex items-center gap-1.5">
                                                     <i class="fa-solid fa-download" aria-hidden="true"></i>
                                                     <span>下载</span>
                                                 </button>

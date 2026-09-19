@@ -34,6 +34,14 @@
     word-wrap normal !important
     word-break normal
 
+  .home-latest-heading
+    margin 0 0 18px
+    padding 0 4px
+    color var(--first-text-color)
+    font-size 1.4rem
+    font-weight 600
+    line-height 1.5
+
   .home-article-list
     .home-article-item
       position relative
@@ -117,9 +125,15 @@
         margin 0
 
       .home-article-content
+        max-width 70ch
         word-wrap break-word
-        text-align justify
+        text-align start
         color var(--default-text-color)
+        font-size 16px
+        line-height 1.6
+
+        p
+          margin 0
 
       .home-article-meta-info-container
         display flex
@@ -140,12 +154,8 @@
             ul, li
               display inline
 
-          .home-article-category
-            +redefine-mobile()
-              display none
-
           .home-article-tag
-            +redefine-tablet()
+            +redefine-mobile()
               display none
 
         hr
@@ -157,6 +167,17 @@
 
         a
           color var(--third-text-color)
+
+          &:hover
+            color var(--primary-color)
+
+        .home-article-read-more
+          display inline-flex
+          min-height 44px
+          align-items center
+          flex-shrink 0
+          color var(--first-text-color)
+          font-weight 600
 
           &:hover
             color var(--primary-color)

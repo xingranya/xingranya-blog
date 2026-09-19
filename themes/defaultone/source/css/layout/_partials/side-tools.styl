@@ -51,20 +51,20 @@ $right-bottom-tools-border-radius = 12px
           box-shadow var(--redefine-box-shadow)
 
     &.tool-dark-light-toggle
-      background linear-gradient(135deg, var(--primary-color), #ff9eb5)
-      box-shadow 0 4px 15px rgba(255, 192, 203, 0.4)
-      transition all 0.3s ease
-      
+      color var(--first-text-color)
+      background var(--background-color-transparent-80)
+      backdrop-filter blur(18px) saturate(1.12)
+      -webkit-backdrop-filter blur(18px) saturate(1.12)
+
       i
-        color white
-        
+        color var(--first-text-color)
+
       &:hover
-        background linear-gradient(135deg, #ff9eb5, var(--primary-color))
-        box-shadow 0 6px 20px rgba(255, 192, 203, 0.6)
-        transform translateY(-2px)
-        
-      &:active
-        transform translateY(0)
+        color var(--primary-color)
+        background var(--background-color-transparent-80)
+
+        i
+          color var(--primary-color)
 
   .hidden-tools-list
     opacity 0

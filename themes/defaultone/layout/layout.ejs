@@ -3,6 +3,13 @@
 <%- partial('components/header/head') %>
 
 	<body>
+		<script>
+			(function () {
+				var dark = document.documentElement.classList.contains('dark');
+				document.body.classList.add(dark ? 'dark-mode' : 'light-mode');
+				document.body.classList.remove(dark ? 'light-mode' : 'dark-mode');
+			})();
+		</script>
 		<%- body %>
 			<%- partial('components/scripts') %>
 				<% if (theme.plugins.aplayer.enable) { %>

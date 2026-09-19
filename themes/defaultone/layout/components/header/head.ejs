@@ -1,6 +1,21 @@
 <head>
     <meta charset="utf-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1">
+    <meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
+    <script>
+      (function () {
+        var dark = <%= theme.colors.default_mode === 'dark' ? 'true' : 'false' %>;
+        try {
+          var raw = localStorage.getItem('REDEFINE-THEME-STATUS');
+          if (raw) {
+            var parsed = JSON.parse(raw);
+            if (typeof parsed.isDark === 'boolean') dark = parsed.isDark;
+          }
+        } catch (e) {}
+        document.documentElement.classList.add(dark ? 'dark' : 'light');
+        document.documentElement.classList.remove(dark ? 'light' : 'dark');
+        window.__redefineIsDark = dark;
+      })();
+    </script>
     <style>
         html.redefine-style-loading {
             background: var(--redefine-loading-background, #202124);
@@ -166,7 +181,7 @@
                                                                     </script>
                                                                     <% } %>
                                                                         <!--- Icon Part-->
-                                                                        <link rel="icon" type="image/svg+xml"
+                                                                        <link rel="icon" type="image/png"
                                                                             href="<%= url_for(theme.defaults.favicon) %>"
                                                                             sizes="any">
                                                                         <link rel="icon" type="image/png"

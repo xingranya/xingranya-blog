@@ -4,13 +4,15 @@
             <% if (theme.defaults.hasOwnProperty('avatar') && theme.defaults.avatar) { %>
                 <a class="logo-image h-8 w-8 sm:w-10 sm:h-10 mr-3" href="<%= config.root %>">
                     <%- image_tag(theme.defaults.avatar, {
-                        class: "w-full h-full rounded-full object-cover"
+                        class: "w-full h-full rounded-full object-cover",
+                        alt: theme.info.author || config.author || '星苒鸭'
                     }) %>
                 </a>
             <% } else if (theme.defaults.hasOwnProperty('logo') && theme.defaults.logo) { %>
                 <a class="logo-image h-8 w-8 sm:w-10 sm:h-10 mr-3" href="<%= config.root %>">
                     <%- image_tag(theme.defaults.logo, {
-                        class: "w-full h-full rounded-sm"
+                        class: "w-full h-full rounded-sm",
+                        alt: theme.info.title || config.title || '星苒鸭 · 博客'
                     }) %>
                 </a>
             <% } %>
@@ -33,7 +35,7 @@
                                 let linkHref = hasSubmenus ? '#' : url_for(link.path);
                                 let onClickAction = hasSubmenus ? 'onClick="return false;"' : '';
                                 let iconClass = link.icon ? `<i class="${link.icon} fa-fw"></i>` : '';
-                                let linkText = __(i.toLowerCase()).toUpperCase();
+                                let linkText = __(i.toLowerCase());
                                 let dropdownIcon = hasSubmenus ? '<i class="fa-solid fa-chevron-down fa-fw"></i>' : '';
                             %>
 
@@ -53,7 +55,7 @@
                                         <% for (var submenu in link.submenus) { %>
                                             <li>
                                                 <a href="<%- url_for(link.submenus[submenu]) %>">
-                                                    <%= __(submenu.toLowerCase()).toUpperCase() %>
+                                                    <%= __(submenu.toLowerCase()) %>
                                                 </a>
                                             </li>
                                         <% } %>

@@ -57,6 +57,12 @@ $home-banner-icon-size = 1.6rem
         letter-spacing 0
         text-wrap balance
 
+      .home-banner-tagline
+        margin 8px 0 0
+        font-family $default-font-family
+        font-weight 500
+        letter-spacing 0
+
       p
         margin 0
         opacity 0.95
@@ -84,6 +90,42 @@ $home-banner-icon-size = 1.6rem
         max-width 95%
         font-size: $title-font-size * 0.75
         padding 16px 24px
+
+.home-chrome-glass
+  color var(--first-text-color)
+  background var(--background-color-transparent-40)
+  border 1px solid var(--border-color)
+  box-shadow var(--redefine-box-shadow-flat)
+  backdrop-filter blur(18px) saturate(1.12)
+  -webkit-backdrop-filter blur(18px) saturate(1.12)
+
+.social-contacts
+  .social-contact-item a,
+  .social-qr-trigger
+    display inline-flex
+    min-width 44px
+    min-height 44px
+    flex-direction column
+    align-items center
+    justify-content center
+    gap 2px
+    padding 4px 6px
+    color inherit
+    text-decoration none
+
+  .social-contact-label
+    font-size 0.92rem
+    font-weight 500
+    line-height 1.2
+    white-space nowrap
+
+.social-qr-download
+  color var(--first-text-color)
+  background var(--background-color-transparent-80)
+  border 1px solid var(--border-color)
+
+  &:hover
+    color var(--primary-color)
 
 .social-contact-item-qr
   .social-qr-trigger

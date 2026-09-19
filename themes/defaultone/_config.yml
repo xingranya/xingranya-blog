@@ -16,13 +16,13 @@ info:
 # 文档: https://redefine-docs.ohevan.com/basic/defaults
 defaults:
   # 网站图标 Favicon
-  favicon: /images/favicon.svg?v=20260501
+  favicon: /images/favicon.png?v=20260919
   # 网站图标 PNG 兜底
-  favicon_png: /images/favicon.png?v=20260501
+  favicon_png: /images/favicon.png?v=20260919
   # 站点 Logo
-  logo: /images/avatar-0.jpg
+  logo: /images/avatar-0.png
   # 站点头像
-  avatar: /images/avatar-0.jpg
+  avatar: /images/avatar-0.png
 # 图片配置 <<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<< end
 
 

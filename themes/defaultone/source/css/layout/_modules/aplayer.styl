@@ -741,6 +741,13 @@ $aplayer-height-lrc= $aplayer-height + $lrc-height - 6
   }
 }
 
+body .aplayer.aplayer-fixed
+  z-index 30
+
+.home-paginator
+  +redefine-tablet()
+    padding-bottom 88px
+
 @keyframes rotate {
   0% {
     transform rotate(0)

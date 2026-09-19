@@ -9,8 +9,9 @@
     margin 0 0.3rem
 
   a.active
-    color var(--background-color)
-    background var(--primary-color)
+    color var(--first-text-color)
+    background transparent
+    border 1px solid var(--primary-color)
 
   a.prev
     float left
@@ -31,14 +32,19 @@
       padding 8px 2px
 
   a.page-number, span.page-number, a.prev, a.next
-    display inline-block
+    display inline-flex
+    min-width 44px
+    min-height 44px
     position relative
+    align-items center
+    justify-content center
     text-align center
     cursor pointer
     white-space nowrap
     border-radius $redefine-border-radius-small
-    padding 8px 16px
-    background var(--background-color)
+    padding 8px 12px
+    color var(--first-text-color)
+    background var(--background-color-transparent-80)
     hover-style(
       true,
       1.06,
@@ -46,16 +52,18 @@
     )
 
     &:hover
-      color var(--background-color)
-      background var(--primary-color)
+      color var(--first-text-color)
+      background unquote('color-mix(in srgb, var(--primary-color) 22%, transparent)')
 
     &:active
       transform scale(0.95)
       transition transform 0.1s ease
 
   span.current
-    color var(--background-color)
-    background var(--primary-color)
+    color var(--first-text-color)
+    background transparent
+    border 1px solid var(--primary-color)
+    cursor default
 
   i.fa-regular
     color var(--default-text-color)

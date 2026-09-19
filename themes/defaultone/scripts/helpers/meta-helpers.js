@@ -129,7 +129,7 @@ hexo.extend.helper.register('seoJsonLd', function (config, theme, page) {
   const authorName = (theme.info && theme.info.author) || config.author || 'xingranya';
   const description = seoDescription(config, theme, page);
   const image = seoImage(config, theme, page);
-  const logo = toAbsoluteUrl(config, (theme.defaults && (theme.defaults.logo || theme.defaults.avatar)) || '/images/avatar-0.jpg');
+  const logo = toAbsoluteUrl(config, (theme.defaults && (theme.defaults.logo || theme.defaults.avatar)) || '/images/avatar-0.png');
   const pageUrl = canonicalUrl(config, page);
   const personId = origin + '/#person';
   const websiteId = origin + '/#website';
