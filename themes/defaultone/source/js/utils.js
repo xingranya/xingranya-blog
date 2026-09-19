@@ -26,7 +26,7 @@ export default function initUtils(signal) {
     prevScrollValue: 0,
     fontSizeLevel: 0,
     isHomeBannerBlurred: false,
-    triggerViewHeight: 0.5 * window.innerHeight,
+    triggerViewHeight: 0.25 * window.innerHeight,
     tocUtils: null,
 
     isHasScrollProgressBar: theme.global.scroll_progress.bar === true,
