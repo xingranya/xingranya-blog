@@ -1,4 +1,11 @@
 {
+  "redirects": [
+    {
+      "source": "/*",
+      "destination": "https://blog.xran.uk/:splat",
+      "statusCode": 301
+    }
+  ],
   "headers": [
     {
       "source": "/*.md",
