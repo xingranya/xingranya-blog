@@ -10,8 +10,17 @@
                     :</strong> <%= date(page.updated, `${config.date_format} ${config.time_format}`) %>
             </li>
         <% } %>
+        <% const blogUrl = (theme.info && theme.info.url) || config.url || 'https://blog.xran.uk'; %>
+        <% const homepageUrl = (theme.info && theme.info.homepage) || 'https://xran.uk'; %>
+        <% const postUrl = getPostUrl(blogUrl, page.path); %>
         <li>
-            <strong><%- __('copyright.link') %>:</strong> <%= getPostUrl((theme.info.url || config.url), page.path) %>
+            <strong><%- __('copyright.link') %>:</strong> <a href="<%= postUrl %>" rel="canonical"><%= postUrl %></a>
+        </li>
+        <li>
+            <strong><%- __('copyright.homepage') %>:</strong> <a href="<%= homepageUrl %>" target="_blank" rel="noopener"><%= homepageUrl %></a>
+        </li>
+        <li>
+            <strong><%- __('copyright.blog') %>:</strong> <a href="<%= blogUrl %>"><%= blogUrl %></a>
         </li>
         <li>
             <strong>

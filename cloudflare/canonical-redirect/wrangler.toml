@@ -1,0 +1,11 @@
+name = "xran-blog-canonical-redirect"
+main = "src/index.js"
+compatibility_date = "2026-09-18"
+account_id = "40cd6efd411585fc0ac8a7e10f2d5d14"
+workers_dev = false
+
+# 只绑旧镜像域名。不要绑 blog.xran.uk，国内流量继续走 EdgeOne。
+routes = [
+  { pattern = "xingranya.com/*", zone_name = "xingranya.com" },
+  { pattern = "www.xingranya.com/*", zone_name = "xingranya.com" }
+]

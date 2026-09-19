@@ -72,7 +72,9 @@ site_wordcount: "共 %s 字"
 copyright:
   author: 作者
   title: 標題
-  link: 連結
+  link: 本文連結
+  homepage: 個人主頁
+  blog: 部落格
   create_time: 撰寫于
   update_time: 更新于
   license_title: 版權宣告

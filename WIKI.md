@@ -75,7 +75,11 @@ npm run watch:css
 
 - 默认分享图：`source/images/og.svg`
 - robots 文件：`source/robots.txt`
-- sitemap：`https://xingranya.cn/sitemap.xml`
+- 正式域名：`https://blog.xran.uk`
+- 个人主页（规划中）：`https://xran.uk`
+- sitemap：`https://blog.xran.uk/sitemap.xml`
+- robots：`https://blog.xran.uk/robots.txt`
+- RSS：`https://blog.xran.uk/atom.xml`
 - 站点关键词在根目录 `_config.yml`
 
 ## 维护约束

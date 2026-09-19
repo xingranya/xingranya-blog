@@ -2,6 +2,9 @@
 
 这是我的个人博客项目，基于 [Hexo](https://hexo.io/) 构建，当前使用自定义主题 `themes/defaultone`。
 
+- 博客正式地址：https://blog.xran.uk
+- 个人主页（规划中）：https://xran.uk
+
 ## 当前项目形态
 
 这是一个静态博客站点仓库，当前仓库内不包含独立的 `admin/` 后台目录。

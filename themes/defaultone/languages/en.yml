@@ -71,7 +71,9 @@ site_wordcount: "%s words in total"
 copyright:
   author: Author
   title: Title
-  link: Link
+  link: Post URL
+  homepage: Homepage
+  blog: Blog
   create_time: Created at
   update_time: Updated at
   license_title: License

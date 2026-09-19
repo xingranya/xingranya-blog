@@ -3,7 +3,8 @@
 ## 项目信息
 
 - **项目类型**: Hexo 静态博客
-- **网站地址**: https://xingranya.cn
+- **网站地址**: https://blog.xran.uk
+- **个人主页（规划中）**: https://xran.uk
 - **Hexo 版本**: 7.3.0
 - **主题**: defaultone
 
@@ -53,8 +54,8 @@ npm run build
    - 点击左侧【网站】
    - 点击【添加站点】
    - 填写信息：
-     - **域名**: `xingranya.cn`（或你的服务器IP）
-     - **根目录**: `/www/wwwroot/xingranya.cn`
+     - **域名**: `blog.xran.uk`（或你的服务器IP）
+     - **根目录**: `/www/wwwroot/blog.xran.uk`
      - **FTP**: 不创建
      - **数据库**: 不创建
      - **PHP版本**: 纯静态
@@ -65,7 +66,7 @@ npm run build
 
 #### 方式 A：使用宝塔文件管理器
 1. 点击左侧【文件】
-2. 进入 `/www/wwwroot/xingranya.cn`
+2. 进入 `/www/wwwroot/blog.xran.uk`
 3. 删除默认的 `index.html` 和 `404.html`
 4. 点击【上传】
 5. 将本地 `public` 文件夹内的**所有内容**（不是public文件夹本身）上传到网站根目录
@@ -131,13 +132,13 @@ hexo version
 方式 B：使用 Git 克隆
 ```bash
 cd /www/wwwroot
-git clone <你的项目Git仓库地址> xingranya.cn
-cd xingranya.cn
+git clone <你的项目Git仓库地址> blog.xran.uk
+cd blog.xran.uk
 ```
 
 2. **安装依赖**
 ```bash
-cd /www/wwwroot/xingranya.cn
+cd /www/wwwroot/blog.xran.uk
 npm install
 ```
 
@@ -148,7 +149,7 @@ npm install
 
 ```nginx
 location / {
-    root /www/wwwroot/xingranya.cn/public;
+    root /www/wwwroot/blog.xran.uk/public;
     index index.html index.htm;
 }
 ```
@@ -164,18 +165,18 @@ location / {
 ### 第五步：构建博客
 
 ```bash
-cd /www/wwwroot/xingranya.cn
+cd /www/wwwroot/blog.xran.uk
 hexo clean
 hexo generate
 ```
 
 ### 第六步：配置自动部署脚本（可选）
 
-创建一个 Shell 脚本 `/www/wwwroot/xingranya.cn/deploy.sh`：
+创建一个 Shell 脚本 `/www/wwwroot/blog.xran.uk/deploy.sh`：
 
 ```bash
 #!/bin/bash
-cd /www/wwwroot/xingranya.cn
+cd /www/wwwroot/blog.xran.uk
 git pull origin main
 npm install
 hexo clean
@@ -186,7 +187,7 @@ echo "部署完成: $(date)"
 在宝塔面板【计划任务】中添加定时任务：
 - 任务类型：Shell脚本
 - 执行周期：根据需要设置
-- 脚本内容：`bash /www/wwwroot/xingranya.cn/deploy.sh`
+- 脚本内容：`bash /www/wwwroot/blog.xran.uk/deploy.sh`
 
 ---
 
@@ -207,7 +208,7 @@ hexo clean && hexo generate
 ```bash
 # 方式 A：直接在服务器操作
 ssh 登录服务器
-cd /www/wwwroot/xingranya.cn
+cd /www/wwwroot/blog.xran.uk
 hexo new "新文章标题"
 # 编辑文章
 hexo clean && hexo generate
@@ -219,7 +220,7 @@ git commit -m "更新文章"
 git push
 
 # 服务器
-cd /www/wwwroot/xingranya.cn
+cd /www/wwwroot/blog.xran.uk
 git pull
 hexo clean && hexo generate
 ```
@@ -233,8 +234,8 @@ hexo clean && hexo generate
 **原因**：Nginx 配置的 root 路径不正确
 
 **解决**：
-- 方式一：确保 root 指向 `/www/wwwroot/xingranya.cn`
-- 方式二：确保 root 指向 `/www/wwwroot/xingranya.cn/public`
+- 方式一：确保 root 指向 `/www/wwwroot/blog.xran.uk`
+- 方式二：确保 root 指向 `/www/wwwroot/blog.xran.uk/public`
 
 ### 2. Live2D 不显示
 
@@ -325,8 +326,8 @@ location ~* \.(js|css|png|jpg|jpeg|gif|ico|svg|woff|woff2|ttf|eot)$ {
 
 2. **设置目录权限**
    ```bash
-   chown -R www:www /www/wwwroot/xingranya.cn
-   chmod -R 755 /www/wwwroot/xingranya.cn
+   chown -R www:www /www/wwwroot/blog.xran.uk
+   chmod -R 755 /www/wwwroot/blog.xran.uk
    ```
 
 3. **安装防火墙**
@@ -338,7 +339,7 @@ location ~* \.(js|css|png|jpg|jpeg|gif|ico|svg|woff|woff2|ttf|eot)$ {
 ## 联系方式
 
 如有问题，请联系：
-- 网站：https://xingranya.cn
+- 网站：https://blog.xran.uk
 - 作者：xingranya
 
 ---

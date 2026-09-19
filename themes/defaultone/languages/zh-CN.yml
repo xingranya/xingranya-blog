@@ -74,7 +74,9 @@ site_wordcount: "共 %s 字"
 copyright:
   title: 标题
   author: 作者
-  link: 链接
+  link: 本文链接
+  homepage: 个人主页
+  blog: 博客
   create_time: 创建于
   update_time: 更新于
   license_title: 版权声明

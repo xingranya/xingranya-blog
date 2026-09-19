@@ -1,4 +1,8 @@
 User-agent: *
 Allow: /
 
-Sitemap: https://xingranya.cn/sitemap.xml
+Disallow: /page/
+Disallow: /search.xml
+Disallow: /live2dw/
+
+Sitemap: https://blog.xran.uk/sitemap.xml

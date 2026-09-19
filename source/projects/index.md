@@ -3,6 +3,7 @@ title: 我的项目
 date: 2025-10-24 21:01:26
 type: "page"
 comments: false
+description: 星苒鸭的个人项目列表，包括 GSAT、效率工具和开源实践。
 ---
 
 <style>

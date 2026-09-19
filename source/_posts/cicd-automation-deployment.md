@@ -230,7 +230,7 @@ jobs:
           github_token: ${{ secrets.GITHUB_TOKEN }}
           publish_dir: ./public # Hexo 生成的静态文件目录
           publish_branch: gh-pages
-          cname: xingranya.cn # 自定义域名（可选）
+          cname: blog.xran.uk # 自定义域名（可选）
 
       # 部署到服务器（可选）
       - name: 部署到服务器

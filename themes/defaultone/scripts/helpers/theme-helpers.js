@@ -86,15 +86,15 @@ hexo.extend.helper.register(
 );
 
 hexo.extend.helper.register("getPostUrl", function (rootUrl, path) {
+  const suffix = String(path || "").replace(/^\/+/, "").replace(/index\.html$/i, "");
   if (rootUrl) {
     let { href } = new URL(rootUrl);
     if (href.substring(href.length - 1) !== "/") {
       href = href + "/";
     }
-    return href + path;
-  } else {
-    return path;
+    return href + suffix;
   }
+  return suffix;
 });
 
 hexo.extend.helper.register("renderJS", function (path, options = {}) {

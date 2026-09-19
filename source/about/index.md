@@ -1,6 +1,7 @@
 ---
 title: 关于我
 date: 2026-06-27 12:53:46
+description: 星苒鸭（xingranya）的个人简介、获奖经历、项目作品和联系方式。
 ---
 <div align="center">
   <img src="https://capsule-render.vercel.app/api?type=waving&height=260&color=gradient&customColorList=12,20,27,30&text=%E6%98%9F%E8%8B%92%E9%B8%AD%20%7C%20xingranya&fontSize=48&fontColor=ffffff&fontAlignY=38&desc=%E7%83%AD%E7%88%B1%E4%BB%A3%E7%A0%81%20%E2%80%A2%20%E6%8C%81%E7%BB%AD%E6%8A%98%E8%85%BE%20%E2%80%A2%20%E4%BA%AB%E5%8F%97%E5%88%9B%E9%80%A0&descSize=16&descAlignY=58&animation=fadeIn" width="100%" />
@@ -19,7 +20,8 @@ date: 2026-06-27 12:53:46
   <p>🎓 计算机科学与技术本科生 · 💻 全栈开发爱好者</p>
 
 <p>
-    <a href="https://xingranya.cn" target="_blank"><img src="https://img.shields.io/badge/🌐%20Website-xingranya.cn-0A66C2?style=for-the-badge&logo=google-chrome&logoColor=white" alt="Website" /></a>
+    <a href="https://xran.uk" target="_blank"><img src="https://img.shields.io/badge/🌐%20Homepage-xran.uk-0A66C2?style=for-the-badge&logo=google-chrome&logoColor=white" alt="Homepage" /></a>
+    <a href="https://blog.xran.uk" target="_blank"><img src="https://img.shields.io/badge/📝%20Blog-blog.xran.uk-FF6B8B?style=for-the-badge&logo=hexo&logoColor=white" alt="Blog" /></a>
     <a href="mailto:xingranya@outlook.jp"><img src="https://img.shields.io/badge/📮%20Email-xingranya@outlook.jp-EA4335?style=for-the-badge&logo=microsoft-outlook&logoColor=white" alt="Email" /></a>
     <a href="https://github.com/xingranya?tab=followers"><img src="https://img.shields.io/github/followers/xingranya?label=👥%20Followers&style=for-the-badge" alt="Followers" /></a>
     <img src="https://komarev.com/ghpvc/?username=xingranya&style=for-the-badge&label=👀%20Profile+Views" alt="Profile Views" />
@@ -36,7 +38,8 @@ date: 2026-06-27 12:53:46
 
 - 🤝 喜欢研究：**有技术挑战、能真实创造价值的项目**
 - 📬 联系方式：`xingranya@outlook.jp`
-- 🌐 个人网站：`https://xingranya.cn`
+- 🌐 个人主页：[https://xran.uk](https://xran.uk)
+- 📝 博客：[https://blog.xran.uk](https://blog.xran.uk)
 
 > 💬 一句话：**把复杂问题拆简单，把简单方案做扎实。**
 
@@ -194,8 +197,9 @@ date: 2026-06-27 12:53:46
 如果你也喜欢折腾技术、做有趣项目，欢迎来交流～ 😄
 
 - 📮 邮箱：**xingranya@outlook.jp**
-- 🌐 网站：**https://xingranya.cn**
-- 🐙 GitHub：**https://github.com/xingranya**
+- 🌐 个人主页：**[https://xran.uk](https://xran.uk)**
+- 📝 博客：**[https://blog.xran.uk](https://blog.xran.uk)**
+- 🐙 GitHub：**[https://github.com/xingranya](https://github.com/xingranya)**
 
 <div align="center">
   <img src="https://capsule-render.vercel.app/api?type=waving&height=100&color=gradient&customColorList=12,20,27,30&section=footer" width="100%" />

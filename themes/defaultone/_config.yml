@@ -5,8 +5,10 @@ info:
   subtitle: xingranya · 个人博客与作品集
   # 作者名称
   author: 星苒鸭
-  # 站点 URL
-  url: https://xingranya.cn
+  # 站点 URL（博客正式地址）
+  url: https://blog.xran.uk
+  # 个人主页
+  homepage: https://xran.uk
 # 基础信息 <<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<< end
 
 
@@ -88,6 +90,14 @@ global:
     enable: true
     image: /images/og.png  # 默认 og:image
     description: 星苒鸭 xingranya · 个人博客与作品集
+  # 搜索引擎索引策略
+  seo:
+    robots:
+      home_first_page: index,follow
+      home_other_pages: noindex,follow
+      archive: noindex,follow
+      category: index,follow
+      tag: index,follow
   # Google Analytics 分析
   google_analytics:
     enable: false # 是否启用 GA
@@ -427,7 +437,7 @@ inject:
 plugins:
   # RSS 订阅（需要 hexo-generator-feed）。https://github.com/hexojs/hexo-generator-feed
   feed:
-    enable: false # 是否启用
+    enable: true # 是否启用
   # Aplayer 音乐播放器：https://github.com/DIYgod/APlayer
   aplayer:
     enable: true # 是否启用
