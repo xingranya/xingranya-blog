@@ -7,6 +7,15 @@ const THEME_ROOT = path.join(__dirname, "../..");
 const SOURCE_DIR = path.join(THEME_ROOT, "source/js");
 const BUILD_DIR = path.join(THEME_ROOT, "source/js/build");
 const LIB_PATTERNS = [`${SOURCE_DIR}/libs/**/*`];
+const CORE_BUNDLE_FILES = [
+  "Swup.min.js",
+  "SwupSlideTheme.min.js",
+  "SwupScriptsPlugin.min.js",
+  "SwupProgressPlugin.min.js",
+  "SwupScrollPlugin.min.js",
+  "SwupPreloadPlugin.min.js",
+  "anime.min.js",
+];
 const IGNORE_PATTERNS = [
   path.join(SOURCE_DIR, "libs/**"),
   path.join(BUILD_DIR, "**"),
@@ -108,6 +117,19 @@ async function processFile(file) {
   }
 }
 
+async function buildCoreBundle() {
+  const chunks = await Promise.all(
+    CORE_BUNDLE_FILES.map(async (file) => {
+      const code = await fs.readFile(path.join(SOURCE_DIR, "libs", file), "utf8");
+      return code.replace(/\n?\/\/[#@] sourceMappingURL=.*?\s*$/u, "");
+    }),
+  );
+  const destination = path.join(BUILD_DIR, "libs", "redefine-core.min.js");
+  await ensureDirectoryExists(path.dirname(destination));
+  await fs.writeFile(destination, chunks.join(";\n"));
+  console.log(`✓ Built core library bundle -> ${destination}`);
+}
+
 async function minifyJS() {
   try {
     await ensureDirectoryExists(BUILD_DIR);
@@ -137,6 +159,7 @@ async function minifyJS() {
       const buildPath = path.join(BUILD_DIR, relativePath);
       await copyFile(file, buildPath);
     }
+    await buildCoreBundle();
 
     // Process remaining files in parallel with a concurrency limit
     const concurrencyLimit = 4; // Adjust based on your needs

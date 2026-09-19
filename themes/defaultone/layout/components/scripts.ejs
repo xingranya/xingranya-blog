@@ -4,15 +4,7 @@
     window.__redefineCoreLoaderBound = true;
 
     var scriptPromises = new Map();
-    var swupSources = <%- JSON.stringify([
-      'libs/Swup.min.js',
-      'libs/SwupSlideTheme.min.js',
-      'libs/SwupScriptsPlugin.min.js',
-      'libs/SwupProgressPlugin.min.js',
-      'libs/SwupScrollPlugin.min.js',
-      'libs/SwupPreloadPlugin.min.js'
-    ].map(function (path) { return url_for('/js/build/' + path); })) %>;
-    var animeSource = <%- JSON.stringify(url_for('/js/build/libs/anime.min.js')) %>;
+    var coreLibrarySource = <%- JSON.stringify(url_for('/js/build/libs/redefine-core.min.js')) %>;
 
     function loadScript(src, id, module) {
       if (scriptPromises.has(src)) return scriptPromises.get(src);
@@ -53,12 +45,8 @@
       if (window.__redefineCorePromise) return window.__redefineCorePromise;
 
       window.__redefineCorePromise = (async function () {
+        await loadScript(coreLibrarySource);
         if (window.__redefineSinglePageEnabled) {
-          await loadScript(swupSources[0]);
-          await Promise.all(
-            swupSources.slice(1).map(function (source) { return loadScript(source); })
-              .concat(loadScript(animeSource))
-          );
           window.swup = new window.Swup({
             plugins: [
               new window.SwupScriptsPlugin({ optin: true }),
@@ -69,8 +57,6 @@
             ],
             containers: ['#swup'],
           });
-        } else {
-          await loadScript(animeSource);
         }
 
         await loadScript(<%- JSON.stringify(url_for('/js/build/main.js')) %>, 'redefine-main', true);
