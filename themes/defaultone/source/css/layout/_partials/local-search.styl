@@ -14,16 +14,24 @@ $icon-size = 1.2rem
   z-index $z-index-8
   transition-t('visibility, background', '0, 0', '0.3, 0.3', 'ease, ease')
 
+  @media (prefers-reduced-motion: reduce)
+    transition none
+
   &.active
     visibility visible
-    background rgba(0, 0, 0, 0.35)
+    background rgba(0, 0, 0, 0.28)
+    backdrop-filter blur(10px)
+    -webkit-backdrop-filter blur(10px)
 
     .search-popup
       transform scale(1)
 
   .search-popup
-    background var(--background-color)
-    border-radius 5px
+    background var(--background-color-transparent-80)
+    backdrop-filter blur(22px) saturate(1.12)
+    -webkit-backdrop-filter blur(22px) saturate(1.12)
+    border-radius 14px
+    border 1px solid var(--border-color)
     height 80%
     width 70%
     margin auto
@@ -37,18 +45,27 @@ $icon-size = 1.2rem
     +redefine-mobile()
       width 90%
 
+    @media (prefers-reduced-motion: reduce)
+      transform none
+      transition none
+
     .search-header
-      background var(--fourth-text-color)
-      border-top-left-radius 2px
-      border-top-right-radius 2px
+      background transparent
+      border-bottom 1px solid var(--border-color)
+      border-top-left-radius 14px
+      border-top-right-radius 14px
       display flex
-      padding 10px
+      align-items center
+      padding 8px 10px
 
       .search-input-field-pre, .popup-btn-close
         font-size $icon-size
+        min-width 44px
+        min-height 44px
         padding 0 10px
         display flex
         align-items center
+        justify-content center
 
       .search-input-field-pre
         cursor pointer
@@ -66,8 +83,14 @@ $icon-size = 1.2rem
           border 0
           outline 0
           width 100%
+          min-height 44px
           font-size 1.2rem
           color var(--default-text-color)
+
+          &:focus-visible
+            outline 2px solid var(--primary-color)
+            outline-offset 3px
+            border-radius $redefine-border-radius-small
 
           &::-webkit-search-cancel-button
             display none

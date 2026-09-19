@@ -123,38 +123,48 @@ description: 星苒鸭（xingranya）的个人简介、获奖经历、项目作�
 
 ## 🚀 精选项目
 
+完整仓库和贡献记录在 [项目页](/projects/)。
+
 <div align="center">
+  <a href="https://github.com/xingranya/GitHub-Stars-AI-Tools">
+    <img src="https://github-readme-stats.vercel.app/api/pin/?username=xingranya&repo=GitHub-Stars-AI-Tools&hide_border=true&theme=transparent" width="49%" alt="GitHub-Stars-AI-Tools" />
+  </a>
+  <a href="https://github.com/xingranya/xingranya-home">
+    <img src="https://github-readme-stats.vercel.app/api/pin/?username=xingranya&repo=xingranya-home&hide_border=true&theme=transparent" width="49%" alt="xingranya-home" />
+  </a>
+  <a href="https://github.com/xingranya/xingranya-blog">
+    <img src="https://github-readme-stats.vercel.app/api/pin/?username=xingranya&repo=xingranya-blog&hide_border=true&theme=transparent" width="49%" alt="xingranya-blog" />
+  </a>
   <a href="https://github.com/xingranya/OQQWall_rust">
     <img src="https://github-readme-stats.vercel.app/api/pin/?username=xingranya&repo=OQQWall_rust&hide_border=true&theme=transparent" width="49%" alt="OQQWall_rust" />
   </a>
   <a href="https://github.com/xingranya/SPlayer-Next">
     <img src="https://github-readme-stats.vercel.app/api/pin/?username=xingranya&repo=SPlayer-Next&hide_border=true&theme=transparent" width="49%" alt="SPlayer-Next" />
   </a>
-  <a href="https://github.com/xingranya/nosleep-mac">
-    <img src="https://github-readme-stats.vercel.app/api/pin/?username=xingranya&repo=nosleep-mac&hide_border=true&theme=transparent" width="49%" alt="nosleep-mac" />
-  </a>
-  <a href="https://github.com/xingranya/CC-Statusline-Builder">
-    <img src="https://github-readme-stats.vercel.app/api/pin/?username=xingranya&repo=CC-Statusline-Builder&hide_border=true&theme=transparent" width="49%" alt="CC-Statusline-Builder" />
+  <a href="https://github.com/xingranya/sync-readme-wiki">
+    <img src="https://github-readme-stats.vercel.app/api/pin/?username=xingranya&repo=sync-readme-wiki&hide_border=true&theme=transparent" width="49%" alt="sync-readme-wiki" />
   </a>
 </div>
 
-### 🧩 项目方向（持续迭代中）
+### 项目方向
 
-- 📝 **xingranya-blog**：个人内容平台，持续打磨博客展示、内容沉淀与前端体验。
-- 🧱 **JingWenWall**：聚合场景下的校园小程序交互和结构打磨。
-- 🔧 **OQQWall_rust**：参与审核后台、发布流程与多架构构建优化，提升项目交付稳定性。
-- 🧩 **SPlayer-Next**：参与 macOS 端界面细节修复，改善灵动岛刘海区域对齐体验。
-- 🤖 **chaoxing-agent-skill**：补充 Playwright CLI CAPTCHA 处理方案，增强通用 Agent 自动化能力。
+- **xingranya-home**：个人主页 [xran.uk](https://xran.uk)
+- **xingranya-blog**：博客 [blog.xran.uk](https://blog.xran.uk)
+- **GitHub-Stars-AI-Tools (GSAT)**：本地 GitHub Stars AI 知识库
+- **JingWenWall**：校园墙小程序与前后端结构
+- **OQQWall_rust / SPlayer-Next / chaoxing-agent-skill / CC-Statusline-Builder**：已合并到上游的开源贡献
+- **sync-readme-wiki / nosleep-mac / CervixDetectAI**：文档技能、桌面工具和医疗 AI 实践
 
 ---
 
 ## 🧭 最近在做什么
 
-- **OQQWall_rust**：合并多架构构建与手动发布流程、支持手动填写发布更新日志、修复审核后台核心交互并提升审计可读性。
-- **SPlayer-Next**：修复 macOS 灵动岛刘海对齐问题，优化桌面端显示细节。
-- **chaoxing-agent-skill**：添加 Playwright CLI CAPTCHA 解决方案，支持更通用的 Agent 工作流。
-- 📚 继续完善 Java + Quasar Vue3 + Node.js 的完整实践链路，沉淀脚手架、自动化脚本与个人效率工具。
-- 🤝 欢迎在 Issues 或邮件交流技术问题、开源协作与实现细节。
+- **xingranya-home**：个人主页，之后从这里跳转到博客。
+- **xingranya-blog**：正式域名切到 `blog.xran.uk`，并整理关于页与项目展示。
+- **open-vela contest**：ESP32-S3-EYE 多模态助手，改动已合并。
+- **dbx**：正在给上游补受控导入与向量检索相关能力。
+- **OQQWall_rust**：发布流程、审核后台和指令兼容，多次合并。
+- 欢迎在 Issues 或邮件交流。
 
 ---
 

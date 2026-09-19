@@ -6,7 +6,7 @@ $logo-image-box-width = 34px
 @require '../../common/variables'
 
 .navbar-container
-  font-family 'Source Sans Pro', -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, 'Helvetica Neue', Arial, sans-serif
+  font-family $default-font-family
   width 100%
   height 100%
   box-sizing border-box
@@ -14,8 +14,8 @@ $logo-image-box-width = 34px
   align-items center
   justify-content center
   background $nav-color-bg
-  -webkit-backdrop-filter blur(10px)
-  backdrop-filter blur(10px)
+  -webkit-backdrop-filter blur(18px) saturate(1.12)
+  backdrop-filter blur(18px) saturate(1.12)
   padding-top $scroll-progress-bar-height
   hover-style(
     false,

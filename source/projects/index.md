@@ -8,136 +8,107 @@ description: 星苒鸭的个人项目列表，包括 GSAT、效率工具和开�
 
 <style>
   .project-page {
-    --project-line: var(--border-color);
+    --project-line: color-mix(in srgb, var(--border-color) 70%, transparent);
     --project-muted: var(--third-text-color);
     --project-strong: var(--first-text-color);
-    --project-surface: var(--second-background-color);
-    --project-soft: var(--third-background-color);
+    --project-glass: color-mix(in srgb, var(--background-color-transparent) 72%, transparent);
+    --project-glass-strong: color-mix(in srgb, var(--second-background-color) 58%, transparent);
     display: flex;
     flex-direction: column;
-    gap: 26px;
+    gap: 28px;
+  }
+
+  .project-page ::selection {
+    background: color-mix(in srgb, var(--primary-color) 35%, transparent);
+    color: var(--project-strong);
+  }
+
+  .project-intro,
+  .project-card,
+  .project-pr-item,
+  .project-repo-item,
+  .project-note {
+    background: var(--project-glass-strong);
+    border: 1px solid var(--project-line);
+    backdrop-filter: blur(18px) saturate(1.12);
+    -webkit-backdrop-filter: blur(18px) saturate(1.12);
   }
 
   .project-intro {
     display: grid;
-    grid-template-columns: minmax(0, 1.45fr) minmax(260px, .55fr);
-    gap: 22px;
-    align-items: stretch;
-    border-bottom: 1px solid var(--project-line);
-    padding: 4px 0 28px;
-  }
-
-  .project-kicker {
-    display: inline-flex;
-    width: fit-content;
-    align-items: center;
-    gap: 8px;
-    border: 1px solid var(--project-line);
-    border-radius: 999px;
-    padding: 5px 12px;
-    color: var(--primary-color);
-    background: var(--project-soft);
-    font-size: 13px;
-    font-weight: 700;
-    line-height: 1.4;
+    gap: 16px;
+    padding: 22px 22px 20px;
+    border-radius: 14px;
+    box-shadow: 0 12px 32px rgba(0, 0, 0, 0.12);
   }
 
   .project-lead {
-    margin: 16px 0 0;
+    margin: 0;
     color: var(--project-strong);
-    font-size: 28px;
-    font-weight: 800;
+    font-size: 1.4rem;
+    font-weight: 600;
     line-height: 1.35;
-    letter-spacing: 0;
   }
 
   .project-copy {
-    max-width: 780px;
-    margin: 12px 0 0;
+    max-width: 70ch;
+    margin: 0;
     color: var(--project-muted);
-    font-size: 15px;
-    line-height: 1.85;
+    font-size: 16px;
+    line-height: 1.8;
   }
 
   .project-actions {
     display: flex;
     flex-wrap: wrap;
     gap: 10px;
-    margin-top: 18px;
+    margin-top: 4px;
+  }
+
+  .project-action,
+  .project-link {
+    display: inline-flex;
+    min-height: 44px;
+    align-items: center;
+    gap: 8px;
+    color: var(--primary-color);
+    font-size: 0.92rem;
+    font-weight: 600;
+    text-decoration: none;
   }
 
   .project-action {
-    display: inline-flex;
-    min-height: 36px;
-    align-items: center;
-    gap: 8px;
     border: 1px solid var(--project-line);
-    border-radius: 8px;
-    padding: 6px 12px;
+    border-radius: 999px;
+    padding: 0 14px;
     color: var(--project-strong);
-    background: var(--project-surface);
-    font-size: 14px;
-    font-weight: 700;
-    text-decoration: none;
-    transition: border-color .2s ease, color .2s ease, transform .2s ease;
-  }
-
-  .project-action:hover {
-    transform: translateY(-2px);
-    border-color: var(--primary-color);
-    color: var(--primary-color);
-    text-decoration: none;
-  }
-
-  .project-index {
-    display: grid;
-    gap: 10px;
-    align-content: start;
-  }
-
-  .project-index-item {
-    border-left: 3px solid var(--primary-color);
-    padding: 4px 0 4px 12px;
-  }
-
-  .project-index-item strong {
-    display: block;
-    color: var(--project-strong);
-    font-size: 18px;
-    line-height: 1.25;
-  }
-
-  .project-index-item span {
-    display: block;
-    margin-top: 3px;
-    color: var(--project-muted);
-    font-size: 13px;
-    line-height: 1.5;
+    background: var(--project-glass);
   }
 
   .project-section-head {
     display: flex;
-    align-items: flex-end;
-    justify-content: space-between;
-    gap: 16px;
+    flex-direction: column;
+    gap: 6px;
+    padding-top: 8px;
   }
 
   .project-section-title {
     margin: 0;
     color: var(--project-strong);
-    font-size: 23px;
-    line-height: 1.35;
+    font-size: 1.4rem;
+    line-height: 1.5;
   }
 
   .project-section-desc {
-    max-width: 680px;
-    margin: 6px 0 0;
+    max-width: 70ch;
+    margin: 0;
     color: var(--project-muted);
-    font-size: 14px;
+    font-size: 0.92rem;
     line-height: 1.75;
   }
 
-  .project-grid {
+  .project-grid,
+  .project-repo-list {
     display: grid;
     grid-template-columns: repeat(2, minmax(0, 1fr));
     gap: 14px;
@@ -145,21 +116,13 @@ description: 星苒鸭的个人项目列表，包括 GSAT、效率工具和开�
 
   .project-card {
     display: flex;
-    min-height: 248px;
+    min-height: 240px;
     flex-direction: column;
     justify-content: space-between;
-    border: 1px solid var(--project-line);
-    border-radius: 8px;
+    border-radius: 18px;
     padding: 18px;
-    background: var(--project-surface);
     box-shadow: var(--redefine-box-shadow-flat);
-    transition: transform .2s ease, box-shadow .2s ease, border-color .2s ease;
-  }
-
-  .project-card:hover {
-    transform: translateY(-3px);
-    border-color: var(--primary-color);
-    box-shadow: var(--redefine-box-shadow);
+    transition: transform .22s ease, border-color .22s ease, box-shadow .22s ease;
   }
 
   .project-card-header {
@@ -172,15 +135,15 @@ description: 星苒鸭的个人项目列表，包括 GSAT、效率工具和开�
   .project-name {
     margin: 0;
     color: var(--project-strong);
-    font-size: 18px;
+    font-size: 1.4rem;
     line-height: 1.35;
   }
 
   .project-type {
-    margin: 5px 0 0;
+    margin: 6px 0 0;
     color: var(--primary-color);
-    font-size: 13px;
-    font-weight: 700;
+    font-size: 0.92rem;
+    font-weight: 650;
     line-height: 1.5;
   }
 
@@ -192,26 +155,27 @@ description: 星苒鸭的个人项目列表，包括 GSAT、效率工具和开�
     align-items: center;
     justify-content: center;
     border: 1px solid var(--project-line);
-    border-radius: 8px;
+    border-radius: 14px;
     color: var(--primary-color);
-    background: var(--project-soft);
+    background: var(--project-glass);
     font-size: 16px;
   }
 
   .project-desc {
     margin: 14px 0 0;
     color: var(--project-muted);
-    font-size: 14px;
+    font-size: 0.92rem;
     line-height: 1.8;
   }
 
-  .project-meta {
+  .project-meta,
+  .project-repo-meta {
     display: flex;
     flex-wrap: wrap;
     gap: 8px 14px;
     margin-top: 12px;
     color: var(--project-muted);
-    font-size: 12px;
+    font-size: 0.92rem;
     line-height: 1.5;
   }
 
@@ -233,14 +197,14 @@ description: 星苒鸭的个人项目列表，包括 GSAT、效率工具和开�
     display: flex;
     gap: 8px;
     color: var(--project-muted);
-    font-size: 13px;
+    font-size: 0.92rem;
     line-height: 1.65;
   }
 
   .project-detail-list i {
     margin-top: 4px;
     color: var(--primary-color);
-    font-size: 10px;
+    font-size: 0.92rem;
   }
 
   .project-card-footer {
@@ -268,24 +232,9 @@ description: 星苒鸭的个人项目列表，包括 GSAT、效率工具和开�
     border-radius: 999px;
     padding: 2px 9px;
     color: var(--project-muted);
-    background: var(--project-soft);
-    font-size: 12px;
+    background: var(--project-glass);
+    font-size: 0.92rem;
     line-height: 1.4;
-  }
-
-  .project-link {
-    display: inline-flex;
-    align-items: center;
-    gap: 7px;
-    color: var(--primary-color);
-    font-size: 13px;
-    font-weight: 800;
-    text-decoration: none;
-    white-space: nowrap;
-  }
-
-  .project-link:hover {
-    text-decoration: underline;
   }
 
   .project-pr-list {
@@ -293,72 +242,86 @@ description: 星苒鸭的个人项目列表，包括 GSAT、效率工具和开�
     gap: 10px;
   }
 
-  .project-pr-item {
+  .project-pr-item,
+  .project-repo-item {
     display: grid;
-    grid-template-columns: minmax(150px, .6fr) minmax(0, 1.4fr) auto;
+    grid-template-columns: minmax(160px, .55fr) minmax(0, 1.45fr) auto;
     gap: 12px;
     align-items: center;
-    border: 1px solid var(--project-line);
-    border-radius: 8px;
+    border-radius: 14px;
     padding: 14px 16px;
     color: var(--project-muted);
-    background: var(--project-surface);
     text-decoration: none;
-    transition: transform .2s ease, border-color .2s ease, color .2s ease;
+    transition: transform .22s ease, border-color .22s ease;
   }
 
-  .project-pr-item:hover {
-    transform: translateY(-2px);
-    border-color: var(--primary-color);
-    color: var(--project-muted);
-    text-decoration: none;
+  .project-repo-item {
+    grid-template-columns: 1fr;
+    align-items: start;
+    gap: 6px;
   }
 
-  .project-pr-repo {
-    color: var(--primary-color);
-    font-size: 13px;
-    font-weight: 800;
+  .project-pr-repo,
+  .project-repo-name {
+    color: var(--project-strong);
+    font-size: 0.92rem;
+    font-weight: 750;
     line-height: 1.5;
   }
 
-  .project-pr-title {
-    color: var(--project-strong);
-    font-size: 14px;
-    font-weight: 700;
-    line-height: 1.6;
+  .project-pr-title,
+  .project-repo-desc {
+    color: var(--project-muted);
+    font-size: 0.92rem;
+    line-height: 1.65;
   }
 
   .project-pr-status {
     display: inline-flex;
+    min-height: 32px;
     align-items: center;
     gap: 6px;
     color: var(--project-muted);
-    font-size: 12px;
-    line-height: 1.5;
+    font-size: 0.92rem;
     white-space: nowrap;
   }
 
   .project-note {
-    border-top: 1px solid var(--project-line);
-    padding-top: 20px;
+    border-radius: 14px;
+    padding: 16px 18px;
     color: var(--project-muted);
-    font-size: 14px;
+    font-size: 0.92rem;
     line-height: 1.85;
   }
 
+  @media (hover: hover) {
+    .project-action:hover,
+    .project-link:hover,
+    .project-card:hover,
+    .project-pr-item:hover,
+    .project-repo-item:hover {
+      border-color: color-mix(in srgb, var(--primary-color) 55%, var(--project-line));
+      color: inherit;
+      text-decoration: none;
+    }
+
+    .project-card:hover,
+    .project-pr-item:hover,
+    .project-repo-item:hover {
+      transform: translateY(-2px);
+      box-shadow: 0 16px 36px rgba(0, 0, 0, 0.16);
+    }
+
+    .project-action:hover,
+    .project-link:hover {
+      color: var(--primary-color);
+    }
+  }
+
   @media (max-width: 768px) {
-    .project-intro,
-    .project-grid {
+    .project-grid,
+    .project-repo-list {
       grid-template-columns: 1fr;
-    }
-
-    .project-lead {
-      font-size: 23px;
-    }
-
-    .project-section-head {
-      align-items: flex-start;
-      flex-direction: column;
     }
 
     .project-card {
@@ -370,45 +333,38 @@ description: 星苒鸭的个人项目列表，包括 GSAT、效率工具和开�
       gap: 6px;
     }
   }
+
+  @media (prefers-reduced-motion: reduce) {
+    .project-card,
+    .project-pr-item,
+    .project-repo-item,
+    .project-action {
+      transition: none;
+    }
+  }
 </style>
 
 <div class="project-page">
 
 <section class="project-intro">
-  <div>
-    <span class="project-kicker"><i class="fa-brands fa-github"></i> GitHub @xingranya</span>
-    <p class="project-lead">这些项目记录了我在 Web 应用、小程序、桌面工具与开源社区中的实践。</p>
-    <p class="project-copy">每个项目都附有源码入口，欢迎查看实现细节。</p>
-    <div class="project-actions">
-      <a class="project-action" href="https://github.com/xingranya" target="_blank" rel="noopener">
-        <i class="fa-brands fa-github"></i> 查看 GitHub 主页
-      </a>
-      <a class="project-action" href="/about/">
-        <i class="fa-solid fa-user"></i> 关于作者
-      </a>
-    </div>
-  </div>
-  <div class="project-index" aria-label="项目概览">
-    <div class="project-index-item">
-      <strong>14</strong>
-      <span>公开项目</span>
-    </div>
-    <div class="project-index-item">
-      <strong>6</strong>
-      <span>开源贡献</span>
-    </div>
-    <div class="project-index-item">
-      <strong>TypeScript / Rust / Vue / Swift / Java</strong>
-      <span>主要技术栈</span>
-    </div>
+  <p class="project-lead">Web、小程序、桌面工具和开源贡献，都从这里回到源码。</p>
+  <p class="project-copy">个人主页是 <a href="https://xran.uk" target="_blank" rel="noopener">xran.uk</a>，博客是 <a href="https://blog.xran.uk">blog.xran.uk</a>。只收录我自己维护或已有真实贡献的仓库。</p>
+  <div class="project-actions">
+    <a class="project-action" href="https://github.com/xingranya" target="_blank" rel="noopener">
+      <i class="fa-brands fa-github"></i> GitHub
+    </a>
+    <a class="project-action" href="https://xran.uk" target="_blank" rel="noopener">
+      <i class="fa-solid fa-house"></i> 个人主页
+    </a>
+    <a class="project-action" href="/about/">
+      <i class="fa-solid fa-user"></i> 关于作者
+    </a>
   </div>
 </section>
 
 <section class="project-section-head">
-  <div>
-    <h2 class="project-section-title">项目作品与开源贡献</h2>
-    <p class="project-section-desc">按项目类型和贡献内容整理，优先收录仍在维护、可查看源码或已有上游合并记录的仓库。</p>
-  </div>
+  <h2 class="project-section-title">主要项目</h2>
+  <p class="project-section-desc">近期仍在维护、可以打开源码或已有上游合并记录的作品。</p>
 </section>
 
 <section class="project-grid">
@@ -419,7 +375,7 @@ description: 星苒鸭的个人项目列表，包括 GSAT、效率工具和开�
           <h3 class="project-name">GSAT — GitHub Stars AI Tools</h3>
           <p class="project-type">GitHub Stars 本地 AI 知识库 · 主要项目</p>
         </div>
-        <span class="project-icon" style="padding:4px;overflow:hidden"><img src="https://gsat.xingranya.cn/icon.svg" alt="GSAT" style="width:30px;height:30px"></span>
+        <span class="project-icon" style="padding:4px;overflow:hidden"><img src="https://gsat.xran.uk/icon.svg" alt="GSAT" style="width:30px;height:30px"></span>
       </div>
       <p class="project-desc">把 GitHub Stars 变成可搜索、可总结、可追问的本地 AI 知识库。同步 Stars 到本地 SQLite，AI 自动生成中文摘要和标签，支持自然语言搜索、标签网络、相似项目发现等能力。数据全程本地存储，支持多种 AI 服务提供商。</p>
       <div class="project-meta">
@@ -442,10 +398,108 @@ description: 星苒鸭的个人项目列表，包括 GSAT、效率工具和开�
         <span class="project-tag">SQLite</span>
       </div>
       <div class="project-links">
-        <a class="project-link" href="https://gsat.xingranya.cn" target="_blank" rel="noopener">官网 <i class="fa-solid fa-arrow-right"></i></a>
-        <a class="project-link" href="https://github.com/xingranya/GitHub-Stars-AI-Tools/wiki" target="_blank" rel="noopener">文档 <i class="fa-solid fa-book"></i></a>
-        <a class="project-link" href="https://gsat.xingranya.cn/download" target="_blank" rel="noopener">下载 <i class="fa-solid fa-download"></i></a>
+        <a class="project-link" href="https://gsat.xran.uk" target="_blank" rel="noopener">官网</a>
+        <a class="project-link" href="https://github.com/xingranya/GitHub-Stars-AI-Tools" target="_blank" rel="noopener">源码</a>
+        <a class="project-link" href="https://gsat.xran.uk/download" target="_blank" rel="noopener">下载</a>
       </div>
+    </div>
+  </article>
+
+  <article class="project-card">
+    <div>
+      <div class="project-card-header">
+        <div>
+          <h3 class="project-name">xingranya-home</h3>
+          <p class="project-type">个人主页</p>
+        </div>
+        <span class="project-icon"><i class="fa-solid fa-house"></i></span>
+      </div>
+      <p class="project-desc">个人主页源码，之后会作为 xran.uk 的入口，从这里跳转到博客和其他作品。</p>
+      <div class="project-meta">
+        <span><i class="fa-solid fa-code"></i> TypeScript</span>
+        <span><i class="fa-solid fa-clock"></i> 2026-09-19</span>
+      </div>
+    </div>
+    <div class="project-card-footer">
+      <div class="project-tags">
+        <span class="project-tag">React</span>
+        <span class="project-tag">主页</span>
+      </div>
+      <div class="project-links">
+        <a class="project-link" href="https://xran.uk" target="_blank" rel="noopener">站点</a>
+        <a class="project-link" href="https://github.com/xingranya/xingranya-home" target="_blank" rel="noopener">源码</a>
+      </div>
+    </div>
+  </article>
+
+  <article class="project-card">
+    <div>
+      <div class="project-card-header">
+        <div>
+          <h3 class="project-name">JingWenWall</h3>
+          <p class="project-type">校园墙小程序</p>
+        </div>
+        <span class="project-icon"><i class="fa-solid fa-comments"></i></span>
+      </div>
+      <p class="project-desc">校园信息墙方向的 uni-app 项目，围绕发布、审核和移动端交互打磨结构。</p>
+      <div class="project-meta">
+        <span><i class="fa-solid fa-code"></i> Java</span>
+        <span><i class="fa-solid fa-clock"></i> 2026-01-24</span>
+      </div>
+    </div>
+    <div class="project-card-footer">
+      <div class="project-tags">
+        <span class="project-tag">uni-app</span>
+        <span class="project-tag">Java</span>
+      </div>
+      <a class="project-link" href="https://github.com/xingranya/JingWenWall" target="_blank" rel="noopener">查看源码</a>
+    </div>
+  </article>
+
+  <article class="project-card">
+    <div>
+      <div class="project-card-header">
+        <div>
+          <h3 class="project-name">sync-readme-wiki</h3>
+          <p class="project-type">文档同步 Skill</p>
+        </div>
+        <span class="project-icon"><i class="fa-solid fa-book"></i></span>
+      </div>
+      <p class="project-desc">按真实代码变更范围同步 README 和 wiki，避免凭空补文档。</p>
+      <div class="project-meta">
+        <span><i class="fa-solid fa-star"></i> 3</span>
+        <span><i class="fa-solid fa-clock"></i> 2026-02-23</span>
+      </div>
+    </div>
+    <div class="project-card-footer">
+      <div class="project-tags">
+        <span class="project-tag">Skill</span>
+        <span class="project-tag">文档</span>
+      </div>
+      <a class="project-link" href="https://github.com/xingranya/sync-readme-wiki" target="_blank" rel="noopener">查看源码</a>
+    </div>
+  </article>
+
+  <article class="project-card">
+    <div>
+      <div class="project-card-header">
+        <div>
+          <h3 class="project-name">open-vela 竞赛项目</h3>
+          <p class="project-type">多模态硬件助手 · 已合并</p>
+        </div>
+        <span class="project-icon"><i class="fa-solid fa-microchip"></i></span>
+      </div>
+      <p class="project-desc">ESP32-S3-EYE 上的语音唤醒、视觉与中文屏显助手，相关改动已合并到竞赛仓库。</p>
+      <div class="project-meta">
+        <span><i class="fa-solid fa-clock"></i> 2026-07-19</span>
+      </div>
+    </div>
+    <div class="project-card-footer">
+      <div class="project-tags">
+        <span class="project-tag">嵌入式</span>
+        <span class="project-tag">PR</span>
+      </div>
+      <a class="project-link" href="https://github.com/open-vela/contest2026_130_xingshuangrenran/pull/1" target="_blank" rel="noopener">贡献记录</a>
     </div>
   </article>
 
@@ -651,11 +705,10 @@ description: 星苒鸭的个人项目列表，包括 GSAT、效率工具和开�
         </div>
         <span class="project-icon"><i class="fa-solid fa-pen-nib"></i></span>
       </div>
-      <p class="project-desc">本博客的源码仓库，基于 Hexo 和自定义主题维护文章发布、作品展示、导航结构和部署流程。</p>
+      <p class="project-desc">本博客源码，基于 Hexo 和自定义主题维护。线上地址是 blog.xran.uk。</p>
       <div class="project-meta">
         <span><i class="fa-solid fa-code"></i> JavaScript</span>
-        <span><i class="fa-solid fa-clock"></i> 2026-05-26</span>
-        <span><i class="fa-solid fa-star"></i> 1</span>
+        <span><i class="fa-solid fa-clock"></i> 2026-09-19</span>
       </div>
       <ul class="project-detail-list">
         <li><i class="fa-solid fa-circle"></i><span>作为作品集、技术文章和个人主页的统一入口。</span></li>
@@ -668,9 +721,10 @@ description: 星苒鸭的个人项目列表，包括 GSAT、效率工具和开�
         <span class="project-tag">JavaScript</span>
         <span class="project-tag">博客</span>
       </div>
-      <a class="project-link" href="https://github.com/xingranya/xingranya-blog" target="_blank" rel="noopener">
-        查看源码 <i class="fa-solid fa-arrow-right"></i>
-      </a>
+      <div class="project-links">
+        <a class="project-link" href="https://blog.xran.uk">博客</a>
+        <a class="project-link" href="https://github.com/xingranya/xingranya-blog" target="_blank" rel="noopener">源码</a>
+      </div>
     </div>
   </article>
 
@@ -861,47 +915,153 @@ description: 星苒鸭的个人项目列表，包括 GSAT、效率工具和开�
 </section>
 
 <section class="project-section-head">
-  <div>
-    <h2 class="project-section-title">开源贡献记录</h2>
-    <p class="project-section-desc">收录已经合并到上游仓库的主要贡献，便于查看具体改动和讨论记录。</p>
-  </div>
+  <h2 class="project-section-title">上游贡献</h2>
+  <p class="project-section-desc">已合并和仍在进行的 Pull Request，按最近活动排列。</p>
 </section>
 
-<section class="project-pr-list" aria-label="已合并 PR 记录">
+<section class="project-pr-list" aria-label="贡献记录">
+  <a class="project-pr-item" href="https://github.com/t8y2/dbx/pull/9121" target="_blank" rel="noopener">
+    <span class="project-pr-repo">dbx #9121</span>
+    <span class="project-pr-title">受控文件导入与版本化向量工具</span>
+    <span class="project-pr-status">进行中 · 2026-09-15</span>
+  </a>
+  <a class="project-pr-item" href="https://github.com/t8y2/dbx/pull/7192" target="_blank" rel="noopener">
+    <span class="project-pr-repo">dbx #7192</span>
+    <span class="project-pr-title">受控表导入与 Milvus 语义工具</span>
+    <span class="project-pr-status">进行中 · 2026-09-08</span>
+  </a>
+  <a class="project-pr-item" href="https://github.com/luolangaga/tubatoolsPlugin/pull/1339" target="_blank" rel="noopener">
+    <span class="project-pr-repo">tubatoolsPlugin #1339</span>
+    <span class="project-pr-title">AMD Ryzen 5 5600 / RX 9060 XT 性能报告</span>
+    <span class="project-pr-status">已合并 · 2026-09-04</span>
+  </a>
+  <a class="project-pr-item" href="https://github.com/open-vela/contest2026_130_xingshuangrenran/pull/1" target="_blank" rel="noopener">
+    <span class="project-pr-repo">open-vela contest #1</span>
+    <span class="project-pr-title">ESP32-S3-EYE 多模态 AI 硬件助手</span>
+    <span class="project-pr-status">已合并 · 2026-07-19</span>
+  </a>
+  <a class="project-pr-item" href="https://github.com/gfhdhytghd/OQQWall_rust/pull/10" target="_blank" rel="noopener">
+    <span class="project-pr-repo">OQQWall_rust #10</span>
+    <span class="project-pr-title">修复指令式收稿预览匿名识别</span>
+    <span class="project-pr-status">已合并 · 2026-07-09</span>
+  </a>
+  <a class="project-pr-item" href="https://github.com/gfhdhytghd/OQQWall_rust/pull/9" target="_blank" rel="noopener">
+    <span class="project-pr-repo">OQQWall_rust #9</span>
+    <span class="project-pr-title">兼容纯文本 @ 指令</span>
+    <span class="project-pr-status">已合并 · 2026-07-08</span>
+  </a>
+  <a class="project-pr-item" href="https://github.com/gfhdhytghd/OQQWall_rust/pull/8" target="_blank" rel="noopener">
+    <span class="project-pr-repo">OQQWall_rust #8</span>
+    <span class="project-pr-title">手动发布说明与图片存储逻辑</span>
+    <span class="project-pr-status">已合并 · 2026-07-08</span>
+  </a>
   <a class="project-pr-item" href="https://github.com/SPlayer-Dev/SPlayer-Next/pull/44" target="_blank" rel="noopener">
     <span class="project-pr-repo">SPlayer-Next #44</span>
-    <span class="project-pr-title">修复 macOS 刘海屏窗口对齐</span>
-    <span class="project-pr-status"><i class="fa-solid fa-code-pull-request"></i> 已合并 · 2026-06-22</span>
-  </a>
-  <a class="project-pr-item" href="https://github.com/iwillwill-ALLWILL/chaoxing-agent-skill/pull/1" target="_blank" rel="noopener">
-    <span class="project-pr-repo">chaoxing-agent-skill #1</span>
-    <span class="project-pr-title">补充 Playwright CLI 验证码处理方案</span>
-    <span class="project-pr-status"><i class="fa-solid fa-code-pull-request"></i> 已合并 · 2026-06-17</span>
+    <span class="project-pr-title">修复 macOS 灵动岛刘海对齐</span>
+    <span class="project-pr-status">已合并 · 2026-06-22</span>
   </a>
   <a class="project-pr-item" href="https://github.com/gfhdhytghd/OQQWall_rust/pull/6" target="_blank" rel="noopener">
     <span class="project-pr-repo">OQQWall_rust #6</span>
     <span class="project-pr-title">支持手动填写发布更新日志</span>
-    <span class="project-pr-status"><i class="fa-solid fa-code-pull-request"></i> 已合并 · 2026-06-22</span>
+    <span class="project-pr-status">已合并 · 2026-06-22</span>
+  </a>
+  <a class="project-pr-item" href="https://github.com/iwillwill-ALLWILL/chaoxing-agent-skill/pull/1" target="_blank" rel="noopener">
+    <span class="project-pr-repo">chaoxing-agent-skill #1</span>
+    <span class="project-pr-title">Playwright CLI 验证码处理</span>
+    <span class="project-pr-status">已合并 · 2026-06-17</span>
   </a>
   <a class="project-pr-item" href="https://github.com/gfhdhytghd/OQQWall_rust/pull/5" target="_blank" rel="noopener">
     <span class="project-pr-repo">OQQWall_rust #5</span>
     <span class="project-pr-title">恢复审核后台交互并优化记录展示</span>
-    <span class="project-pr-status"><i class="fa-solid fa-code-pull-request"></i> 已合并 · 2026-06-15</span>
+    <span class="project-pr-status">已合并 · 2026-06-15</span>
   </a>
   <a class="project-pr-item" href="https://github.com/gfhdhytghd/OQQWall_rust/pull/3" target="_blank" rel="noopener">
     <span class="project-pr-repo">OQQWall_rust #3</span>
     <span class="project-pr-title">合并多架构构建与手动发布流程</span>
-    <span class="project-pr-status"><i class="fa-solid fa-code-pull-request"></i> 已合并 · 2026-06-15</span>
+    <span class="project-pr-status">已合并 · 2026-06-15</span>
   </a>
   <a class="project-pr-item" href="https://github.com/denki-san/CC-Statusline-Builder/pull/1" target="_blank" rel="noopener">
     <span class="project-pr-repo">CC-Statusline-Builder #1</span>
-    <span class="project-pr-title">修复 Windows 路径配置问题</span>
-    <span class="project-pr-status"><i class="fa-solid fa-code-pull-request"></i> 已合并 · 2026-02-21</span>
+    <span class="project-pr-title">修复 Windows 路径配置</span>
+    <span class="project-pr-status">已合并 · 2026-02-21</span>
+  </a>
+  <a class="project-pr-item" href="https://github.com/gfhdhytghd/OQQWall/pull/12" target="_blank" rel="noopener">
+    <span class="project-pr-repo">OQQWall #12</span>
+    <span class="project-pr-title">更新文档</span>
+    <span class="project-pr-status">已合并 · 2025-09-15</span>
+  </a>
+</section>
+
+<section class="project-section-head">
+  <h2 class="project-section-title">其他仓库</h2>
+  <p class="project-section-desc">其余自己维护的公开仓库，不包含只 fork 未改动的镜像。</p>
+</section>
+
+<section class="project-repo-list" aria-label="其他仓库">
+  <a class="project-repo-item" href="https://github.com/xingranya/SmartTech" target="_blank" rel="noopener">
+    <span class="project-repo-name">SmartTech</span>
+    <span class="project-repo-desc">技术探索与场景化功能实现。</span>
+    <span class="project-repo-meta">TypeScript · 2025-12-31</span>
+  </a>
+  <a class="project-repo-item" href="https://github.com/xingranya/Super-Dim-Probe" target="_blank" rel="noopener">
+    <span class="project-repo-name">Super-Dim-Probe</span>
+    <span class="project-repo-desc">探测与实验向 TypeScript 项目。</span>
+    <span class="project-repo-meta">TypeScript · 2026-04-15</span>
+  </a>
+  <a class="project-repo-item" href="https://github.com/xingranya/GSAT-Web" target="_blank" rel="noopener">
+    <span class="project-repo-name">GSAT-Web</span>
+    <span class="project-repo-desc">GSAT 的 Web 端实验仓库。</span>
+    <span class="project-repo-meta">TypeScript · 2026-07-21</span>
+  </a>
+  <a class="project-repo-item" href="https://github.com/xingranya/fox" target="_blank" rel="noopener">
+    <span class="project-repo-name">fox</span>
+    <span class="project-repo-desc">品牌项目 OS 团队服务端规格与实现计划。</span>
+    <span class="project-repo-meta">Python · 2026-07-29</span>
+  </a>
+  <a class="project-repo-item" href="https://github.com/xingranya/TeddyCup-C-EventDriven" target="_blank" rel="noopener">
+    <span class="project-repo-name">TeddyCup-C-EventDriven</span>
+    <span class="project-repo-desc">泰迪杯相关的事件驱动实验。</span>
+    <span class="project-repo-meta">Python · 2026-04-14</span>
+  </a>
+  <a class="project-repo-item" href="https://github.com/xingranya/CourseDesign" target="_blank" rel="noopener">
+    <span class="project-repo-name">CourseDesign</span>
+    <span class="project-repo-desc">课程设计实践仓库。</span>
+    <span class="project-repo-meta">Java · 2026-01-05</span>
+  </a>
+  <a class="project-repo-item" href="https://github.com/xingranya/FoodDeliveryAdminSystem" target="_blank" rel="noopener">
+    <span class="project-repo-name">FoodDeliveryAdminSystem</span>
+    <span class="project-repo-desc">外卖后台管理系统。</span>
+    <span class="project-repo-meta">Java · 2025-06-26</span>
+  </a>
+  <a class="project-repo-item" href="https://github.com/xingranya/airapplication" target="_blank" rel="noopener">
+    <span class="project-repo-name">airapplication</span>
+    <span class="project-repo-desc">Kotlin 端应用实践。</span>
+    <span class="project-repo-meta">Kotlin · 2025-05-20</span>
+  </a>
+  <a class="project-repo-item" href="https://github.com/xingranya/vue-blog" target="_blank" rel="noopener">
+    <span class="project-repo-name">vue-blog</span>
+    <span class="project-repo-desc">较早的 Vue 博客实验。</span>
+    <span class="project-repo-meta">HTML · 2025-09-15</span>
+  </a>
+  <a class="project-repo-item" href="https://github.com/xingranya/xingranya-physics-simulation-web-page" target="_blank" rel="noopener">
+    <span class="project-repo-name">physics-simulation-web-page</span>
+    <span class="project-repo-desc">网页物理模拟小实验。</span>
+    <span class="project-repo-meta">HTML · 2025-04-27</span>
+  </a>
+  <a class="project-repo-item" href="https://github.com/xingranya/Christmas-tree" target="_blank" rel="noopener">
+    <span class="project-repo-name">Christmas-tree</span>
+    <span class="project-repo-desc">CSS 圣诞树页面。</span>
+    <span class="project-repo-meta">CSS · 2024-12-24</span>
+  </a>
+  <a class="project-repo-item" href="https://github.com/xingranya/WeixinWeatherPush" target="_blank" rel="noopener">
+    <span class="project-repo-name">WeixinWeatherPush</span>
+    <span class="project-repo-desc">微信天气推送脚本。</span>
+    <span class="project-repo-meta">Python · 2024-11-25</span>
   </a>
 </section>
 
 <section class="project-note">
-  更多项目和贡献会随仓库更新持续补充。完整源码和讨论记录可通过每个条目的 GitHub 链接查看。
+  没有把只 fork、没有实际改动的仓库列进来。学校课程专用仓库也不在这里展示。
 </section>
 
 </div>

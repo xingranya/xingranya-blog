@@ -6,11 +6,16 @@ redefine-mobile()
   @media (max-width $media-max-width-mobile)
     {block}
 
+glass-surface()
+  background var(--background-color-transparent-80)
+  backdrop-filter blur(18px) saturate(1.12)
+  -webkit-backdrop-filter blur(18px) saturate(1.12)
+
 hover-style(isTransform, scaleX, scaleY)
   box-shadow var(--redefine-box-shadow)
 
   if (isTransform)
-    transition-t('transform', '0', '0.2', 'linear')
+    transition-t('transform', '0', '0.2', 'ease')
 
   &:hover
     if (hexo-config('global.hover.scale') && isTransform)
@@ -19,11 +24,17 @@ hover-style(isTransform, scaleX, scaleY)
     if (hexo-config('global.hover.shadow'))
       box-shadow var(--redefine-box-shadow-hover)
 
+  @media (prefers-reduced-motion: reduce)
+    transition none
+
+    &:hover
+      transform none
+
 redefine-container(isTransform, scaleX, scaleY, padding, marginBottomValue)
   padding padding
   border-radius $redefine-border-radius-large
   box-sizing border-box
-  background var(--background-color)
+  glass-surface()
 
   if (marginBottomValue != 0)
     margin-bottom marginBottomValue
@@ -36,13 +47,12 @@ redefine-container(isTransform, scaleX, scaleY, padding, marginBottomValue)
 
   hover-style(isTransform, scaleX, scaleY)
 
-  +redefine-tablet()
-    padding: padding - 4
-    border-radius: $redefine-border-radius-large
+  if padding > 8
+    +redefine-tablet()
+      padding: padding - 4
 
-  +redefine-mobile()
-    padding: padding - 8
-    border-radius: $redefine-border-radius-large
+    +redefine-mobile()
+      padding: padding - 8
 
 
 .redefine-box-shadow

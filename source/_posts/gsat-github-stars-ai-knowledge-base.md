@@ -130,11 +130,11 @@ GSAT 支持 macOS（Apple Silicon + Intel）、Windows 和 Linux 三个平台，
 
 说了这么多，不如直接上手试试。
 
-**官网**：[gsat.xingranya.cn](https://gsat.xingranya.cn)
+**官网**：[gsat.xran.uk](https://gsat.xran.uk)
 
 **开源仓库与文档**：[GitHub Wiki](https://github.com/xingranya/GitHub-Stars-AI-Tools/wiki)
 
-**下载地址**：[gsat.xingranya.cn/download](https://gsat.xingranya.cn/download)
+**下载地址**：[gsat.xran.uk/download](https://gsat.xran.uk/download)
 
 GSAT 目前版本是 v1.1.2，采用 PolyForm Noncommercial 开源许可——个人学习、研究和非商业场景可以自由使用，商业使用需要书面授权。
 

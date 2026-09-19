@@ -11,9 +11,11 @@ $right-bottom-tools-border-radius = 12px
     cursor pointer
     border-right none
     border-radius $right-bottom-tools-border-radius
-    box-shadow var(--redefine-box-shadow)
+    box-shadow var(--redefine-box-shadow-flat)
     color var(--default-text-color)
-    background var(--background-color)
+    background var(--background-color-transparent-80)
+    backdrop-filter blur(18px) saturate(1.12)
+    -webkit-backdrop-filter blur(18px) saturate(1.12)
 
     i
       color var(--default-text-color)

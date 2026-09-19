@@ -6,19 +6,22 @@
   box-sizing border-box
   padding 10px 6px
   font-size 1rem
-  background var(--third-background-color)
+  background var(--background-color-transparent-80)
+  backdrop-filter blur(18px) saturate(1.12)
+  -webkit-backdrop-filter blur(18px) saturate(1.12)
   border-radius 14px
-  border 1px solid var(--shadow-color-1)
+  border 1px solid var(--border-color)
 
   ul
     margin-left 10px
 
     li
       margin-bottom 5px
-      overflow hidden
-      text-overflow ellipsis
-      white-space nowrap
+      overflow visible
       color var(--default-text-color)
+      white-space normal
+      word-break break-all
+      line-height 1.6
 
       .license
         font-weight bold
