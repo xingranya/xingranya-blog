@@ -20,17 +20,30 @@
     word-break normal
 
   .home-latest-heading
+    position relative
+    display inline-block
+    width fit-content
     margin 0 0 14px
     padding 0 2px
-    color #1f2937
+    color var(--first-text-color)
     font-size 1.3rem
     font-weight 600
     line-height 1.5
-    text-shadow 0 1px 2px rgba(255, 255, 255, 0.95), 0 0 14px rgba(255, 255, 255, 0.78)
+    text-shadow 0 1px 2px rgba(255, 255, 255, 0.45)
+
+    &::after
+      content ''
+      position absolute
+      left 2px
+      bottom -3px
+      width 34px
+      height 2px
+      border-radius 999px
+      background var(--primary-color)
+      opacity 0.72
 
     .dark &
-      color #f8fafc
-      text-shadow 0 1px 2px rgba(0, 0, 0, 0.95), 0 0 14px rgba(0, 0, 0, 0.82)
+      text-shadow 0 1px 2px rgba(0, 0, 0, 0.55)
 
   .home-article-list
     .home-article-item
