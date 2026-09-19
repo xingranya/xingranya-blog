@@ -126,8 +126,8 @@ home_banner:
   style: fixed # static 或 fixed
   # 横幅图片
   image: 
-    light: https://img1.tucang.cc/api/image/show/dfaec2d2a6c8c70d3cb0df64c4c97b0d # light mode
-    dark: https://img1.tucang.cc/api/image/show/ac5fcbc88d41dc84518913b836531768 # dark mode
+    light: /images/home-banner-light.webp # light mode
+    dark: /images/home-banner-dark.webp # dark mode
   # 横幅标题
   title: 星苒鸭 · 博客
   # 横幅副标题
