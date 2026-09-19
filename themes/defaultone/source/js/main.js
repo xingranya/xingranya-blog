@@ -123,10 +123,14 @@ export const main = {
         }
         initTyped("subtitle");
       };
-      window.addEventListener('pointerdown', startTyped, { once: true, passive: true, signal });
-      window.addEventListener('touchstart', startTyped, { once: true, passive: true, signal });
-      window.addEventListener('scroll', startTyped, { once: true, passive: true, signal });
-      window.addEventListener('keydown', startTyped, { once: true, signal });
+      if (window.__redefineUserInteracted) {
+        startTyped();
+      } else {
+        window.addEventListener('pointerdown', startTyped, { once: true, passive: true, signal });
+        window.addEventListener('touchstart', startTyped, { once: true, passive: true, signal });
+        window.addEventListener('scroll', startTyped, { once: true, passive: true, signal });
+        window.addEventListener('keydown', startTyped, { once: true, signal });
+      }
     }
 
     if (theme.navbar.search.enable === true) {
@@ -147,10 +151,14 @@ export function initMain() {
   main.refresh();
 }
 
-document.addEventListener("DOMContentLoaded", initMain);
+if (document.readyState === "loading") {
+  document.addEventListener("DOMContentLoaded", initMain, { once: true });
+} else {
+  initMain();
+}
 
-try {
-  swup.hooks.on("page:view", () => {
+if (window.swup && window.swup.hooks) {
+  window.swup.hooks.on("page:view", () => {
     main.refresh();
   });
-} catch (e) { }
+}

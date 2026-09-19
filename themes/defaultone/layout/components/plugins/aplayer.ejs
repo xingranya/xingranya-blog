@@ -1,3 +1,37 @@
 <div id="aplayer"></div>
-<%- renderJS('libs/APlayer.min.js') %>
-<%- renderJS('plugins/aplayer.js') %>
+<script>
+  (function () {
+    if (window.__redefineAPlayerLoaderBound) return;
+    window.__redefineAPlayerLoaderBound = true;
+
+    var requested = false;
+    function loadPlayer() {
+      if (requested || !window.__redefineLoadScript) return;
+      requested = true;
+      window.setTimeout(function () {
+        window.__redefineLoadScript(<%- JSON.stringify(url_for('/js/build/libs/APlayer.min.js')) %>)
+          .then(function () {
+            return window.__redefineLoadScript(<%- JSON.stringify(url_for('/js/build/plugins/aplayer.js')) %>);
+          })
+          .catch(function (error) {
+            requested = false;
+            console.error(error);
+          });
+      }, 600);
+    }
+
+    function requestPlayer() {
+      window.__redefineUserInteracted = true;
+      if (window.__redefineCoreReady) loadPlayer();
+      else document.addEventListener('redefine:core-ready', loadPlayer, { once: true });
+    }
+
+    window.addEventListener('pointerdown', requestPlayer, { once: true, passive: true });
+    window.addEventListener('touchstart', requestPlayer, { once: true, passive: true });
+    window.addEventListener('keydown', requestPlayer, { once: true });
+    window.addEventListener('scroll', requestPlayer, { once: true, passive: true });
+    if (!matchMedia('(pointer: coarse)').matches) {
+      window.addEventListener('pointermove', requestPlayer, { once: true, passive: true });
+    }
+  })();
+</script>

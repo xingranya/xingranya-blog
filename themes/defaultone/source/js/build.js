@@ -49,7 +49,19 @@ async function copyFile(source, destination) {
   try {
     const destinationDir = path.dirname(destination);
     await ensureDirectoryExists(destinationDir);
-    await fs.copyFile(source, destination);
+    if (source.endsWith('.map')) {
+      await fs.rm(destination, { force: true });
+      console.log(`✓ Skipped production source map ${source}`);
+      return;
+    }
+
+    if (/\.(?:m?js)$/.test(source)) {
+      const code = await fs.readFile(source, 'utf8');
+      const withoutSourceMap = code.replace(/\n?\/\/[#@] sourceMappingURL=.*?\s*$/u, '');
+      await fs.writeFile(destination, withoutSourceMap);
+    } else {
+      await fs.copyFile(source, destination);
+    }
     console.log(`✓ Copied ${source} -> ${destination}`);
   } catch (err) {
     console.error(`× Error copying ${source}:`, err);

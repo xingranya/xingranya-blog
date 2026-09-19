@@ -1,24 +1,142 @@
-<%- renderJS('libs/anime.min.js') %>
-<%- renderJS('main.js', { module: true }) %>
+<script>
+  (function () {
+    if (window.__redefineCoreLoaderBound) return;
+    window.__redefineCoreLoaderBound = true;
 
-<% if (theme.footer.runtime) { %>
-<%- renderJS('tools/runtime.js') %>
-<%- renderJS('libs/odometer.min.js') %>
-<%- renderCSS('assets/odometer-theme-minimal.css') %>
-<% } %>
+    var scriptPromises = new Map();
+    var swupSources = <%- JSON.stringify([
+      'libs/Swup.min.js',
+      'libs/SwupSlideTheme.min.js',
+      'libs/SwupScriptsPlugin.min.js',
+      'libs/SwupProgressPlugin.min.js',
+      'libs/SwupScrollPlugin.min.js',
+      'libs/SwupPreloadPlugin.min.js'
+    ].map(function (path) { return url_for('/js/build/' + path); })) %>;
 
-<% if (theme.plugins.mermaid.enable) { %>
-  <% if (theme.plugins.mermaid.version === '11.4.1') { %>
-  <%- renderJS('libs/mermaid.min.js') %>
-  <% } else { %>
-  <script src="https://cdn.jsdelivr.net/npm/mermaid@<%= theme.plugins.mermaid.version %>/dist/mermaid.min.js"></script>
-  <% } %>
-  <%- renderJS('plugins/mermaid.js') %>
-<% } %>
+    function loadScript(src, id, module) {
+      if (scriptPromises.has(src)) return scriptPromises.get(src);
+      var promise = new Promise(function (resolve, reject) {
+        var existing = id && document.getElementById(id);
+        if (existing) {
+          if (existing.dataset.loaded === 'true') resolve();
+          else existing.addEventListener('load', resolve, { once: true });
+          return;
+        }
+        var script = document.createElement('script');
+        script.src = src;
+        if (id) script.id = id;
+        if (module) script.type = 'module';
+        script.addEventListener('load', function () {
+          script.dataset.loaded = 'true';
+          resolve();
+        }, { once: true });
+        script.addEventListener('error', reject, { once: true });
+        document.head.appendChild(script);
+      });
+      scriptPromises.set(src, promise);
+      return promise;
+    }
 
-<% if (theme.articles.pangu_js) { %>
-<%- renderJS(['libs/pangu.min.js', 'plugins/pangu.js']) %>
-<% } %>
+    function loadStylesheet(href, id) {
+      if (id && document.getElementById(id)) return;
+      var link = document.createElement('link');
+      link.rel = 'stylesheet';
+      link.href = href;
+      if (id) link.id = id;
+      document.head.appendChild(link);
+    }
+
+    window.__redefineLoadScript = loadScript;
+
+    window.__redefineLoadCore = function () {
+      if (window.__redefineCorePromise) return window.__redefineCorePromise;
+
+      window.__redefineCorePromise = (async function () {
+        if (window.__redefineSinglePageEnabled) {
+          for (var source of swupSources) await loadScript(source);
+          window.swup = new window.Swup({
+            plugins: [
+              new window.SwupScriptsPlugin({ optin: true }),
+              new window.SwupProgressPlugin(),
+              new window.SwupScrollPlugin({ offset: 80 }),
+              new window.SwupSlideTheme({ mainElement: '.main-content-body' }),
+              new window.SwupPreloadPlugin(),
+            ],
+            containers: ['#swup'],
+          });
+        }
+
+        await loadScript(<%- JSON.stringify(url_for('/js/build/libs/anime.min.js')) %>);
+        await loadScript(<%- JSON.stringify(url_for('/js/build/main.js')) %>, 'redefine-main', true);
+
+        <% if (theme.footer.runtime) { %>
+        loadStylesheet(<%- JSON.stringify(url_for('/assets/odometer-theme-minimal.css')) %>, 'redefine-odometer-style');
+        await loadScript(<%- JSON.stringify(url_for('/js/build/libs/odometer.min.js')) %>);
+        await loadScript(<%- JSON.stringify(url_for('/js/build/tools/runtime.js')) %>);
+        <% } %>
+
+        <% if (theme.plugins.mermaid.enable) { %>
+        await loadScript(<%- JSON.stringify(theme.plugins.mermaid.version === '11.4.1'
+          ? url_for('/js/build/libs/mermaid.min.js')
+          : 'https://cdn.jsdelivr.net/npm/mermaid@' + theme.plugins.mermaid.version + '/dist/mermaid.min.js') %>);
+        await loadScript(<%- JSON.stringify(url_for('/js/build/plugins/mermaid.js')) %>);
+        <% } %>
+
+        <% if (theme.articles.pangu_js) { %>
+        await loadScript(<%- JSON.stringify(url_for('/js/build/libs/pangu.min.js')) %>);
+        await loadScript(<%- JSON.stringify(url_for('/js/build/plugins/pangu.js')) %>);
+        <% } %>
+
+        window.__redefineCoreReady = true;
+        document.dispatchEvent(new CustomEvent('redefine:core-ready'));
+      })().catch(function (error) {
+        window.__redefineCorePromise = null;
+        console.error(error);
+        throw error;
+      });
+
+      return window.__redefineCorePromise;
+    };
+
+    function recordIntent() {
+      window.__redefineUserInteracted = true;
+      window.__redefineLoadCore().catch(function () {});
+    }
+
+    window.addEventListener('pointerdown', recordIntent, { once: true, passive: true });
+    window.addEventListener('touchstart', recordIntent, { once: true, passive: true });
+    window.addEventListener('keydown', recordIntent, { once: true });
+    window.addEventListener('scroll', recordIntent, { once: true, passive: true });
+    if (!matchMedia('(pointer: coarse)').matches) {
+      window.addEventListener('pointermove', recordIntent, { once: true, passive: true });
+    }
+
+    document.addEventListener('click', function (event) {
+      if (window.__redefineCoreReady) return;
+      var control = event.target.closest(
+        '.search-popup-trigger, .navbar-bar, [navbar-data-toggle], .right-side-tools-container button, .markdown-body img'
+      );
+      if (!control) return;
+      event.preventDefault();
+      event.stopImmediatePropagation();
+      window.__redefineUserInteracted = true;
+      window.__redefineLoadCore().then(function () { control.click(); }).catch(function () {});
+    }, true);
+
+    function scheduleAfterLoad() {
+      window.setTimeout(function () {
+        if ('requestIdleCallback' in window) {
+          requestIdleCallback(function () { window.__redefineLoadCore().catch(function () {}); }, { timeout: 2000 });
+        } else {
+          window.__redefineLoadCore().catch(function () {});
+        }
+      }, 1000);
+    }
+
+    if (document.readyState === 'complete') scheduleAfterLoad();
+    else window.addEventListener('load', scheduleAfterLoad, { once: true });
+  })();
+</script>
 
 <script>
   (function () {
@@ -109,7 +227,8 @@
       function start() {
         if (started) return;
         started = true;
-        startOptionalEffects();
+        if (window.__redefineCoreReady) startOptionalEffects();
+        else document.addEventListener('redefine:core-ready', startOptionalEffects, { once: true });
       }
       window.addEventListener('pointerdown', start, { once: true, passive: true });
       window.addEventListener('touchstart', start, { once: true, passive: true });
@@ -130,10 +249,15 @@
       scheduleOptionalEffects();
     }
 
-    try {
-      swup.hooks.on('page:view', function () {
+    function bindPageView() {
+      if (!window.swup || !window.swup.hooks || window.__redefineEnhancementsSwupBound) return;
+      window.__redefineEnhancementsSwupBound = true;
+      window.swup.hooks.on('page:view', function () {
         enhanceCurrentPage().catch(console.error);
       });
-    } catch (error) {}
+    }
+
+    bindPageView();
+    document.addEventListener('redefine:core-ready', bindPageView, { once: true });
   })();
 </script>

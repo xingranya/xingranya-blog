@@ -273,6 +273,9 @@ export default function initLocalSearch(signal) {
         noResultDom &&
           (noResultDom.innerHTML =
             '<i class="fa-solid fa-magnifying-glass fa-5x"></i>');
+        if (searchInputDom.value.trim()) {
+          inputEventFunction();
+        }
       })
       .catch((error) => {
         fetchPromise = null;

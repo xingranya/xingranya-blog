@@ -25,4 +25,8 @@ const footerRuntime = () => {
   if (runtime_seconds) runtime_seconds.innerHTML = D;
 };
 
-window.addEventListener("DOMContentLoaded", footerRuntime);
+if (document.readyState === "loading") {
+  window.addEventListener("DOMContentLoaded", footerRuntime, { once: true });
+} else {
+  footerRuntime();
+}
