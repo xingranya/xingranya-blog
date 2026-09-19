@@ -54,11 +54,3 @@ export function initMasonry() {
     }, 100);
   }
 }
-
-if (data.masonry) {
-  try {
-    swup.hooks.on("page:view", initMasonry);
-  } catch (e) {}
-
-  document.addEventListener("DOMContentLoaded", initMasonry);
-}

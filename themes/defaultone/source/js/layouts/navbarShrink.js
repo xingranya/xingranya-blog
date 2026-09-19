@@ -1,19 +1,17 @@
-import { navigationState } from "../utils.js";
-
 export const navbarShrink = {
   navbarDom: document.querySelector(".navbar-container"),
   leftAsideDom: document.querySelector(".page-aside"),
   isnavbarShrink: false,
   navbarHeight: 0,
 
-  init() {
+  init(signal) {
+    this.navbarDom = document.querySelector(".navbar-container");
+    this.leftAsideDom = document.querySelector(".page-aside");
+    if (!this.navbarDom) return;
     this.navbarHeight = this.navbarDom.getBoundingClientRect().height;
     this.shrink();
-    this.togglenavbarDrawerShow();
-    this.toggleSubmenu();
-    window.addEventListener("scroll", () => {
-      this.shrink();
-    });
+    this.togglenavbarDrawerShow(signal);
+    this.toggleSubmenu(signal);
   },
 
   shrink() {
@@ -29,7 +27,7 @@ export const navbarShrink = {
     }
   },
 
-  togglenavbarDrawerShow() {
+  togglenavbarDrawerShow(signal) {
     const updateDrawerButtonState = () => {
       const menuButton = document.querySelector(".navbar-bar");
       if (menuButton) {
@@ -60,7 +58,7 @@ export const navbarShrink = {
         v.addEventListener("click", () => {
           document.body.classList.toggle("navbar-drawer-show");
           updateDrawerButtonState();
-        });
+        }, { signal });
       }
     });
 
@@ -72,13 +70,13 @@ export const navbarShrink = {
       logoTitleDom.addEventListener("click", () => {
         document.body.classList.remove("navbar-drawer-show");
         updateDrawerButtonState();
-      });
+      }, { signal });
     }
 
     updateDrawerButtonState();
   },
 
-  toggleSubmenu() {
+  toggleSubmenu(signal) {
     const toggleElements = document.querySelectorAll("[navbar-data-toggle]");
 
     toggleElements.forEach((toggle) => {
@@ -126,24 +124,8 @@ export const navbarShrink = {
               delay: anime.stagger(80, { start: 20 }),
             });
           }
-        });
+        }, { signal });
       }
     });
   },
 };
-
-try {
-  swup.hooks.on("page:view", () => {
-    navbarShrink.init();
-    navigationState.isNavigating = false;
-  });
-
-  swup.hooks.on("visit:start", () => {
-    navigationState.isNavigating = true;
-    document.body.classList.remove("navbar-shrink");
-  });
-} catch (error) {}
-
-document.addEventListener("DOMContentLoaded", () => {
-  navbarShrink.init();
-});

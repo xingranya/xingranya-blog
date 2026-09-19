@@ -1,4 +1,4 @@
-const initCopyCode = () => {
+const initCopyCode = (signal) => {
   HTMLElement.prototype.wrap = function (wrapper) {
     this.parentNode.insertBefore(wrapper, this);
     this.parentNode.removeChild(this);
@@ -6,16 +6,17 @@ const initCopyCode = () => {
   };
 
   document.querySelectorAll("figure.highlight").forEach((element) => {
+    if (element.parentElement?.classList.contains("highlight-container")) return;
     const container = document.createElement("div");
     element.wrap(container);
     container.classList.add("highlight-container");
     container.insertAdjacentHTML(
       "beforeend",
-      '<div class="copy-button"><i class="fa-regular fa-copy"></i></div>',
+      '<button type="button" class="copy-button" aria-label="复制代码"><i class="fa-regular fa-copy"></i></button>',
     );
     container.insertAdjacentHTML(
       "beforeend",
-      '<div class="fold-button"><i class="fa-solid fa-chevron-down"></i></div>',
+      '<button type="button" class="fold-button" aria-label="折叠代码"><i class="fa-solid fa-chevron-down"></i></button>',
     );
     const copyButton = container.querySelector(".copy-button");
     const foldButton = container.querySelector(".fold-button");
@@ -33,15 +34,17 @@ const initCopyCode = () => {
       setTimeout(() => {
         copyButton.querySelector("i").className = "fa-regular fa-copy";
       }, 1000);
-    });
+    }, { signal });
     foldButton.addEventListener("click", () => {
       container.classList.toggle("folded");
+      foldButton.setAttribute("aria-expanded", String(!container.classList.contains("folded")));
+      foldButton.setAttribute("aria-label", container.classList.contains("folded") ? "展开代码" : "折叠代码");
       foldButton.querySelector("i").className = container.classList.contains(
         "folded",
       )
         ? "fa-solid fa-chevron-up"
         : "fa-solid fa-chevron-down";
-    });
+    }, { signal });
   });
 };
 

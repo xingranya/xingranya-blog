@@ -1,5 +1,1 @@
-new cursoreffects.emojiCursor({ 
-  emoji: ["❄️"] ,
-  length: 4,
-  size: 8
-});
+export default function initCursorEffect(){!window.__redefineCursorEffect&&window.cursoreffects&&(matchMedia("(prefers-reduced-motion: reduce)").matches||matchMedia("(pointer: coarse)").matches||(window.__redefineCursorEffect=new window.cursoreffects.emojiCursor({emoji:["❄️"],length:4,size:8})))}

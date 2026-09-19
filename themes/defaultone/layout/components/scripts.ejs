@@ -1,179 +1,139 @@
-<%- renderJS([ 'tools/imageViewer.js' , 'utils.js' , 'main.js' , 'layouts/navbarShrink.js' , 'tools/scrollTopBottom.js'
-    , 'tools/lightDarkSwitch.js' , 'layouts/categoryList.js' ],{ module: true }) %>
+<%- renderJS('libs/anime.min.js') %>
+<%- renderJS('main.js', { module: true }) %>
 
-    <% if (theme.navbar.search.enable) { %>
-        <%- renderJS('tools/localSearch.js', { module: true }) %>
-            <% } %>
+<% if (theme.footer.runtime) { %>
+<%- renderJS('tools/runtime.js') %>
+<%- renderJS('libs/odometer.min.js') %>
+<%- renderCSS('assets/odometer-theme-minimal.css') %>
+<% } %>
 
-                <% if (theme.articles.code_block.copy) { %>
-                    <%- renderJS('tools/codeBlock.js', { module: true }) %>
-                        <% } %>
+<% if (theme.plugins.mermaid.enable) { %>
+  <% if (theme.plugins.mermaid.version === '11.4.1') { %>
+  <%- renderJS('libs/mermaid.min.js') %>
+  <% } else { %>
+  <script src="https://cdn.jsdelivr.net/npm/mermaid@<%= theme.plugins.mermaid.version %>/dist/mermaid.min.js"></script>
+  <% } %>
+  <%- renderJS('plugins/mermaid.js') %>
+<% } %>
 
-                            <% if (theme.articles.lazyload) { %>
-                                <%- renderJS('layouts/lazyload.js', { module: true }) %>
-                                    <% } %>
+<% if (theme.articles.pangu_js) { %>
+<%- renderJS(['libs/pangu.min.js', 'plugins/pangu.js']) %>
+<% } %>
 
-                                        <% if (theme.footer.runtime) { %>
-                                            <%- renderJS('tools/runtime.js') %>
-                                                <%- renderJS('libs/odometer.min.js') %>
-                                                    <%- renderCSS('assets/odometer-theme-minimal.css') %>
-                                                        <% } %>
+<script>
+  (function () {
+    if (window.__redefineEnhancementsBound) return;
+    window.__redefineEnhancementsBound = true;
 
-                                                            <% if (theme.home_banner.subtitle.length !==0) { %>
-                                                                <%- renderJS('libs/Typed.min.js') %>
-                                                                    <%- renderJS('plugins/typed.js', { module: true })
-                                                                        %>
-                                                                        <% } %>
+    var root = <%- JSON.stringify(config.root) %>;
+    var reducedMotion = matchMedia('(prefers-reduced-motion: reduce)');
+    var loadedScripts = new Map();
 
-                                                                            <% if (theme.plugins.mermaid.enable) { %>
-                                                                                <% if
-                                                                                    (theme.plugins.mermaid.version==='11.4.1'
-                                                                                    ) { %>
-                                                                                    <%- renderJS('libs/mermaid.min.js')
-                                                                                        %>
-                                                                                        <% } else { %>
-                                                                                            <script
-                                                                                                src="https://cdn.jsdelivr.net/npm/mermaid@<%= theme.plugins.mermaid.version %>/dist/mermaid.min.js"></script>
-                                                                                            <% } %>
-                                                                                                <%- renderJS('plugins/mermaid.js')
-                                                                                                    %>
-                                                                                                    <% } %>
+    function loadScript(src, id) {
+      if (loadedScripts.has(src)) return loadedScripts.get(src);
+      var promise = new Promise(function (resolve, reject) {
+        var existing = id && document.getElementById(id);
+        if (existing) {
+          if (existing.dataset.loaded === 'true') resolve();
+          else existing.addEventListener('load', resolve, { once: true });
+          return;
+        }
+        var script = document.createElement('script');
+        script.src = src;
+        if (id) script.id = id;
+        script.addEventListener('load', function () {
+          script.dataset.loaded = 'true';
+          resolve();
+        }, { once: true });
+        script.addEventListener('error', reject, { once: true });
+        document.head.appendChild(script);
+      });
+      loadedScripts.set(src, promise);
+      return promise;
+    }
 
-                                                                                                        <% if
-                                                                                                            (theme.masonry
-                                                                                                            ||
-                                                                                                            theme.photos
-                                                                                                            ||
-                                                                                                            theme.gallery)
-                                                                                                            { %>
-                                                                                                            <%- renderJS('libs/minimasonry.min.js')
-                                                                                                                %>
-                                                                                                                <%- renderJS('plugins/masonry.js',
-                                                                                                                    {
-                                                                                                                    module:
-                                                                                                                    true
-                                                                                                                    })
-                                                                                                                    %>
-                                                                                                                    <% }
-                                                                                                                        %>
+    async function enhanceCurrentPage() {
+      if (document.getElementById('masonry-container')) {
+        await loadScript(root + 'js/build/libs/minimasonry.min.js', 'redefine-minimasonry');
+        var masonry = await import(root + 'js/build/plugins/masonry.js');
+        masonry.initMasonry();
+      }
+      if (document.querySelector('.essay-date')) {
+        await loadScript(root + 'js/build/libs/moment-with-locales.min.js', 'redefine-moment');
+        var essays = await import(root + 'js/build/layouts/essays.js');
+        essays.formatEssayDates();
+      }
+    }
 
-                                                                                                                        <% if
-                                                                                                                            (theme.global.preloader===false
-                                                                                                                            ||
-                                                                                                                            theme.global.preloader.enable===false)
-                                                                                                                            {
-                                                                                                                            %>
-                                                                                                                            <%- renderJS('libs/anime.min.js')
-                                                                                                                                %>
-                                                                                                                                <% }
-                                                                                                                                    %>
+    function startOptionalEffects() {
+      if (reducedMotion.matches || document.visibilityState !== 'visible') return;
 
-                                                                                                                                    <% if
-                                                                                                                                        (theme.articles.toc.enable)
-                                                                                                                                        {
-                                                                                                                                        %>
-                                                                                                                                        <%- renderJS([ 'tools/tocToggle.js'
-                                                                                                                                            , 'layouts/toc.js'
-                                                                                                                                            , 'plugins/tabs.js'
-                                                                                                                                            ],
-                                                                                                                                            {
-                                                                                                                                            module:
-                                                                                                                                            true,
-                                                                                                                                            swupReload:
-                                                                                                                                            true
-                                                                                                                                            })
-                                                                                                                                            %>
-                                                                                                                                            <% }
-                                                                                                                                                %>
+      <% if (theme.effects.particles) { %>
+      loadScript(root + 'js/build/libs/particles.min.js', 'redefine-particles').then(function () {
+        return import(root + 'js/build/layouts/setup-particles.js');
+      }).then(function (particles) { particles.default(); }).catch(console.error);
+      <% } %>
 
-                                                                                                                                                <%- renderJS('libs/moment-with-locales.min.js',
-                                                                                                                                                    {
-                                                                                                                                                    swupReload:
-                                                                                                                                                    true
-                                                                                                                                                    })
-                                                                                                                                                    %>
-                                                                                                                                                    <%- renderJS('layouts/essays.js',
-                                                                                                                                                        {
-                                                                                                                                                        swupReload:
-                                                                                                                                                        true,
-                                                                                                                                                        module:
-                                                                                                                                                        true
-                                                                                                                                                        })
-                                                                                                                                                        %>
+      <% if (theme.effects.cursoreffects) { %>
+      if (!matchMedia('(pointer: coarse)').matches) {
+        loadScript(root + 'js/build/libs/cursor-effects.js', 'redefine-cursor-effects').then(function () {
+          return import(root + 'js/build/layouts/setup-cursor.js');
+        }).then(function (cursor) { cursor.default(); }).catch(console.error);
+      }
+      <% } %>
 
-                                                                                                                                                        <% if
-                                                                                                                                                            (theme.articles.pangu_js)
-                                                                                                                                                            {
-                                                                                                                                                            %>
-                                                                                                                                                            <%- renderJS([ 'libs/pangu.min.js'
-                                                                                                                                                                , 'plugins/pangu.js'
-                                                                                                                                                                ])
-                                                                                                                                                                %>
-                                                                                                                                                                <% }
-                                                                                                                                                                    %>
+      <% const live2dConfig = config.live2d || {}; if (live2dConfig.enable) {
+        const live2dScriptSrc = live2dConfig.script && live2dConfig.script.src ? live2dConfig.script.src : '/live2dw/lib/L2Dwidget.min.js';
+        const live2dWidgetConfig = {
+          log: Boolean(live2dConfig.log),
+          model: { jsonPath: url_for(live2dConfig.model && live2dConfig.model.jsonPath ? live2dConfig.model.jsonPath : '/live2dw/assets/wanko.model.json') },
+          display: live2dConfig.display || { position: 'right', width: 150, height: 300 },
+          mobile: live2dConfig.mobile || { show: false },
+          react: live2dConfig.react || { opacity: 0.7 }
+        };
+      %>
+      var live2dConfig = <%- JSON.stringify(live2dWidgetConfig) %>;
+      if (live2dConfig.mobile.show || !matchMedia('(max-width: 768px)').matches) {
+        loadScript(<%- JSON.stringify(url_for(live2dScriptSrc)) %>, 'redefine-live2d').then(function () {
+          if (window.L2Dwidget && !window.__redefineLive2dStarted) {
+            window.__redefineLive2dStarted = true;
+            window.L2Dwidget.init(live2dConfig);
+          }
+        }).catch(console.error);
+      }
+      <% } %>
+    }
 
-                                                                                                                                                                    <% if
-                                                                                                                                                                        (theme.bookmarks
-                                                                                                                                                                        &&
-                                                                                                                                                                        theme.bookmarks.length
-                                                                                                                                                                        !==0)
-                                                                                                                                                                        {
-                                                                                                                                                                        %>
-                                                                                                                                                                        <%- renderJS('layouts/bookmarkNav.js',
-                                                                                                                                                                            {
-                                                                                                                                                                            module:
-                                                                                                                                                                            true
-                                                                                                                                                                            })
-                                                                                                                                                                            %>
-                                                                                                                                                                            <% }
-                                                                                                                                                                                %>
+    function scheduleOptionalEffects() {
+      var started = false;
+      function start() {
+        if (started) return;
+        started = true;
+        startOptionalEffects();
+      }
+      window.addEventListener('pointerdown', start, { once: true, passive: true });
+      window.addEventListener('touchstart', start, { once: true, passive: true });
+      window.addEventListener('keydown', start, { once: true });
+      window.addEventListener('scroll', start, { once: true, passive: true });
+      if (!matchMedia('(pointer: coarse)').matches) {
+        window.addEventListener('pointermove', start, { once: true, passive: true });
+      }
+    }
 
-                                                                                                                                                                                <% if
-                                                                                                                                                                                    (theme.effects.cursoreffects)
-                                                                                                                                                                                    {
-                                                                                                                                                                                    %>
-                                                                                                                                                                                    <%- renderJS('layouts/setup-cursor.js',
-                                                                                                                                                                                        {
-                                                                                                                                                                                        module:
-                                                                                                                                                                                        true
-                                                                                                                                                                                        })
-                                                                                                                                                                                        %>
-                                                                                                                                                                                        <% }
-                                                                                                                                                                                            %>
+    if (document.readyState === 'loading') {
+      document.addEventListener('DOMContentLoaded', function () {
+        enhanceCurrentPage().catch(console.error);
+        scheduleOptionalEffects();
+      }, { once: true });
+    } else {
+      enhanceCurrentPage().catch(console.error);
+      scheduleOptionalEffects();
+    }
 
-                                                                                                                                                                                            <% const live2dConfig = config.live2d || {};
-                                                                                                                                                                                            if (live2dConfig.enable) {
-                                                                                                                                                                                                const live2dScriptSrc = live2dConfig.script && live2dConfig.script.src ? live2dConfig.script.src : '/live2dw/lib/L2Dwidget.min.js';
-                                                                                                                                                                                                const live2dWidgetConfig = {
-                                                                                                                                                                                                    log: Boolean(live2dConfig.log),
-                                                                                                                                                                                                    model: {
-                                                                                                                                                                                                        jsonPath: url_for(live2dConfig.model && live2dConfig.model.jsonPath ? live2dConfig.model.jsonPath : '/live2dw/assets/wanko.model.json')
-                                                                                                                                                                                                    },
-                                                                                                                                                                                                    display: live2dConfig.display || {
-                                                                                                                                                                                                        position: 'right',
-                                                                                                                                                                                                        width: 150,
-                                                                                                                                                                                                        height: 300
-                                                                                                                                                                                                    },
-                                                                                                                                                                                                    mobile: live2dConfig.mobile || {
-                                                                                                                                                                                                        show: false
-                                                                                                                                                                                                    },
-                                                                                                                                                                                                    react: live2dConfig.react || {
-                                                                                                                                                                                                        opacity: 0.7
-                                                                                                                                                                                                    }
-                                                                                                                                                                                                };
-                                                                                                                                                                                            %>
-                                                                                                                                                                                                <script src="<%- url_for(live2dScriptSrc) %>"></script>
-                                                                                                                                                                                                <script>
-                                                                                                                                                                                                    function initLive2DWidget() {
-                                                                                                                                                                                                        if (window.L2Dwidget) {
-                                                                                                                                                                                                            window.L2Dwidget.init(<%- JSON.stringify(live2dWidgetConfig) %>);
-                                                                                                                                                                                                        }
-                                                                                                                                                                                                    }
-
-                                                                                                                                                                                                    if (document.readyState === 'complete') {
-                                                                                                                                                                                                        initLive2DWidget();
-                                                                                                                                                                                                    } else {
-                                                                                                                                                                                                        window.addEventListener('load', initLive2DWidget);
-                                                                                                                                                                                                    }
-                                                                                                                                                                                                </script>
-                                                                                                                                                                                            <% } %>
+    try {
+      swup.hooks.on('page:view', function () {
+        enhanceCurrentPage().catch(console.error);
+      });
+    } catch (error) {}
+  })();
+</script>

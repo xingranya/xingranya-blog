@@ -1,47 +1,47 @@
 <div class="side-tools-container">
 	<ul class="hidden-tools-list">
-		<li class="right-bottom-tools min-w-[44px] min-h-[44px] tool-font-adjust-plus flex justify-center items-center">
+		<li><button type="button" class="right-bottom-tools min-w-[44px] min-h-[44px] tool-font-adjust-plus flex justify-center items-center" aria-label="放大字号">
 			<i class="fa-regular fa-magnifying-glass-plus"></i>
-		</li>
+		</button></li>
 
-		<li class="right-bottom-tools min-w-[44px] min-h-[44px] tool-font-adjust-minus flex justify-center items-center">
+		<li><button type="button" class="right-bottom-tools min-w-[44px] min-h-[44px] tool-font-adjust-minus flex justify-center items-center" aria-label="缩小字号">
 			<i class="fa-regular fa-magnifying-glass-minus"></i>
-		</li>
+		</button></li>
 
 		<!-- rss -->
 		<% if (theme.plugins.feed.enable && config.feed) { %>
 		<li class="right-bottom-tools min-w-[44px] min-h-[44px] rss flex justify-center items-center">
-			<a class="flex justify-center items-center" href="<%= '/' + config.feed.path %>" target="_blank">
+			<a class="flex justify-center items-center" href="<%= '/' + config.feed.path %>" target="_blank" rel="noopener" aria-label="RSS 订阅" style="min-width:44px;min-height:44px">
 				<i class="fa-regular fa-rss"></i>
 			</a>
 		</li>
 		<% } %>
 
 		<% if (theme.global.scroll_progress.percentage !== true) { %>
-		<li class="right-bottom-tools min-w-[44px] min-h-[44px] tool-scroll-to-top flex justify-center items-center">
+		<li><button type="button" class="right-bottom-tools min-w-[44px] min-h-[44px] tool-scroll-to-top flex justify-center items-center" aria-label="回到顶部">
 			<i class="fa-regular fa-arrow-up"></i>
-		</li>
+		</button></li>
 		<% } %>
 
-		<li class="right-bottom-tools min-w-[44px] min-h-[44px] tool-scroll-to-bottom flex justify-center items-center">
+		<li><button type="button" class="right-bottom-tools min-w-[44px] min-h-[44px] tool-scroll-to-bottom flex justify-center items-center" aria-label="滚动到底部">
 			<i class="fa-regular fa-arrow-down"></i>
-		</li>
+		</button></li>
 	</ul>
 
 	<ul class="visible-tools-list">
-		<li class="right-bottom-tools min-w-[44px] min-h-[44px] toggle-tools-list flex justify-center items-center">
+		<li><button type="button" class="right-bottom-tools min-w-[44px] min-h-[44px] toggle-tools-list flex justify-center items-center" aria-label="展开工具">
 			<i class="fa-regular fa-cog fa-spin"></i>
-		</li>
+		</button></li>
 		
-		<li class="right-bottom-tools min-w-[44px] min-h-[44px] tool-dark-light-toggle flex justify-center items-center">
+		<li><button type="button" class="right-bottom-tools min-w-[44px] min-h-[44px] tool-dark-light-toggle flex justify-center items-center" aria-label="切换亮暗主题">
 			<i class="fa-regular fa-moon"></i>
-		</li>
+		</button></li>
 		
 		<% if (theme.global.scroll_progress.percentage === true) { %>
-		<li class="right-bottom-tools min-w-[44px] min-h-[44px] tool-scroll-to-top flex justify-center items-center">
+		<li><button type="button" class="right-bottom-tools min-w-[44px] min-h-[44px] tool-scroll-to-top flex justify-center items-center" aria-label="回到顶部">
 			<i class="arrow-up fas fa-arrow-up"></i>
 			<span class="percent"></span>
-		</li>
+		</button></li>
 		<% } %>
 		<% if (theme.plugins.aplayer.enable && theme.plugins.aplayer.type === "mini") { %>
 		<li class="right-bottom-tools min-w-[44px] min-h-[44px] tool-aplayer flex justify-center items-center">

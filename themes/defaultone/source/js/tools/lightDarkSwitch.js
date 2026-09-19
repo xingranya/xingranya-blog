@@ -119,21 +119,21 @@ export const ModeToggle = {
     }
   },
 
-  initModeToggleButton() {
+  initModeToggleButton(signal) {
     this.modeToggleButton_dom.addEventListener("click", () => {
       const isDark = document.body.classList.contains("dark-mode");
       isDark ? this.enableLightMode() : this.enableDarkMode();
-    });
+    }, { signal });
   },
 
-  initModeAutoTrigger() {
+  initModeAutoTrigger(signal) {
     const isDarkMode = this.isDarkPrefersColorScheme();
     isDarkMode.addEventListener("change", (e) => {
       e.matches ? this.enableDarkMode() : this.enableLightMode();
-    });
+    }, { signal });
   },
 
-  async init() {
+  async init(signal) {
     this.modeToggleButton_dom = document.querySelector(
       ".tool-dark-light-toggle",
     );
@@ -151,8 +151,8 @@ export const ModeToggle = {
         ? theme.mermaid.style.dark
         : "dark";
     this.initModeStatus();
-    this.initModeToggleButton();
-    this.initModeAutoTrigger();
+    this.initModeToggleButton(signal);
+    this.initModeAutoTrigger(signal);
     try {
       await saveOriginalData().catch(console.error);
     } catch (error) {}
@@ -160,6 +160,6 @@ export const ModeToggle = {
 };
 
 // Exported function
-export default function initModeToggle() {
-  ModeToggle.init();
+export default function initModeToggle(signal) {
+  ModeToggle.init(signal);
 }

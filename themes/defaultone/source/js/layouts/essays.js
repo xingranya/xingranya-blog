@@ -1,5 +1,5 @@
 // Function to format the dates
-function formatEssayDates() {
+export function formatEssayDates() {
   const dateElements = document.querySelectorAll(".essay-date");
 
   if (!dateElements) {
@@ -14,12 +14,3 @@ function formatEssayDates() {
     element.textContent = formattedDate;
   });
 }
-
-try {
-  swup.hooks.on("page:view", formatEssayDates);
-} catch (e) {
-  console.error(e);
-}
-
-// Initial call for the first page load
-document.addEventListener("DOMContentLoaded", formatEssayDates);

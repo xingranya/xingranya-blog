@@ -1,355 +1,91 @@
 <head>
-    <meta charset="utf-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
-    <script>
-      (function () {
-        var dark = <%= theme.colors.default_mode === 'dark' ? 'true' : 'false' %>;
-        try {
-          var raw = localStorage.getItem('REDEFINE-THEME-STATUS');
-          if (raw) {
-            var parsed = JSON.parse(raw);
-            if (typeof parsed.isDark === 'boolean') dark = parsed.isDark;
-          }
-        } catch (e) {}
-        document.documentElement.classList.add(dark ? 'dark' : 'light');
-        document.documentElement.classList.remove(dark ? 'light' : 'dark');
-        window.__redefineIsDark = dark;
-      })();
-    </script>
-    <style>
-        html.redefine-style-loading {
-            background: var(--redefine-loading-background, #202124);
-        }
-
-        html.redefine-style-loading body {
-            visibility: visible;
-        }
-
-        html.redefine-style-loading * {
-            transition: none !important;
-        }
-
-        @media (prefers-color-scheme: light) {
-            html.redefine-style-loading {
-                background: var(--redefine-loading-background, #fff);
-            }
-        }
-    </style>
-    <noscript>
-        <style>
-            html.redefine-style-loading body {
-                visibility: visible;
-            }
-        </style>
-    </noscript>
-    <script>
-        (function () {
-            var root = document.documentElement;
-            var fallbackTimer;
-
-            function setLoadingBackground() {
-                try {
-                    var themeStatus = JSON.parse(localStorage.getItem('REDEFINE-THEME-STATUS') || '{}');
-                    var isDark = themeStatus && themeStatus.isDark;
-
-                    if (isDark === undefined || isDark === null) {
-                        isDark = window.matchMedia && window.matchMedia('(prefers-color-scheme: dark)').matches;
-                    }
-
-                    root.style.setProperty('--redefine-loading-background', isDark ? '#202124' : '#fff');
-                } catch (error) {
-                    root.style.setProperty('--redefine-loading-background', '#202124');
-                }
-            }
-
-            window.redefineReleaseStyleLoading = function () {
-                clearTimeout(fallbackTimer);
-                root.classList.remove('redefine-style-loading');
-                root.style.removeProperty('--redefine-loading-background');
-            };
-
-            window.redefineCriticalStyleReady = function (style) {
-                if (style) {
-                    style.setAttribute('data-redefine-style-loaded', 'true');
-                }
-
-                if (window.redefineReleaseWhenCriticalStylesReady) {
-                    window.redefineReleaseWhenCriticalStylesReady();
-                }
-            };
-
-            window.redefineReleaseWhenCriticalStylesReady = function () {
-                var styles = document.querySelectorAll('link[data-redefine-critical-style]');
-                var expectedCount = window.redefineCriticalStyleExpectedCount || 0;
-
-                if (expectedCount && styles.length < expectedCount) {
-                    return;
-                }
-
-                if (!expectedCount && !styles.length) {
-                    window.redefineReleaseStyleLoading();
-                    return;
-                }
-
-                for (var i = 0; i < styles.length; i++) {
-                    var style = styles[i];
-
-                    if (style.getAttribute('data-redefine-style-loaded') === 'true') {
-                        continue;
-                    }
-
-                    if (style.sheet) {
-                        style.setAttribute('data-redefine-style-loaded', 'true');
-                        continue;
-                    }
-
-                    return;
-                }
-
-                window.redefineReleaseStyleLoading();
-            };
-
-            setLoadingBackground();
-            root.classList.add('redefine-style-loading');
-            fallbackTimer = setTimeout(window.redefineReleaseStyleLoading, 5000);
-            document.addEventListener('DOMContentLoaded', window.redefineReleaseWhenCriticalStylesReady);
-        })();
-    </script>
-    <script>
-        window.redefineCriticalStyleExpectedCount = 2;
-    </script>
-    <%- css('css/style').replace('<link', '<link data-redefine-critical-style onload="window.redefineCriticalStyleReady&&window.redefineCriticalStyleReady(this)" onerror="window.redefineCriticalStyleReady&&window.redefineCriticalStyleReady(this)"') %>
-    <% if (theme.developer && theme.developer.enable) { %>
-        <%- css('css/build/tailwind.css').replace('<link', '<link data-redefine-critical-style onload="window.redefineCriticalStyleReady&&window.redefineCriticalStyleReady(this)" onerror="window.redefineCriticalStyleReady&&window.redefineCriticalStyleReady(this)"') %>
-    <% } else { %>
-        <%- renderCSS('css/build/tailwind.css').replace('<link', '<link data-redefine-critical-style onload="window.redefineCriticalStyleReady&&window.redefineCriticalStyleReady(this)" onerror="window.redefineCriticalStyleReady&&window.redefineCriticalStyleReady(this)"') %>
-    <% } %>
-    <script>
-        window.redefineReleaseWhenCriticalStylesReady&&window.redefineReleaseWhenCriticalStylesReady();
-    </script>
-    <meta name="keywords" content="<%= seoKeywords(config, page) %>">
-    <% const pageDescription = seoDescription(config, theme, page); %>
-    <meta name="description" content="<%= pageDescription %>">
-            <meta name="author" content="<%= theme.info.author || config.author || 'defaultone Team' %>">
-            <!-- preconnect -->
-            <!-- <link rel="preconnect" href="https://fonts.googleapis.com"> -->
-            <!-- <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin> -->
-            <!-- Source Sans Pro font -->
-            <!-- <link
-                href="https://fonts.googleapis.com/css2?family=Source+Sans+Pro:ital,wght@0,400;0,500;0,600;0,700;1,400;1,500;1,600;1,700&display=swap"
-                rel="stylesheet"> -->
-            <%- renderJS('libs/particles.min.js').replace('<script', '<script defer') %>
-            <%- renderJS('libs/cursor-effects.js').replace('<script', '<script defer') %>
-
-            <% if (theme.cdn.enable) { %>
-                <% const provider=theme.cdn.provider; %>
-                    <% const cdnLinks={ 'jsdelivr' : 'https://cdn.jsdelivr.net' , 'unpkg' : 'https://unpkg.com'
-                        , 'aliyun' : 'https://evan.beee.top' , 'cdnjs' : 'https://cdnjs.cloudflare.com' , 'zstatic'
-                        : 'https://s4.zstatic.net' , 'npmmirror' : 'https://registry.npmmirror.com' , }; %>
-                        <% if (cdnLinks[provider]) { %>
-                            <link rel="preconnect" href="<%= cdnLinks[provider] %>" crossorigin>
-                            <% } %>
-                                <% } %>
-                                    <!--- Seo Part-->
-                                    <%- generateMeta(theme, page) %>
-                                        <%- autoCanonical(config, page) %>
-                                        <%- seoJsonLd(config, theme, page) %>
-                                        <link rel="alternate" type="application/atom+xml" title="<%= theme.info.title || config.title %>" href="<%= url_for('/atom.xml') %>">
-
-                                            <% checkDeprecation( theme.global.open_graph===true, 'open_graph'
-                                                , "Using 'open_graph: true' is deprecated. Please update to the new format:\nglobal:\n  open_graph:\n    enable: true\n    image: your_image_path\n    description: your_description"
-                                                ) %>
-                                                <% if (theme.global.open_graph?.enable ||
-                                                    theme.global.open_graph===true) { %>
-                                                    <% let ogImage=seoImage(config, theme, page); let
-                                                        ogDescription=pageDescription; let author=page.author || config.author
-                                                        || theme.info.author || 'xingranya' ; %>
-                                                        <%- open_graph({ image: ogImage, author: author, description:
-                                                            ogDescription, twitter_card: 'summary_large_image' , twitter_image:
-                                                            ogImage, }) %>
-                                                            <% } %>
-                                                                <% if (theme.global.google_analytics.enable) { %>
-                                                                    <!-- Google tag (gtag.js) -->
-                                                                    <script
-                                                                        src="https://www.googletagmanager.com/gtag/js?id=<%= theme.global.google_analytics.id %>"></script>
-                                                                    <script>
-                                                                        window.dataLayer = window.dataLayer || [];
-                                                                        function gtag() { dataLayer.push(arguments); }
-                                                                        gtag('js', new Date());
-
-                                                                        gtag('config', '<%= theme.global.google_analytics.id %>');
-                                                                    </script>
-                                                                    <% } %>
-                                                                        <!--- Icon Part-->
-                                                                        <link rel="icon" type="image/png"
-                                                                            href="<%= url_for(theme.defaults.favicon) %>"
-                                                                            sizes="any">
-                                                                        <link rel="icon" type="image/png"
-                                                                            href="<%= url_for(theme.defaults.favicon_png || theme.defaults.favicon) %>"
-                                                                            sizes="512x512">
-                                                                        <link rel="apple-touch-icon" sizes="180x180"
-                                                                            href="<%= url_for(theme.defaults.favicon_png || theme.defaults.favicon) %>">
-                                                                        <meta name="theme-color"
-                                                                            content="<%= theme.colors.primary %>">
-                                                                        <%- favicon_tag(theme.defaults.favicon_png || theme.defaults.favicon) %>
-                                                                            <!--- Page Info -->
-                                                                            <%
-                                                                            let pageTitle = page.title;
-                                                                            if (is_archive()) {
-                                                                                pageTitle = __('archive');
-                                                                                if (is_month()) {
-                                                                                    pageTitle += ': ' + page.year + '/' + page.month;
-                                                                                } else if (is_year()) {
-                                                                                    pageTitle += ': ' + page.year;
-                                                                                }
-                                                                            } else if (is_category()) {
-                                                                                pageTitle = __('category') + ': ' + page.category;
-                                                                            } else if (is_tag()) {
-                                                                                pageTitle = __('tag') + ': ' + page.tag;
-                                                                            } else {
-                                                                                pageTitle = __(page.title);
-                                                                            }
-
-                                                                            let siteName = theme.info.title || config.title || '星苒鸭博客';
-                                                                            let fullTitle = '';
-                                                                            if (pageTitle) {
-                                                                                fullTitle = pageTitle + ' | ' + siteName;
-                                                                            } else {
-                                                                                let subtitle = theme.info.subtitle || config.subtitle || '';
-                                                                                if (subtitle) {
-                                                                                    fullTitle = siteName + ' - ' + subtitle;
-                                                                                } else {
-                                                                                    fullTitle = siteName;
-                                                                                }
-                                                                            }
-                                                                            %>
-                                                                                <title><%= fullTitle %></title>
-
-                                                                                <%- renderCSS('fonts/Chillax/chillax.css')
-                                                                                    %>
-
-                                                                                    <!--- Inject Part-->
-                                                                                    <% if (theme.inject.enable==true) {
-                                                                                        %>
-                                                                                        <% for (let i in
-                                                                                            theme.inject.head) { %>
-                                                                                            <% if (theme.inject.head[i]
-                                                                                                !==null){ %>
-                                                                                                <% if
-                                                                                                    (theme.global.single_page==true)
-                                                                                                    { %>
-                                                                                                    <%- theme.inject.head[i].replace("<script", "<script data-swup-reload-script"
-                                                                                                        ) %>
-                                                                                                        <% } else { %>
-                                                                                                            <%- theme.inject.head[i]
-                                                                                                                %>
-                                                                                                                <% } }%>
-                                                                                                                    <% }
-                                                                                                                        }%>
-
-                                                                                                                                                <%- renderCSS('fonts/GeistMono/geist-mono.css')
-                                                                                                                                                    %>
-                                                                                                                                                    <%- renderCSS('fonts/Geist/geist.css')
-                                                                                                                                                        %>
-                                                                                                                                                        <!--- Font Part-->
-                                                                                                                                                        <% if
-                                                                                                                                                            (theme.home_banner.custom_font.enable && theme.home_banner.custom_font.url)
-                                                                                                                                                            {
-                                                                                                                                                            %>
-                                                                                                                                                            <link
-                                                                                                                                                                href="<%- theme.home_banner.custom_font.url %>"
-                                                                                                                                                                rel="stylesheet">
-                                                                                                                                                            <% }
-                                                                                                                                                                %>
-                                                                                                                                                                <% if
-                                                                                                                                                                    (theme.articles.code_block.font.enable)
-                                                                                                                                                                    {
-                                                                                                                                                                    %>
-                                                                                                                                                                    <link
-                                                                                                                                                                        href="<%- theme.articles.code_block.font.url %>"
-                                                                                                                                                                        rel="stylesheet">
-                                                                                                                                                                    <% }
-                                                                                                                                                                        %>
-                                                                                                                                                                        <% if
-                                                                                                                                                                            (theme.global.fonts.chinese.enable)
-                                                                                                                                                                            {
-                                                                                                                                                                            %>
-                                                                                                                                                                            <link
-                                                                                                                                                                                href="<%- theme.global.fonts.chinese.url %>"
-                                                                                                                                                                                rel="stylesheet">
-                                                                                                                                                                            <% }
-                                                                                                                                                                                %>
-                                                                                                                                                                                <% if
-                                                                                                                                                                                    (theme.global.fonts.english.enable)
-                                                                                                                                                                                    {
-                                                                                                                                                                                    %>
-                                                                                                                                                                                    <link
-                                                                                                                                                                                        href="<%- theme.global.fonts.english.url %>"
-                                                                                                                                                                                        rel="stylesheet">
-                                                                                                                                                                                    <% }
-                                                                                                                                                                                        %>
-                                                                                                                                                                                        <% if
-                                                                                                                                                                                            (theme.global.fonts.title.enable)
-                                                                                                                                                                                            {
-                                                                                                                                                                                            %>
-                                                                                                                                                                                            <link
-                                                                                                                                                                                                href="<%- theme.global.fonts.title.url %>"
-                                                                                                                                                                                                rel="stylesheet">
-                                                                                                                                                                                            <% }
-                                                                                                                                                                                                %>
-                                                                                                                                                                                                <% if
-                                                                                                                                                                                                    (theme.global.preloader===true
-                                                                                                                                                                                                    ||
-                                                                                                                                                                                                    theme.global.preloader.enable===true)
-                                                                                                                                                                                                    {
-                                                                                                                                                                                                    %>
-                                                                                                                                                                                                    <%-
-                                                                                                                                                                                                        renderJS('libs/anime.min.js')%>
-                                                                                                                                                                                                        <% }
-                                                                                                                                                                                                            %>
-
-                                                                                                                                                                                                            <%- export_config()
-                                                                                                                                                                                                                %>
-
-                                                                                                                                                                                                                <!--- Fontawesome Part-->
-                                                                                                                                                                                                                <%- renderCSS('fontawesome/fontawesome.min.css')
-                                                                                                                                                                                                                    %>
-                                                                                                                                                                                                                    <%- renderCSS('fontawesome/brands.min.css')
-                                                                                                                                                                                                                        %>
-                                                                                                                                                                                                                        <%- renderCSS('fontawesome/solid.min.css')
-                                                                                                                                                                                                                            %>
-                                                                                                                                                                                                                            <%- renderCSS('fontawesome/regular.min.css')
-                                                                                                                                                                                                                                %>
-                                                                                                                                                                                                                                <% if
-                                                                                                                                                                                                                                    (theme.fontawesome.thin==true)
-                                                                                                                                                                                                                                    {
-                                                                                                                                                                                                                                    %>
-                                                                                                                                                                                                                                    <%- renderCSS('fontawesome/thin.min.css')
-                                                                                                                                                                                                                                        %>
-                                                                                                                                                                                                                                        <% }
-                                                                                                                                                                                                                                            %>
-                                                                                                                                                                                                                                            <% if
-                                                                                                                                                                                                                                                (theme.fontawesome.light==true)
-                                                                                                                                                                                                                                                {
-                                                                                                                                                                                                                                                %>
-                                                                                                                                                                                                                                                <%- renderCSS('fontawesome/light.min.css')
-                                                                                                                                                                                                                                                    %>
-                                                                                                                                                                                                                                                    <% }
-                                                                                                                                                                                                                                                        %>
-                                                                                                                                                                                                                                                        <% if
-                                                                                                                                                                                                                                                            (theme.fontawesome.duotone==true)
-                                                                                                                                                                                                                                                            {
-                                                                                                                                                                                                                                                            %>
-                                                                                                                                                                                                                                                            <%- renderCSS('fontawesome/duotone.min.css')
-                                                                                                                                                                                                                                                                %>
-                                                                                                                                                                                                                                                                <% }
-                                                                                                                                                                                                                                                                    %>
-                                                                                                                                                                                                                                                                    <% if
-                                                                                                                                                                                                                                                                        (theme.fontawesome.sharp_solid==true)
-                                                                                                                                                                                                                                                                        {
-                                                                                                                                                                                                                                                                        %>
-                                                                                                                                                                                                                                                                        <%- renderCSS('fontawesome/sharp-solid.min.css')
-                                                                                                                                                                                                                                                                            %>
-                                                                                                                                                                                                                                                                            <% }
-                                                                                                                                                                                                                                                                                %>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
+  <script>
+    (function () {
+      var dark = matchMedia('(prefers-color-scheme: dark)').matches;
+      try {
+        var saved = JSON.parse(localStorage.getItem('REDEFINE-THEME-STATUS') || '{}');
+        if (typeof saved.isDark === 'boolean') dark = saved.isDark;
+      } catch (error) {}
+      document.documentElement.classList.add(dark ? 'dark' : 'light');
+      window.__redefineIsDark = dark;
+      <% if (theme.home_banner.enable && is_home()) { %>
+      var image = dark ? <%- JSON.stringify(url_for(theme.home_banner.image.dark)) %> : <%- JSON.stringify(url_for(theme.home_banner.image.light)) %>;
+      if (matchMedia('(max-width: 768px)').matches) image = image.replace(/\.webp$/, '-mobile.webp');
+      var preload = document.createElement('link');
+      preload.rel = 'preload';
+      preload.as = 'image';
+      preload.href = image;
+      preload.fetchPriority = 'high';
+      document.head.appendChild(preload);
+      <% } %>
+    })();
+  </script>
+  <%- css('css/style') %>
+  <% if (theme.developer && theme.developer.enable) { %>
+  <%- css('css/build/tailwind.css') %>
+  <% } else { %>
+  <%- renderCSS('css/build/tailwind.css') %>
+  <% } %>
+  <% const seoPage = seoPageData(config, theme, page); const pageDescription = seoPage.description; %>
+  <meta name="keywords" content="<%= seoKeywords(config, page) %>">
+  <meta name="description" content="<%= pageDescription %>">
+  <meta name="author" content="<%= theme.info.author || config.author %>">
+  <%- generateMeta(theme, page) %>
+  <%- autoCanonical(config, page) %>
+  <%- seoJsonLd(config, theme, page) %>
+  <link rel="alternate" type="application/atom+xml" title="<%= theme.info.title || config.title %>" href="<%= url_for('/atom.xml') %>">
+  <link rel="alternate" type="text/plain" title="站点内容索引" href="<%= url_for('/llms.txt') %>">
+  <% if (isPublicArticle(page)) { %>
+  <link rel="alternate" type="text/markdown" title="Markdown 原文" href="<%= url_for(markdownPath(page)) %>">
+  <% } %>
+  <% if (theme.global.open_graph?.enable || theme.global.open_graph === true) { %>
+    <%- open_graph({ image: seoImage(config, theme, page), author: page.author || config.author, description: pageDescription, twitter_card: 'summary_large_image', twitter_image: seoImage(config, theme, page) }) %>
+  <% } %>
+  <% const faviconType = String(theme.defaults.favicon).replace(/\?.*$/, '').endsWith('.webp') ? 'image/webp' : 'image/png'; %>
+  <link rel="icon" type="<%= faviconType %>" href="<%= url_for(theme.defaults.favicon) %>" sizes="any">
+  <link rel="apple-touch-icon" sizes="180x180" href="<%= url_for(theme.defaults.favicon_png || theme.defaults.favicon) %>">
+  <meta name="theme-color" content="<%= theme.colors.primary %>">
+  <title><%= seoPage.title %></title>
+  <style>
+    @font-face { font-family: 'Geist Variable'; src: url('/fonts/Geist/GeistVF.woff2') format('woff2'); font-weight: 200 700; font-style: normal; font-display: optional; }
+    @font-face { font-family: 'Chillax-Variable'; src: url('/fonts/Chillax/Chillax-Variable.woff2') format('woff2'); font-weight: 200 700; font-style: normal; font-display: optional; }
+    @font-face { font-family: 'Geist Mono'; src: url('/fonts/GeistMono/GeistMonoVF.woff2') format('woff2'); font-weight: 400; font-style: normal; font-display: optional; }
+    .home-banner-subtitle { display: flex; min-height: 3.25rem; max-width: min(90vw, 48rem); align-items: center; justify-content: center; }
+    .fa, .fa-brands, .fa-regular, .fa-solid, .fab, .far, .fas { display: inline-block; min-width: 1em; font-style: normal; font-variant: normal; line-height: 1; text-align: center; }
+    .fa-fw { width: 1.25em; }
+    .home-banner-background { background-image: url('<%= url_for(theme.home_banner.image.dark) %>'); background-position: center; background-size: cover; }
+    html.light .home-banner-background { background-image: url('<%= url_for(theme.home_banner.image.light) %>'); }
+    @media (max-width: 768px) {
+      .home-banner-background { background-image: url('<%= url_for(theme.home_banner.image.dark.replace(/\.webp$/, '-mobile.webp')) %>'); }
+      html.light .home-banner-background { background-image: url('<%= url_for(theme.home_banner.image.light.replace(/\.webp$/, '-mobile.webp')) %>'); }
+    }
+    @media (min-width: 640px) { .home-banner-subtitle { min-height: 1.75rem; } }
+  </style>
+  <% const fontUrls = [theme.home_banner.custom_font, theme.articles.code_block.font, ...Object.values(theme.global.fonts)].filter(font => font && font.enable && font.url); %>
+  <% for (const font of fontUrls) { %>
+  <link href="<%= font.url %>" rel="stylesheet" media="print" onload="this.media='all'">
+  <noscript><link href="<%= font.url %>" rel="stylesheet"></noscript>
+  <% } %>
+  <% for (const fontAwesomeStyle of ['fontawesome/fontawesome.min.css', 'fontawesome/brands.min.css', 'fontawesome/solid.min.css', 'fontawesome/regular.min.css']) { %>
+    <link rel="stylesheet" href="<%= url_for('/' + fontAwesomeStyle) %>" media="print" onload="this.media='all'">
+    <noscript><link rel="stylesheet" href="<%= url_for('/' + fontAwesomeStyle) %>"></noscript>
+  <% } %>
+  <style>
+    @font-face { font-family: 'Font Awesome 6 Pro'; font-style: normal; font-weight: 900; font-display: swap; src: url('/webfonts/fa-solid-900-subset.woff2') format('woff2'); }
+    @font-face { font-family: 'Font Awesome 6 Pro'; font-style: normal; font-weight: 400; font-display: swap; src: url('/webfonts/fa-regular-400-subset.woff2') format('woff2'); }
+    @font-face { font-family: 'Font Awesome 6 Brands'; font-style: normal; font-weight: 400; font-display: swap; src: url('/webfonts/fa-brands-400-subset.woff2') format('woff2'); }
+  </style>
+  <% for (const [option, name] of [['thin', 'thin'], ['light', 'light'], ['duotone', 'duotone'], ['sharp_solid', 'sharp-solid']]) { %>
+    <% if (theme.fontawesome[option]) { %><%- renderCSS('fontawesome/' + name + '.min.css') %><% } %>
+  <% } %>
+  <%- export_config() %>
+  <% if (theme.global.google_analytics.enable) { %>
+    <script async src="https://www.googletagmanager.com/gtag/js?id=<%= theme.global.google_analytics.id %>"></script>
+    <script>window.dataLayer = window.dataLayer || []; function gtag() { dataLayer.push(arguments); } gtag('js', new Date()); gtag('config', '<%= theme.global.google_analytics.id %>');</script>
+  <% } %>
+  <% if (theme.inject.enable) { for (const item of theme.inject.head || []) { if (item) { %>
+    <%- theme.global.single_page ? item.replace('<script', '<script data-swup-reload-script') : item %>
+  <% } } } %>
 </head>

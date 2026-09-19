@@ -35,6 +35,13 @@ function isHttpUrl(value) {
   }
 }
 
+function isExistingLocalAsset(value) {
+  if (!isPresent(value)) return false;
+  const assetPath = String(value).trim();
+  if (!assetPath.startsWith('/') || assetPath.includes('..')) return false;
+  return fs.existsSync(path.join(process.cwd(), 'source', assetPath.replace(/^\/+/, '')));
+}
+
 function isValidDate(value) {
   return isPresent(value) && !Number.isNaN(new Date(value).getTime());
 }
@@ -61,8 +68,8 @@ function validatePost(filePath) {
     errors.push('date 格式无效');
   }
 
-  if (isPresent(post.cover) && !isHttpUrl(post.cover)) {
-    errors.push('cover 必须是 http(s) 外链');
+  if (isPresent(post.cover) && !isHttpUrl(post.cover) && !isExistingLocalAsset(post.cover)) {
+    errors.push('cover 必须是 http(s) 外链或已存在的站内绝对路径');
   }
 
   return errors.map((message) => `${relativePath}: ${message}`);

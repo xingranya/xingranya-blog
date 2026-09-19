@@ -1,4 +1,4 @@
-export default function initBookmarkNav() {
+export default function initBookmarkNav(signal) {
   const navItems = document.querySelectorAll('.bookmark-nav-item');
   const sections = document.querySelectorAll('section[id]');
 
@@ -52,14 +52,8 @@ export default function initBookmarkNav() {
   // });
 
   // Throttle scroll handler to run at most every 100ms
-  window.addEventListener('scroll', throttle(setActiveNavItem, 100));
+  window.addEventListener('scroll', throttle(setActiveNavItem, 100), { passive: true, signal });
   
   // Initial check
   setActiveNavItem();
 }
-
-try {
-  swup.hooks.on("page:view", initBookmarkNav);
-} catch (e) {}
-
-document.addEventListener("DOMContentLoaded", initBookmarkNav); 

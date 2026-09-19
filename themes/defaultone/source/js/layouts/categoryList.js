@@ -3,7 +3,7 @@ const toggleStyle = (element, style, firstValue, secondValue) => {
     element.style[style] === firstValue ? secondValue : firstValue;
 };
 
-const setupCategoryList = () => {
+export default function setupCategoryList(signal) {
   const parentElements = Array.from(
     document.querySelectorAll(".all-category-list-item"),
   ).filter((item) =>
@@ -40,14 +40,6 @@ const setupCategoryList = () => {
           });
         }
       });
-    });
+    }, { signal });
   });
-};
-
-try {
-  swup.hooks.on("page:view", setupCategoryList);
-} catch (e) {
-  console.error(e);
 }
-
-document.addEventListener("DOMContentLoaded", setupCategoryList);

@@ -28,7 +28,8 @@
                 <% if (post.thumbnail !== false && (post.thumbnail || post.cover || post.banner)) { %>
                     <div id="home-article-thumbnail" class="home-article-thumbnail relative pt-[42%] overflow-hidden rounded-t-large">
                         <a href="<%- url_for(post.path) %>">
-                            <img src="<%- url_for(articleThumbnail) %>" alt="<%= post.title %>" width="800" height="450" loading="lazy" decoding="async" class="w-full h-full object-cover dark:brightness-75 transition-all" />
+                            <img src="data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='800' height='450' viewBox='0 0 800 450'%3E%3C/svg%3E" data-src="<%- url_for(articleThumbnail) %>" lazyload alt="<%= post.title %>" width="800" height="450" loading="lazy" decoding="async" fetchpriority="low" class="w-full h-full object-cover dark:brightness-75 transition-all" />
+                            <noscript><img src="<%- url_for(articleThumbnail) %>" alt="<%= post.title %>" width="800" height="450" class="w-full h-full object-cover dark:brightness-75" /></noscript>
                         </a>
                     </div>
                 <% } %>

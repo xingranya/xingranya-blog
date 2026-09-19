@@ -27,16 +27,12 @@
         }
     </style>
     <div class="home-banner-background transition-fade fixed top-0 left-0 w-screen h-screen scale-125 sm:scale-110 box-border will-change-transform bg-cover">
-        <img src="<%- url_for(theme.home_banner.image.light) %>" alt="" aria-hidden="true" width="1920" height="1080" decoding="async" fetchpriority="high" class="w-full h-full object-cover dark:hidden">
-        <img src="<%- url_for(theme.home_banner.image.dark) %>" alt="" aria-hidden="true" width="1920" height="1080" decoding="async" fetchpriority="high" class="w-full h-full object-cover hidden dark:block">
     </div>
 <% } %>
 
 <div class="home-banner-container flex justify-center items-center transition-fade relative">
     <% if (theme.home_banner.style !== "fixed") {%>
     <div class="home-banner-background transition-fade absolute top-0 left-0 w-screen h-screen scale-125 sm:scale-110 box-border will-change-transform bg-cover">
-        <img src="<%- url_for(theme.home_banner.image.light) %>" alt="" aria-hidden="true" width="1920" height="1080" decoding="async" fetchpriority="high" class="w-full h-full object-cover dark:hidden">
-        <img src="<%- url_for(theme.home_banner.image.dark) %>" alt="" aria-hidden="true" width="1920" height="1080" decoding="async" fetchpriority="high" class="w-full h-full object-cover hidden dark:block">
     </div>
     <% } %>
     <div class="content mt-8 flex flex-col justify-center items-center transition-fade-down">
@@ -44,7 +40,7 @@
             <h1 class="home-banner-title"><%- theme.home_banner.title || theme.style.first_screen.description || config.description %></h1>
             <%# theme.style.first_screen.description is deprecated %>
             <% if (theme.home_banner.subtitle.length !== 0) { %>
-                <p class="text-base sm:text-lg md:text-xl"><i id="subtitle"></i></p>
+                <p class="home-banner-subtitle text-base sm:text-lg md:text-xl"><i id="subtitle"><%= theme.home_banner.subtitle.text[0] || '' %></i></p>
             <% } %>
         </div>
     </div>
@@ -54,12 +50,11 @@
             const justify = theme.home_banner.social_links.style === "center" ? "justify-center" : "justify-between";
             const display = theme.home_banner.social_links.style === "center" ? "hidden" : "flex";
         %>
-        <div class="absolute bottom-0.5 flex <%- flexDirection %> <%- justify %> max-w-[1340px] items-center w-full px-8 sm:px-12">
-                <button type="button" class="home-scroll-trigger home-chrome-glass <%- display %> min-h-[44px] px-4 py-2 group rounded-full cursor-pointer inline-flex justify-center items-center gap-2" aria-label="看文章">
+        <div class="absolute bottom-0.5 flex <%- flexDirection %> <%- justify %> max-w-[1340px] items-center w-full px-1 sm:px-12">
+                <button type="button" class="home-scroll-trigger home-chrome-glass <%- display %> min-h-[44px] min-w-[44px] p-3 group rounded-full cursor-pointer inline-flex justify-center items-center" aria-label="看文章" title="看文章">
                     <i class="fa-solid fa-arrow-down fa-fw group-hover:translate-y-1 transition-transform" aria-hidden="true"></i>
-                    <span class="home-scroll-label">看文章</span>
                 </button>
-                <div class="social-contacts home-chrome-glass px-3 sm:px-4 py-2 rounded-3xl flex flex-row flex-wrap justify-center gap-1 sm:gap-2 items-center max-w-full">
+                <div class="social-contacts flex flex-row flex-wrap justify-center gap-1 items-center max-w-full">
                     <% for (const key in theme.home_banner.social_links.links) { %>
                         <% const socialLink = theme.home_banner.social_links.links[key]; %>
                         <% if(socialLink) { %>
@@ -67,23 +62,23 @@
                             <% const socialLabel = socialLabels[key] || key; %>
                             <% if(key === 'email') { %>
                                 <span class="social-contact-item <%= key %> ">
-                                    <a href="<%- /^mailto:/i.test(socialLink) ? socialLink : 'mailto:' + socialLink %>" aria-label="复制邮箱地址">
+                                    <a href="<%- /^mailto:/i.test(socialLink) ? socialLink : 'mailto:' + socialLink %>" aria-label="复制邮箱地址" title="<%= socialLabel %>">
                                         <i class="fa-solid fa-fw fa-at" aria-hidden="true"></i>
-                                        <span class="social-contact-label"><%= socialLabel %></span>
+                                        <span class="social-contact-label sr-only"><%= socialLabel %></span>
                                     </a>
                                 </span>
                             <% } else if(key.includes("fa-")) { %>
                                 <span class="social-contact-item">
-                                    <a target="_blank" rel="noopener noreferrer" href="<%- socialLink %>" aria-label="打开<%= socialLabel %>">
+                                    <a target="_blank" rel="noopener noreferrer" href="<%- socialLink %>" aria-label="打开<%= socialLabel %>" title="<%= socialLabel %>">
                                         <i class="<%= key %> fa-fw" aria-hidden="true"></i>
-                                        <span class="social-contact-label"><%= socialLabel %></span>
+                                        <span class="social-contact-label sr-only"><%= socialLabel %></span>
                                     </a>
                                 </span>
                             <% } else { %>
                                 <span class="social-contact-item <%= key %>">
-                                    <a target="_blank" rel="noopener noreferrer" href="<%- socialLink %>" aria-label="打开<%= socialLabel %>">
+                                    <a target="_blank" rel="noopener noreferrer" href="<%- socialLink %>" aria-label="打开<%= socialLabel %>" title="<%= socialLabel %>">
                                         <i class="fa-brands fa-fw fa-<%= key %>" aria-hidden="true"></i>
-                                        <span class="social-contact-label"><%= socialLabel %></span>
+                                        <span class="social-contact-label sr-only"><%= socialLabel %></span>
                                     </a>
                                 </span>
                             <% } %>
@@ -99,19 +94,19 @@
                         }
                     if (qrs && qrCount >= 1) { %>
 
-                        <div class="social-links-divider vertical-separator w-[1px] h-4 bg-third-text-color mx-0.5"></div>
+                        <div class="social-links-divider vertical-separator hidden sm:block w-[1px] h-4 bg-third-text-color mx-0.5"></div>
 
                         <% for (const key in qrs) { %>
                             <% if(qrs[key]) { %>
                                 <% if(key.includes("fa-")) { %>
                                     <span class="social-contact-item-qr cursor-pointer group relative">
-                                        <button type="button" class="social-qr-trigger" aria-label="显示二维码" aria-expanded="false">
+                                        <button type="button" class="social-qr-trigger" aria-label="显示二维码" aria-expanded="false" title="二维码">
                                             <i class="<%= key %> fa-fw" aria-hidden="true"></i>
-                                            <span class="social-contact-label">二维码</span>
+                                            <span class="social-contact-label sr-only">二维码</span>
                                         </button>
-                                            <div class="social-qr-container absolute h-auto w-64 backdrop-blur-2xl bg-white/90 dark:bg-gray-800/90 border border-white/20 dark:border-gray-500/30 overflow-hidden rounded-2xl bottom-0 mb-14 right-0 invisible group-hover:visible group-focus-within:visible opacity-0 group-hover:opacity-100 group-focus-within:opacity-100 translate-y-0.5 group-hover:translate-y-0 group-focus-within:translate-y-0 transition-all flex flex-col items-center pb-3 shadow-2xl z-50">
+                                            <div class="social-qr-container absolute h-auto w-64 backdrop-blur-2xl bg-white/90 dark:bg-gray-800/90 border border-white/20 dark:border-gray-500/30 overflow-hidden rounded-2xl bottom-0 mb-14 right-0 invisible opacity-0 translate-y-0.5 transition-all flex flex-col items-center pb-3 shadow-2xl z-50">
                                                 <img class="social-contacts-qr w-full"
-                                                     src="<%- url_for(theme.home_banner.social_links.qrs[key]) %>" alt="二维码" width="256" height="256" loading="lazy" decoding="async"/>
+                                                     src="data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='256' height='256' viewBox='0 0 256 256'%3E%3C/svg%3E" data-src="<%- url_for(theme.home_banner.social_links.qrs[key]) %>" alt="二维码" width="256" height="256" loading="lazy" decoding="async"/>
                                                 <button type="button" data-download-image="<%- url_for(theme.home_banner.social_links.qrs[key]) %>" data-download-filename="qr-code-<%= key %>.png" class="social-qr-download mt-2 min-h-[44px] px-4 py-2 rounded-full text-sm transition-colors duration-200 flex items-center gap-1.5">
                                                     <i class="fa-solid fa-download" aria-hidden="true"></i>
                                                     <span>下载</span>
@@ -120,13 +115,13 @@
                                     </span>
                                 <% } else { %>
                                     <span class="social-contact-item-qr <%= key %> cursor-pointer group relative">
-                                        <button type="button" class="social-qr-trigger" aria-label="显示 <%= key === 'weixin' ? '微信' : (key === 'qq' ? 'QQ' : key) %> 二维码" aria-expanded="false">
+                                        <button type="button" class="social-qr-trigger" aria-label="显示 <%= key === 'weixin' ? '微信' : (key === 'qq' ? 'QQ' : key) %> 二维码" aria-expanded="false" title="<%= key === 'weixin' ? '微信' : (key === 'qq' ? 'QQ' : key) %>">
                                             <i class="fa-brands fa-fw fa-<%= key %>" aria-hidden="true"></i>
-                                            <span class="social-contact-label"><%= key === 'weixin' ? '微信' : (key === 'qq' ? 'QQ' : key) %></span>
+                                            <span class="social-contact-label sr-only"><%= key === 'weixin' ? '微信' : (key === 'qq' ? 'QQ' : key) %></span>
                                         </button>
-                                            <div class="social-qr-container absolute h-auto w-64 backdrop-blur-2xl bg-white/90 dark:bg-gray-800/90 border border-white/20 dark:border-gray-500/30 overflow-hidden rounded-2xl bottom-0 mb-14 right-0 invisible group-hover:visible group-focus-within:visible opacity-0 group-hover:opacity-100 group-focus-within:opacity-100 translate-y-0.5 group-hover:translate-y-0 group-focus-within:translate-y-0 transition-all flex flex-col items-center pb-3 shadow-2xl z-50">
+                                            <div class="social-qr-container absolute h-auto w-64 backdrop-blur-2xl bg-white/90 dark:bg-gray-800/90 border border-white/20 dark:border-gray-500/30 overflow-hidden rounded-2xl bottom-0 mb-14 right-0 invisible opacity-0 translate-y-0.5 transition-all flex flex-col items-center pb-3 shadow-2xl z-50">
                                                 <img class="social-contacts-qr w-full"
-                                                     src="<%- url_for(theme.home_banner.social_links.qrs[key]) %>" alt="<%= key %> 二维码" width="256" height="256" loading="lazy" decoding="async"/>
+                                                     src="data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='256' height='256' viewBox='0 0 256 256'%3E%3C/svg%3E" data-src="<%- url_for(theme.home_banner.social_links.qrs[key]) %>" alt="<%= key %> 二维码" width="256" height="256" loading="lazy" decoding="async"/>
                                                 <button type="button" data-download-image="<%- url_for(theme.home_banner.social_links.qrs[key]) %>" data-download-filename="qr-code-<%= key %>.png" class="social-qr-download mt-2 min-h-[44px] px-4 py-2 rounded-full text-sm transition-colors duration-200 flex items-center gap-1.5">
                                                     <i class="fa-solid fa-download" aria-hidden="true"></i>
                                                     <span>下载</span>
@@ -295,6 +290,23 @@
                 });
             };
 
+            const loadQrImage = (item) => {
+                const image = item && item.querySelector('.social-contacts-qr[data-src]');
+                if (!image) return;
+                image.src = image.dataset.src;
+                image.removeAttribute('data-src');
+            };
+
+            document.addEventListener('pointerover', (event) => {
+                const item = event.target.closest('.social-contact-item-qr');
+                if (item) loadQrImage(item);
+            }, { passive: true });
+
+            document.addEventListener('focusin', (event) => {
+                const item = event.target.closest('.social-contact-item-qr');
+                if (item) loadQrImage(item);
+            });
+
             document.addEventListener('click', (event) => {
                 const trigger = event.target.closest('.social-qr-trigger');
                 const downloadButton = event.target.closest('[data-download-image]');
@@ -311,13 +323,17 @@
 
                 const item = trigger.closest('.social-contact-item-qr');
                 const willOpen = !item.classList.contains('is-open');
+                if (willOpen) loadQrImage(item);
                 closeQrPanels();
                 item.classList.toggle('is-open', willOpen);
                 trigger.setAttribute('aria-expanded', String(willOpen));
             });
 
             document.addEventListener('keyup', (event) => {
-                if (event.key === 'Escape') closeQrPanels();
+                if (event.key === 'Escape') {
+                    closeQrPanels();
+                    if (document.activeElement instanceof HTMLElement) document.activeElement.blur();
+                }
             });
 
             if (typeof swup !== 'undefined') {

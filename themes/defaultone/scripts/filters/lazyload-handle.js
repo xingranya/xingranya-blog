@@ -1,24 +1,9 @@
-'use strict'
-hexo.extend.filter.register(
-  'after_post_render',
-  function (data) {
-    const theme = hexo.theme.config;
-    if (!theme.articles.lazyload || !theme.articles.lazyload) return;
-    data.content = data.content.replace(
-      // Match 'img' tags width the src attribute.
-      /<img([^>]*)src="([^"]*)"([^>\/]*)\/?\s*>/gim,
-      function (match, attrBegin, src, attrEnd) {
-        // Exit if the src doesn't exists.
-        if (!src) return match;
-
-        return `<img ${attrBegin}
-                     lazyload
-                     src="/images/loading.svg"
-                     data-src="${src}"
-                     ${attrEnd}
-                >`
-      }
-    )
-  },
-  1
-);
+hexo.extend.filter.register('after_post_render', function (data) {
+  if (!hexo.theme.config.articles.lazyload) return data;
+  data.content = data.content.replace(/<img\b[^>]*>/gi, tag => {
+    if (!/\bloading=/.test(tag)) tag = tag.replace('<img', '<img loading="lazy"');
+    if (!/\bdecoding=/.test(tag)) tag = tag.replace('<img', '<img decoding="async"');
+    return tag;
+  });
+  return data;
+}, 1);

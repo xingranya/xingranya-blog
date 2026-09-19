@@ -1,17 +1,17 @@
 <div class="search-pop-overlay">
 	<div class="popup search-popup">
 		<div class="search-header">
-			<span class="search-input-field-pre">
+			<button type="button" class="search-input-field-pre" aria-label="清空搜索">
 				<i class="fa-solid fa-keyboard"></i>
-			</span>
+			</button>
 			<div class="search-input-container">
-				<input autocomplete="off" autocorrect="off" autocapitalize="off" placeholder="<%= __('search') %>" spellcheck="false" type="search" class="search-input">
+				<input autocomplete="off" autocorrect="off" autocapitalize="off" placeholder="<%= __('search') %>" spellcheck="false" type="search" class="search-input" aria-label="搜索博客文章">
 			</div>
-			<span class="popup-btn-close">
+			<button type="button" class="popup-btn-close" aria-label="关闭搜索">
 				<i class="fa-solid fa-times"></i>
-			</span>
+			</button>
 		</div>
-		<div id="search-result">
+		<div id="search-result" aria-live="polite">
 			<div id="no-result">
 				<i class="fa-solid fa-spinner fa-spin-pulse fa-5x fa-fw"></i>
 			</div>

@@ -1,137 +1,16 @@
 <!DOCTYPE html>
-<html lang="<%= config.language %>" class="redefine-style-loading">
+<html lang="<%= config.language %>" class="<%= theme.colors.default_mode === 'dark' ? 'dark' : 'light' %>">
 <%- partial('components/header/head') %>
-
-	<body>
-		<script>
-			(function () {
-				var dark = document.documentElement.classList.contains('dark');
-				document.body.classList.add(dark ? 'dark-mode' : 'light-mode');
-				document.body.classList.remove(dark ? 'light-mode' : 'dark-mode');
-			})();
-		</script>
-		<%- body %>
-			<%- partial('components/scripts') %>
-				<% if (theme.plugins.aplayer.enable) { %>
-					<%- partial('components/plugins/aplayer') %>
-						<% } %>
-							<div id="particles-js"
-								style="position: fixed; top: 0; left: 0; width: 100%; height: 100%; z-index: 1; pointer-events: none; background: transparent;">
-							</div>
-							<% if (theme.effects.particles) { %>
-								<script>
-									document.addEventListener('DOMContentLoaded', function () {
-										const mainDiv = document.getElementById("particles-js");
-
-										if (mainDiv && typeof particlesJS === "function") {
-											particlesJS("particles-js", {
-												"particles": {
-													"number": {
-														"value": 100,
-														"density": {
-															"enable": true,
-															"value_area": 800
-														}
-													},
-													"color": {
-														"value": "#ffffff"
-													},
-													"shape": {
-														"type": "circle",
-														"stroke": {
-															"width": 0,
-															"color": "#000000"
-														},
-														"polygon": {
-															"nb_sides": 5
-														}
-													},
-													"opacity": {
-														"value": 0.5,
-														"random": true,
-														"anim": {
-															"enable": true,
-															"speed": 1,
-															"opacity_min": 0.1,
-															"sync": false
-														}
-													},
-													"size": {
-														"value": 3,
-														"random": true,
-														"anim": {
-															"enable": true,
-															"speed": 2,
-															"size_min": 0.1,
-															"sync": false
-														}
-													},
-													"line_linked": {
-														"enable": false,
-														"distance": 150,
-														"color": "#ffffff",
-														"opacity": 0.4,
-														"width": 1
-													},
-													"move": {
-														"enable": true,
-														"speed": 1,
-														"direction": "bottom",
-														"random": true,
-														"straight": false,
-														"out_mode": "out",
-														"bounce": false,
-														"attract": {
-															"enable": false,
-															"rotateX": 600,
-															"rotateY": 1200
-														}
-													}
-												},
-												"interactivity": {
-													"detect_on": "canvas",
-													"events": {
-														"onhover": {
-															"enable": false,
-															"mode": "repulse"
-														},
-														"onclick": {
-															"enable": false,
-															"mode": "push"
-														},
-														"resize": true
-													},
-													"modes": {
-														"grab": {
-															"distance": 400,
-															"line_linked": {
-																"opacity": 1
-															}
-														},
-														"bubble": {
-															"distance": 400,
-															"size": 40,
-															"duration": 2,
-															"opacity": 8,
-															"speed": 3
-														},
-														"repulse": {
-															"distance": 200
-														},
-														"push": {
-															"particles_nb": 4
-														},
-														"remove": {
-															"particles_nb": 2
-														}
-													}
-												},
-												"retina_detect": true
-											});
-										}
-									});
-								</script>
-								<% } %>
-	</body>
-
+<body class="<%= theme.colors.default_mode === 'dark' ? 'dark-mode' : 'light-mode' %>">
+  <script>
+    document.body.classList.toggle('dark-mode', window.__redefineIsDark);
+    document.body.classList.toggle('light-mode', !window.__redefineIsDark);
+  </script>
+  <%- body %>
+  <%- partial('components/scripts') %>
+  <% if (theme.plugins.aplayer.enable) { %><%- partial('components/plugins/aplayer') %><% } %>
+  <% if (theme.effects.particles) { %>
+  <div id="particles-js" aria-hidden="true" style="position:fixed;inset:0;z-index:1;pointer-events:none"></div>
+  <% } %>
+</body>
 </html>

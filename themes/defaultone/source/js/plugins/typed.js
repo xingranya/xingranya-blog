@@ -16,7 +16,8 @@ function createTyped(id, strings, options) {
     return;
   }
 
-  new Typed('#' + id, {
+  window.__redefineTyped?.destroy();
+  window.__redefineTyped = new Typed('#' + id, {
     strings,
     typeSpeed: options.usrTypeSpeed || 100,
     smartBackspace: options.usrSmartBackspace || false,

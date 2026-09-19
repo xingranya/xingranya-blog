@@ -3,7 +3,7 @@
   "version": "0.0.0",
   "private": true,
   "scripts": {
-    "build": "npm run build:theme && hexo generate",
+    "build": "npm run build:theme && hexo clean && hexo generate && hexo render themes/defaultone/source/css/style.styl --output public/css/style.css && node bin/inline-home-css.js",
     "build:theme": "cd themes/defaultone && ../../node_modules/.bin/tailwindcss -i source/css/tailwind.source.css -o source/css/build/tailwind.css --minify && node source/js/build.js",
     "build:all": "npm run build",
     "clean": "hexo clean",
@@ -13,7 +13,9 @@
     "post:check": "node scripts/validate-posts.js",
     "publish": "node scripts/admin-publish.js",
     "audit:prod": "npm audit --omit=dev",
-    "audit:all": "npm audit"
+    "audit:all": "npm audit",
+    "seo:check": "node bin/check-seo.js",
+    "seo:submit": "node bin/submit-indexnow.js"
   },
   "engines": {
     "node": ">=22 <25"

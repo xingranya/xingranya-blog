@@ -2,7 +2,7 @@
 
 import { main } from "../main.js";
 
-export function initTocToggle() {
+export function initTocToggle(signal) {
   const TocToggle = {
     toggleBar: document.querySelector(".page-aside-toggle"),
     postPageContainerDom: document.querySelector(".post-page-container"),
@@ -21,7 +21,7 @@ export function initTocToggle() {
           main.styleStatus.isOpenPageAside = this.isOpenPageAside;
           main.setStyleStatus();
           this.changePageLayoutWhenOpenToggle(this.isOpenPageAside);
-        });
+        }, { signal });
     },
 
     toggleClassName(element, className, condition) {
@@ -47,12 +47,3 @@ export function initTocToggle() {
   TocToggle.initToggleBarButton();
   return TocToggle;
 }
-
-// Event listeners
-try {
-  swup.hooks.on("page:view", () => {
-    initTocToggle();
-  });
-} catch (e) {}
-
-document.addEventListener("DOMContentLoaded", initTocToggle);

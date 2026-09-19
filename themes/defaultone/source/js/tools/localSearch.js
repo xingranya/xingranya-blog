@@ -1,4 +1,4 @@
-export default function initLocalSearch() {
+export default function initLocalSearch(signal) {
   // Search DB path
   let searchPath = config.path;
   if (!searchPath) {
@@ -9,6 +9,7 @@ export default function initLocalSearch() {
 
   // Popup Window
   let isfetched = false;
+  let fetchPromise;
   let datas;
   let isXml = true;
   if (searchPath.length === 0) {
@@ -18,6 +19,8 @@ export default function initLocalSearch() {
   }
   const searchInputDom = document.querySelector(".search-input");
   const resultContent = document.getElementById("search-result");
+  const overlay = document.querySelector(".search-pop-overlay");
+  if (!searchInputDom || !resultContent || !overlay) return;
 
   const getIndexByWord = (word, text, caseSensitive) => {
     let wordLen = word.length;
@@ -235,7 +238,8 @@ export default function initLocalSearch() {
   };
 
   const fetchData = () => {
-    fetch(config.root + searchPath)
+    if (fetchPromise) return fetchPromise;
+    fetchPromise = fetch(config.root + searchPath)
       .then((response) => response.text())
       .then((res) => {
         // Get the contents from search data
@@ -269,7 +273,13 @@ export default function initLocalSearch() {
         noResultDom &&
           (noResultDom.innerHTML =
             '<i class="fa-solid fa-magnifying-glass fa-5x"></i>');
+      })
+      .catch((error) => {
+        fetchPromise = null;
+        resultContent.innerHTML = '<p id="no-result">搜索索引加载失败，请稍后重试。</p>';
+        console.error(error);
       });
+    return fetchPromise;
   };
 
   if (theme.navbar.search.preload) {
@@ -277,51 +287,44 @@ export default function initLocalSearch() {
   }
 
   if (searchInputDom) {
-    searchInputDom.addEventListener("input", inputEventFunction);
+    searchInputDom.addEventListener("input", inputEventFunction, { signal });
   }
 
   // Handle and trigger popup window
   document.querySelectorAll(".search-popup-trigger").forEach((element) => {
     element.addEventListener("click", () => {
       document.body.style.overflow = "hidden";
-      document.querySelector(".search-pop-overlay").classList.add("active");
+      overlay.classList.add("active");
       setTimeout(() => searchInputDom.focus(), 500);
       if (!isfetched) fetchData();
-    });
+    }, { signal });
   });
 
   // Monitor main search box
   const onPopupClose = () => {
     document.body.style.overflow = "";
-    document.querySelector(".search-pop-overlay").classList.remove("active");
+    overlay.classList.remove("active");
   };
 
-  document
-    .querySelector(".search-pop-overlay")
-    .addEventListener("click", (event) => {
-      if (event.target === document.querySelector(".search-pop-overlay")) {
+  overlay.addEventListener("click", (event) => {
+      if (event.target === overlay) {
         onPopupClose();
       }
-    });
+    }, { signal });
   document
     .querySelector(".search-input-field-pre")
     .addEventListener("click", () => {
       searchInputDom.value = "";
       searchInputDom.focus();
       inputEventFunction();
-    });
+    }, { signal });
   document
     .querySelector(".popup-btn-close")
-    .addEventListener("click", onPopupClose);
-  try {
-    swup.hooks.on("page:view", (visit) => {
-      onPopupClose();
-    });
-  } catch (e) {}
+    .addEventListener("click", onPopupClose, { signal });
 
   window.addEventListener("keyup", (event) => {
     if (event.key === "Escape") {
       onPopupClose();
     }
-  });
+  }, { signal });
 }

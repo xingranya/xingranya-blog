@@ -1,4 +1,4 @@
-export default function imageViewer() {
+export default function imageViewer(signal) {
   let isBigImage = false;
   let scale = 1;
   let isMouseDown = false;
@@ -93,11 +93,11 @@ export default function imageViewer() {
     targetImg.style.cursor = "grab";
   };
 
-  targetImg.addEventListener("wheel", zoomHandle, { passive: false });
-  targetImg.addEventListener("mousedown", dragStartHandle, { passive: false });
-  targetImg.addEventListener("mousemove", dragHandle, { passive: false });
-  targetImg.addEventListener("mouseup", dragEndHandle, { passive: false });
-  targetImg.addEventListener("mouseleave", dragEndHandle, { passive: false });
+  targetImg.addEventListener("wheel", zoomHandle, { passive: false, signal });
+  targetImg.addEventListener("mousedown", dragStartHandle, { passive: false, signal });
+  targetImg.addEventListener("mousemove", dragHandle, { passive: false, signal });
+  targetImg.addEventListener("mouseup", dragEndHandle, { passive: false, signal });
+  targetImg.addEventListener("mouseleave", dragEndHandle, { passive: false, signal });
 
   maskDom.addEventListener("click", (event) => {
     if (!dragged) {
@@ -109,7 +109,7 @@ export default function imageViewer() {
       targetImg.style.transform = `translate(${translateX}px, ${translateY}px) scale(${scale})`;
     }
     dragged = false;
-  });
+  }, { signal });
 
   const imgDoms = document.querySelectorAll(
     ".markdown-body img, .masonry-item img, #shuoshuo-content img",
@@ -123,10 +123,10 @@ export default function imageViewer() {
       translateX = 0;
       translateY = 0;
       targetImg.style.transform = `translate(${translateX}px, ${translateY}px) scale(${scale})`;
-      // Remove the event listener when the image viewer is closed
-      document.removeEventListener("keydown", escapeKeyListener);
     }
   };
+
+  document.addEventListener("keydown", escapeKeyListener, { signal });
 
   if (imgDoms.length > 0) {
     imgDoms.forEach((img, index) => {
@@ -135,8 +135,7 @@ export default function imageViewer() {
         isBigImage = true;
         showHandle(isBigImage);
         targetImg.src = img.src;
-        document.addEventListener("keydown", escapeKeyListener);
-      });
+      }, { signal });
     });
 
     const handleArrowKeys = (event) => {
@@ -163,7 +162,7 @@ export default function imageViewer() {
       targetImg.src = newSrc;
     };
 
-    document.addEventListener("keydown", handleArrowKeys);
+    document.addEventListener("keydown", handleArrowKeys, { signal });
   } else {
     // console.warn("No images found to attach image viewer functionality.");
   }

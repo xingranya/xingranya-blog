@@ -1,11 +1,23 @@
 export default function initParticles() {
   const mainDiv = document.getElementById("particles-js");
 
+  if (
+    !mainDiv ||
+    mainDiv.dataset.particlesInitialized ||
+    typeof window.particlesJS !== "function" ||
+    matchMedia("(prefers-reduced-motion: reduce)").matches
+  ) {
+    return;
+  }
+
+  mainDiv.dataset.particlesInitialized = "true";
+  const isMobile = matchMedia("(max-width: 768px)").matches;
+
   if (mainDiv) {
     particlesJS("particles-js", {
       "particles": {
         "number": {
-          "value": 100,
+          "value": isMobile ? 35 : 80,
           "density": {
             "enable": true,
             "value_area": 800
@@ -104,7 +116,7 @@ export default function initParticles() {
           }
         }
       },
-      "retina_detect": true
+      "retina_detect": !isMobile
     });
   }
 }

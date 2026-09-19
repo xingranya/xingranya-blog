@@ -12,7 +12,7 @@ export default function initLazyLoad() {
   }
 
   const options = {
-    rootMargin: "200px 0px",
+    rootMargin: "0px 0px 100px 0px",
     threshold: 0.1,
   };
   const observer = new IntersectionObserver((entries, observer) => {

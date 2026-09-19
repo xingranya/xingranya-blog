@@ -8,7 +8,7 @@ export const navigationState = {
   isNavigating: false,
 };
 
-export default function initUtils() {
+export default function initUtils(signal) {
   const utils = {
     html_root_dom: document.querySelector("html"),
     pageContainer_dom: document.querySelector(".page-container"),
@@ -27,6 +27,7 @@ export default function initUtils() {
     fontSizeLevel: 0,
     isHomeBannerBlurred: false,
     triggerViewHeight: 0.5 * window.innerHeight,
+    tocUtils: null,
 
     isHasScrollProgressBar: theme.global.scroll_progress.bar === true,
     isHasScrollPercent: theme.global.scroll_progress.percentage === true,
@@ -107,25 +108,27 @@ export default function initUtils() {
         this.updateNavbarShrink();
         // this.updateHomeBannerBlur();
         this.updateAutoHideTools();
-      });
+      }, { passive: true, signal });
       window.addEventListener(
         "scroll",
         this.debounce(() => this.updateHomeBannerBlur(), 20),
+        { passive: true, signal },
       );
     },
 
     updateTOCScroll() {
       if (
         theme.articles.toc.enable &&
-        initTOC().hasOwnProperty("updateActiveTOCLink")
+        this.tocUtils &&
+        this.tocUtils.hasOwnProperty("updateActiveTOCLink")
       ) {
-        initTOC().updateActiveTOCLink();
+        this.tocUtils.updateActiveTOCLink();
       }
     },
 
     updateNavbarShrink() {
       if (!navigationState.isNavigating) {
-        navbarShrink.init();
+        navbarShrink.shrink();
       }
     },
 
@@ -198,7 +201,7 @@ export default function initUtils() {
     toggleToolsList() {
       this.toggleButton.addEventListener("click", () => {
         this.toolsList.classList.toggle("show");
-      });
+      }, { signal });
     },
 
     fontAdjPlus_dom: document.querySelector(".tool-font-adjust-plus"),
@@ -237,8 +240,8 @@ export default function initUtils() {
         setFontSize(fontSizeLevel);
       }
 
-      fontAdjustPlus.addEventListener("click", increaseFontSize);
-      fontAdjustMinus.addEventListener("click", decreaseFontSize);
+      fontAdjustPlus.addEventListener("click", increaseFontSize, { signal });
+      fontAdjustMinus.addEventListener("click", decreaseFontSize, { signal });
     },
     // go comment anchor
     goComment() {
@@ -253,7 +256,7 @@ export default function initUtils() {
               behavior: "smooth",
             });
           }
-        });
+        }, { signal });
       }
     },
 
@@ -355,6 +358,9 @@ export default function initUtils() {
     },
   };
 
+  navbarShrink.init(signal);
+  utils.tocUtils = initTOC(signal);
+
   utils.updateAutoHideTools();
 
   // init scroll
@@ -379,5 +385,5 @@ export default function initUtils() {
   utils.relativeTimeInHome();
 
   // image viewer handle
-  imageViewer();
+  imageViewer(signal);
 }

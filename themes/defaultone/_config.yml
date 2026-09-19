@@ -16,13 +16,13 @@ info:
 # 文档: https://redefine-docs.ohevan.com/basic/defaults
 defaults:
   # 网站图标 Favicon
-  favicon: /images/favicon.png?v=20260919
+  favicon: /images/avatar-0.webp
   # 网站图标 PNG 兜底
-  favicon_png: /images/favicon.png?v=20260919
+  favicon_png: /images/avatar-0.webp
   # 站点 Logo
-  logo: /images/avatar-0.png
+  logo: /images/avatar-0.webp
   # 站点头像
-  avatar: /images/avatar-0.png
+  avatar: /images/avatar-0.webp
 # 图片配置 <<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<< end
 
 
@@ -113,7 +113,7 @@ fontawesome: # 专业版 v6.2.1
   # 双重色版
   duotone: false
   # 锐利实心版
-  sharp_solid: true
+  sharp_solid: false
 # FONTAWESOME <<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<< end
 
 
@@ -229,7 +229,7 @@ navbar:
     # Whether to enable
     enable: true
     # Preload search data when the page loads
-    preload: true
+    preload: false
     # 每篇文章展示的匹配片段数量
     top_n_per_article: 1
 # 导航栏 <<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<< end

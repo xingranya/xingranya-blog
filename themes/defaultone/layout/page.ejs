@@ -3,6 +3,7 @@
 <%- partial('components/header/preloader') %>
 <% } %>
 <main class="page-container <%= (is_home() && !page.prev) ? 'home-page' : 'inner-page' %>" id="swup">
+	<script type="application/json" class="page-seo-data"><%- JSON.stringify(seoPageData(config, theme, page)).replace(/</g, '\\u003c') %></script>
 
 	<% if (theme.home_banner.enable === true && is_home() && !page.prev) { %>
 	<%- partial('pages/home/home-banner') %>

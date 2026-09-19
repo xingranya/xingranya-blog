@@ -2,7 +2,7 @@
 
 import { initTocToggle } from "../tools/tocToggle.js";
 import { main } from "../main.js";
-export function initTOC() {
+export function initTOC(signal) {
   const utils = {
     navItems: document.querySelectorAll(".post-toc-wrap .post-toc li"),
 
@@ -73,9 +73,9 @@ export function initTOC() {
         const styleStatus = main.getStyleStatus();
         const key = "isOpenPageAside";
         if (styleStatus && styleStatus.hasOwnProperty(key)) {
-          initTocToggle().pageAsideHandleOfTOC(styleStatus[key]);
+          initTocToggle(signal).pageAsideHandleOfTOC(styleStatus[key]);
         } else {
-          initTocToggle().pageAsideHandleOfTOC(true);
+          initTocToggle(signal).pageAsideHandleOfTOC(true);
         }
       };
 
@@ -84,7 +84,7 @@ export function initTOC() {
       if (theme.articles.toc.hasOwnProperty(initOpenKey)) {
         theme.articles.toc[initOpenKey]
           ? openHandle()
-          : initTocToggle().pageAsideHandleOfTOC(false);
+          : initTocToggle(signal).pageAsideHandleOfTOC(false);
       } else {
         openHandle();
       }
@@ -104,12 +104,3 @@ export function initTOC() {
 
   return utils;
 }
-
-// Event listeners
-try {
-  swup.hooks.on("page:view", () => {
-    initTOC();
-  });
-} catch (e) {}
-
-document.addEventListener("DOMContentLoaded", initTOC);
