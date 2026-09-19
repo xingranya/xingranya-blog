@@ -59,7 +59,7 @@
           });
         }
 
-        await loadScript(<%- JSON.stringify(url_for('/js/build/main.js')) %>, 'redefine-main', true);
+        await loadScript(<%- JSON.stringify(url_for('/js/build/main.js?v=blur25')) %>, 'redefine-main', true);
 
         window.__redefineCoreReady = true;
         document.dispatchEvent(new CustomEvent('redefine:core-ready'));

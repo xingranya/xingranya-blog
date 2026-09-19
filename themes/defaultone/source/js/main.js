@@ -1,5 +1,5 @@
 /* main function */
-import initUtils from "./utils.js";
+import initUtils from "./utils.js?v=blur25";
 import initTyped from "./plugins/typed.js";
 import initModeToggle from "./tools/lightDarkSwitch.js";
 import initLazyLoad from "./layouts/lazyload.js";
