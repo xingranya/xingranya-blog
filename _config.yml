@@ -56,6 +56,9 @@ prismjs:
   line_number: true
   tab_replace: ''
 
+marked:
+  mangle: false
+
 # 文章扩展字段
 metadata:
   banner: ''

@@ -41,7 +41,7 @@
   <link rel="alternate" type="text/markdown" title="Markdown 原文" href="<%= url_for(markdownPath(page)) %>">
   <% } %>
   <% if (theme.global.open_graph?.enable || theme.global.open_graph === true) { %>
-    <%- open_graph({ image: seoImage(config, theme, page), author: page.author || config.author, description: pageDescription, twitter_card: 'summary_large_image', twitter_image: seoImage(config, theme, page) }) %>
+    <%- stableOpenGraph(open_graph({ image: seoImage(config, theme, page), author: page.author || config.author, description: pageDescription, twitter_card: 'summary_large_image', twitter_image: seoImage(config, theme, page) })) %>
   <% } %>
   <% const faviconType = String(theme.defaults.favicon).replace(/\?.*$/, '').endsWith('.webp') ? 'image/webp' : 'image/png'; %>
   <link rel="icon" type="<%= faviconType %>" href="<%= url_for(theme.defaults.favicon) %>" sizes="any">

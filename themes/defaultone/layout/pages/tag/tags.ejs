@@ -11,7 +11,7 @@
 	<% } else {%>
 	<div class="tagcloud-content">
 		<ul class="tag-list" data-show-value="true">
-			<% site.tags.forEach(function(tag){ %>
+			<% sortedTags(site.tags).forEach(function(tag){ %>
 				<li>
 					<a data-weight="<%- tag.posts.length %>" href="<%- url_for("/" + tag.path) %>">
 						<i class="fa-solid fa-hashtag"></i><%- tag.name %>

@@ -7,6 +7,20 @@ function stripHtml(value) {
     .trim();
 }
 
+function sortedTags(collection) {
+  const tags = [];
+  if (collection && typeof collection.each === 'function') {
+    collection.each((tag) => tags.push(tag));
+  } else if (collection && typeof collection.forEach === 'function') {
+    collection.forEach((tag) => tags.push(tag));
+  }
+  return tags.sort((a, b) => {
+    const left = String((a && a.name) || a || '');
+    const right = String((b && b.name) || b || '');
+    return left < right ? -1 : left > right ? 1 : 0;
+  });
+}
+
 function siteUrl(config) {
   return String(config.url || '').replace(/\/+$/, '');
 }
@@ -133,12 +147,7 @@ function seoGraph(hexo, config, theme, page) {
   ];
 
   if (hexo.is_post && hexo.is_post()) {
-    const keywords = [];
-    if (page.tags && typeof page.tags.each === 'function') {
-      page.tags.each(function (tag) {
-        if (tag && tag.name) keywords.push(tag.name);
-      });
-    }
+    const keywords = sortedTags(page.tags).map((tag) => tag.name).filter(Boolean);
     graph.push({
       '@type': 'BlogPosting',
       '@id': pageUrl + '#article',
@@ -167,14 +176,21 @@ function seoGraph(hexo, config, theme, page) {
 
 hexo.extend.helper.register('seoKeywords', function (config, page) {
   if (page.keywords) return page.keywords;
-  const names = [];
-  if (page.tags && typeof page.tags.each === 'function') {
-    page.tags.each(function (tag) {
-      if (tag && tag.name) names.push(tag.name);
-    });
-  }
+  const names = sortedTags(page.tags).map((tag) => tag.name).filter(Boolean);
   if (names.length) return names.join(', ');
   return config.keywords || config.title || '星苒鸭博客';
+});
+
+hexo.extend.helper.register('sortedTags', function (collection) {
+  return sortedTags(collection);
+});
+
+hexo.extend.helper.register('stableOpenGraph', function (markup) {
+  const tagPattern = /<meta property="article:tag" content="[^"]*">\n?/g;
+  const tags = String(markup || '').match(tagPattern);
+  if (!tags || tags.length < 2) return markup;
+  let index = 0;
+  return String(markup).replace(tagPattern, () => tags.sort()[index++]);
 });
 
 hexo.extend.helper.register('seoDescription', function (config, theme, page) {

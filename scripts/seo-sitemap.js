@@ -18,12 +18,21 @@ hexo.on('ready', () => {
 hexo.extend.helper.register('isPublicArticle', page => page.layout === 'post' && isIndexable(page));
 hexo.extend.helper.register('markdownPath', markdownPath);
 
+function compareText(left, right) {
+  return left < right ? -1 : left > right ? 1 : 0;
+}
+
+function comparePosts(left, right) {
+  const dateOrder = right.date.valueOf() - left.date.valueOf();
+  return dateOrder || compareText(left.path || '', right.path || '');
+}
+
 hexo.extend.generator.register('agent-content', function (locals) {
   const base = this.config.url;
   const displayAuthor = this.theme.config.info.author || this.config.author;
   const author = displayAuthor === this.config.author ? displayAuthor : displayAuthor + '（' + this.config.author + '）';
-  const posts = locals.posts.filter(isIndexable).sort('-date').toArray();
-  const pages = locals.pages.filter(isIndexable).toArray();
+  const posts = locals.posts.filter(isIndexable).toArray().sort(comparePosts);
+  const pages = locals.pages.filter(isIndexable).toArray().sort((left, right) => compareText(left.path || '', right.path || ''));
   const text = [
     '# 星苒鸭 · 博客',
     '',

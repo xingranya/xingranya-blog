@@ -97,7 +97,7 @@
 
 		<% if (page?.tags?.length) { %>
 		<ul class="post-tags-box text-lg mt-1.5 flex-wrap justify-center flex md:hidden">
-			<% page.tags.forEach((tag) => { %>
+			<% sortedTags(page.tags).forEach((tag) => { %>
 			<li class="tag-item mx-0.5">
 				<a href="<%- url_for(tag.path) %>">#<%= tag.name %></a>&nbsp;
 			</li>

@@ -41,7 +41,7 @@
         <span class="article-tags article-meta-item">
             <i class="fa-regular fa-tags"></i>&nbsp;
             <ul>
-                <% articleObject.tags.forEach((tag, i) => { %>
+                <% sortedTags(articleObject.tags).forEach((tag, i) => { %>
                     <li>
                         <%= i === 0 ? '' : '| ' %><a href="<%- url_for(tag.path) %>"><%= tag.name %></a>&nbsp;
                     </li>
