@@ -17,9 +17,15 @@
   .sticky-container
     top: $navbar-height + 14px
     display grid
+    grid-template-columns minmax(0, 1fr)
     gap 12px
+    min-width 0
 
   .sidebar-content
+    box-sizing border-box
+    width 100%
+    max-width 100%
+    min-width 0
     redefine-container(
       false,
       1,
@@ -58,6 +64,10 @@
         color var(--third-text-color)
 
   .sidebar-links
+    box-sizing border-box
+    width 100%
+    max-width 100%
+    min-width 0
     overflow hidden
     redefine-container(
       false,

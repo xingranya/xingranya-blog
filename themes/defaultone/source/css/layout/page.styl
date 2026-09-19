@@ -89,12 +89,14 @@
       padding $spacing-unit 0
 
       &.home-with-sidebar
+        display grid
+        grid-template-columns 214px minmax(0, 1fr)
         max-width 1160px
         margin 0 auto
         padding-left 18px
         padding-right 18px
         align-items flex-start
-        gap 18px
+        column-gap 24px
 
         .home-sidebar-column
           flex 0 0 214px
@@ -108,10 +110,10 @@
           max-width 900px
 
         @media (max-width: 1023px)
+          display block
           max-width 936px
           padding-left 18px
           padding-right 18px
-          gap 0
 
           .main-content
             width 100%
