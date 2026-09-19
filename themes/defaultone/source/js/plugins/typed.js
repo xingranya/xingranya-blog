@@ -42,7 +42,9 @@ export default function initTyped(id) {
   const sentenceList = [...theme.home_banner.subtitle.text];
 
   if (theme.home_banner.subtitle.hitokoto.enable) {
-    fetch(options.usrHitokotoAPI)
+    const controller = new AbortController();
+    const timeout = window.setTimeout(() => controller.abort(), 3000);
+    fetch(options.usrHitokotoAPI, { signal: controller.signal })
       .then((response) => response.json())
       .then((data) => {
         if (data.from_who && theme.home_banner.subtitle.hitokoto.show_author) {
@@ -52,9 +54,10 @@ export default function initTyped(id) {
         }
       })
       .catch((error) => {
-        console.error(error);
+        if (error.name !== 'AbortError') console.warn(error);
         createTyped(id, sentenceList, options);
-      });
+      })
+      .finally(() => window.clearTimeout(timeout));
   } else {
     createTyped(id, sentenceList, options);
   }
