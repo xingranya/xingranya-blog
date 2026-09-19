@@ -1,10 +1,10 @@
 @require '../common/variables'
 
 .home-sidebar-container
-  width 240px
+  width 214px
   height auto
-  // background-color #bbb
-  margin 0 $spacing-unit
+  flex 0 0 214px
+  margin 0 14px 0 0
 
   +redefine-tablet()
     margin 0 ($spacing-unit * 0.5)
@@ -16,24 +16,28 @@
     padding 0
 
   .sticky-container
-    top $navbar-height
+    top: $navbar-height + 14px
+    display grid
+    gap 12px
 
   .sidebar-content
     redefine-container(
       false,
-      1.02,
-      1.02,
-      20px,
+      1,
+      1,
+      16px,
       0
     )
+    border 1px solid var(--border-color)
+    box-shadow var(--redefine-box-shadow-flat)
 
     &[marginTop]
-      margin-top: $spacing-unit * 0.6
+      margin-top 0
 
     .avatar img
-        width 80px
-        height 80px
-        border-radius $redefine-border-radius-large
+        width 72px
+        height 72px
+        border-radius 50%
         box-shadow var(--redefine-box-shadow-flat)
         border 1px solid var(--border-color)
         padding 1px
@@ -45,7 +49,7 @@
 
       .name
         text-align center
-        font-size 1.2rem
+        font-size 1.05rem
         font-weight 600
         color var(--second-text-color)
 
@@ -58,25 +62,27 @@
     overflow hidden
     redefine-container(
       false,
-      1.02,
-      1.02,
-      15px,
+      1,
+      1,
+      12px,
       0
     )
+    border 1px solid var(--border-color)
+    box-shadow var(--redefine-box-shadow-flat)
 
     &[marginTop]
-      margin-top: $spacing-unit * 0.6
+      margin-top 0
 
     .site-info
       background-color var(--background-color-transparent-40)
-      margin -15px -15px 10px -15px
+      margin -12px -12px 8px -12px
       border-radius $redefine-border-radius-large-top
-      padding 15px
+      padding 12px
       border-bottom 1px solid var(--border-color)
 
       .site-name
-        font-size 1.2rem
-        font-weight 500
+        font-size 1rem
+        font-weight 600
         color var(--second-text-color)
         font-family 'Chillax-Variable', sans-serif
         text-align center
@@ -92,9 +98,10 @@
         margin-bottom 5px
 
     .links
-      padding 5px 0
+      min-height 40px
+      padding 6px 10px
       display flex
-      justify-content center
+      justify-content flex-start
       align-items center
       color var(--second-text-color)
       text-align left
@@ -106,7 +113,7 @@
         font-weight 500
 
       .icon-space
-        margin-right 5px
+        margin-right 8px
 
       &:hover
         color var(--primary-color)

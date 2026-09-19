@@ -35,10 +35,10 @@
     word-break normal
 
   .home-latest-heading
-    margin 0 0 18px
-    padding 0 4px
+    margin 0 0 14px
+    padding 0 2px
     color var(--first-text-color)
-    font-size 1.4rem
+    font-size 1.3rem
     font-weight 600
     line-height 1.5
 
@@ -46,47 +46,70 @@
     .home-article-item
       position relative
       redefine-container(
-        true,
-        1.015,
-        1.015,
+        false,
+        1,
+        1,
         0px,
-        38px
+        18px
       )
+      overflow hidden
+      border 1px solid var(--border-color)
+      box-shadow var(--redefine-box-shadow-flat)
+      transition transform 0.2s ease, box-shadow 0.2s ease, border-color 0.2s ease
+
+      &.has-thumbnail
+        display grid
+        grid-template-columns minmax(210px, 30%) minmax(0, 1fr)
+
+      &:hover
+        transform translateY(-2px)
+        box-shadow var(--redefine-box-shadow)
+        border-color rgba(255, 192, 203, 0.35)
+
+      @media (prefers-reduced-motion: reduce)
+        transition none
+
+        &:hover
+          transform none
+
+      +redefine-tablet()
+        &.has-thumbnail
+          grid-template-columns minmax(180px, 32%) minmax(0, 1fr)
+
+      +redefine-mobile()
+        &.has-thumbnail
+          display block
       
       .home-article-thumbnail
         position relative
         width 100%
-        aspect-ratio 16/9
-        max-height 200px
+        height 100%
+        min-height 190px
+        max-height 230px
+        border-radius $redefine-border-radius-large 0 0 $redefine-border-radius-large
+        background var(--third-background-color)
         
         +redefine-tablet()
-          max-height 180px
+          min-height 175px
+          max-height 215px
           
         +redefine-mobile()
-          max-height 150px
+          width 100%
+          height 158px
+          min-height 158px
+          max-height 158px
+          border-radius $redefine-border-radius-large-top
         
         &::after
           content ""
           position absolute
-          bottom 0
-          left 0
-          width 100%
-          height 40px
-          // Soft blur transition
-          backdrop-filter blur(15px)
-          -webkit-backdrop-filter blur(15px)
-          // Simple gradient background
-          background linear-gradient(to bottom, 
-            transparent 0%, 
-            var(--background-color-transparent-40) 100%)
-          -webkit-mask-image linear-gradient(to bottom, 
-            transparent 0%, 
-            black 100%)
-          mask-image linear-gradient(to bottom, 
-            transparent 0%, 
-            black 100%)
+          inset 0
+          background linear-gradient(90deg, transparent 68%, var(--background-color-transparent-40) 100%)
           pointer-events none
           z-index 1
+
+          +redefine-mobile()
+            background linear-gradient(to bottom, transparent 72%, var(--background-color-transparent-40) 100%)
 
       .home-article-thumbnail img
           width 100%
@@ -95,32 +118,44 @@
           position absolute
           top 0
           left 0
-          // Slight gradient transition - from image to text area
-          -webkit-mask-image linear-gradient(to bottom, 
-            black 0%, 
-            black 90%, 
-            transparent 100%)
-          mask-image linear-gradient(to bottom, 
-            black 0%, 
-            black 90%, 
-            transparent 100%)
+          transition transform 0.35s ease
+
+      &:hover .home-article-thumbnail img
+        transform scale(1.025)
+
+      .home-article-body
+        min-width 0
+        display flex
+        flex-direction column
+        justify-content center
+        gap 12px
+        padding 20px 22px
+
+        +redefine-tablet()
+          padding 18px
+
+        +redefine-mobile()
+          gap 10px
+          padding 16px
 
       .home-article-title
         position relative
         font-weight 600
-        font-size 1.4rem
-        // Slight adjustment to title position
-        margin-top -10px
+        font-size 1.28rem
         z-index 2
-        line-height 1.5
+        line-height 1.42
         color var(--second-text-color)
         font-family $english-font-family, $chinese-font-family, 'Noto Sans SC', sans-serif
+        display -webkit-box
+        -webkit-box-orient vertical
+        -webkit-line-clamp 2
+        overflow hidden
 
         +redefine-tablet()
-          font-size 1.3rem
+          font-size 1.2rem
 
         +redefine-mobile()
-          font-size 1.2rem
+          font-size 1.12rem
 
         margin 0
 
@@ -129,11 +164,15 @@
         word-wrap break-word
         text-align start
         color var(--default-text-color)
-        font-size 16px
-        line-height 1.6
+        font-size 0.95rem
+        line-height 1.55
 
         p
           margin 0
+          display -webkit-box
+          -webkit-box-orient vertical
+          -webkit-line-clamp 2
+          overflow hidden
 
       .home-article-meta-info-container
         display flex
@@ -144,6 +183,10 @@
 
         .home-article-meta-info
           letter-spacing 0.5px
+          min-width 0
+          display flex
+          flex-wrap wrap
+          row-gap 5px
 
           span
             margin-right 10px
@@ -173,11 +216,12 @@
 
         .home-article-read-more
           display inline-flex
-          min-height 44px
+          min-height 38px
           align-items center
           flex-shrink 0
           color var(--first-text-color)
           font-weight 600
+          white-space nowrap
 
           &:hover
             color var(--primary-color)

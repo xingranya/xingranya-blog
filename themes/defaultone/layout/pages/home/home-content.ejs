@@ -2,7 +2,7 @@
     <h2 class="home-latest-heading"><%= __('recent_posts') %></h2>
     <ul class="home-article-list">
         <% page.posts.forEach(post => { %>
-            <li class="home-article-item">
+            <li class="home-article-item <%= post.thumbnail !== false && (post.thumbnail || post.cover || post.banner) ? 'has-thumbnail' : 'without-thumbnail' %>">
 
                 <% if (post.sticky) { %>
                     <div class="absolute top-[12px] right-[12px] text-[0.7rem] text-third-text-color rounded-medium bg-background-color-transparent-15 py-[2px] px-[10px] border border-border-color z-1 hover:text-first-text-color cursor-default">
@@ -26,14 +26,14 @@
                 <% } %>
 
                 <% if (post.thumbnail !== false && (post.thumbnail || post.cover || post.banner)) { %>
-                    <div id="home-article-thumbnail" class="home-article-thumbnail relative pt-[42%] overflow-hidden rounded-t-large">
+                    <div class="home-article-thumbnail relative overflow-hidden">
                         <a href="<%- url_for(post.path) %>">
                             <img src="data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='800' height='450' viewBox='0 0 800 450'%3E%3C/svg%3E" data-src="<%- url_for(articleThumbnail) %>" lazyload alt="<%= post.title %>" width="800" height="450" loading="lazy" decoding="async" fetchpriority="low" class="w-full h-full object-cover dark:brightness-75 transition-all" />
                             <noscript><img src="<%- url_for(articleThumbnail) %>" alt="<%= post.title %>" width="800" height="450" class="w-full h-full object-cover dark:brightness-75" /></noscript>
                         </a>
                     </div>
                 <% } %>
-                <div class="flex flex-col gap-5 px-7 pb-7 <%= post.thumbnail !== false && (post.thumbnail || post.cover || post.banner) ? "pt-5" : "pt-7" %>">
+                <div class="home-article-body">
                     <h2 class="home-article-title">
                         <a href="<%- url_for(post.path) %>">
                             <%= post.title %>
