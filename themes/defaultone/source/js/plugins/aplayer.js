@@ -19,6 +19,7 @@
     new APlayer({
       container: document.getElementById("aplayer"),
       mini: true,
+      preload: "none",
       audio: audioList,
     });
   } else if (isFixed) {
@@ -26,6 +27,7 @@
     const player = new APlayer({
       container: document.getElementById("aplayer"),
       fixed: true,
+      preload: "none",
       lrcType: hasLrc ? 3 : 0,
       audio: audioList,
     });

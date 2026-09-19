@@ -2,7 +2,7 @@
 <% if (theme.global.preloader === true || theme.global.preloader.enable === true) { %>
 <%- partial('components/header/preloader') %>
 <% } %>
-<main class="page-container" id="swup">
+<main class="page-container <%= (is_home() && !page.prev) ? 'home-page' : 'inner-page' %>" id="swup">
 
 	<% if (theme.home_banner.enable === true && is_home() && !page.prev) { %>
 	<%- partial('pages/home/home-banner') %>

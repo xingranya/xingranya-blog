@@ -192,7 +192,7 @@
                                                                         <meta name="theme-color"
                                                                             content="<%= theme.colors.primary %>">
                                                                         <%- favicon_tag(theme.defaults.favicon_png || theme.defaults.favicon) %>
-                                                                            <!--- Page Info (SEO优化：标题限制70字符内) -->
+                                                                            <!--- Page Info -->
                                                                             <%
                                                                             let pageTitle = page.title;
                                                                             if (is_archive()) {
@@ -210,25 +210,14 @@
                                                                                 pageTitle = __(page.title);
                                                                             }
 
-                                                                            // SEO优化：构建完整标题并限制长度
                                                                             let siteName = theme.info.title || config.title || '星苒鸭博客';
                                                                             let fullTitle = '';
                                                                             if (pageTitle) {
-                                                                                // 计算站点名称部分长度（包含分隔符）
-                                                                                let sitePartLength = (' | ' + siteName).length;
-                                                                                let maxPageTitleLength = 70 - sitePartLength;
-                                                                                // 如果页面标题过长，截断
-                                                                                if (pageTitle.length > maxPageTitleLength) {
-                                                                                    pageTitle = pageTitle.substring(0, maxPageTitleLength - 3) + '...';
-                                                                                }
                                                                                 fullTitle = pageTitle + ' | ' + siteName;
                                                                             } else {
                                                                                 let subtitle = theme.info.subtitle || config.subtitle || '';
                                                                                 if (subtitle) {
                                                                                     fullTitle = siteName + ' - ' + subtitle;
-                                                                                    if (fullTitle.length > 70) {
-                                                                                        fullTitle = fullTitle.substring(0, 67) + '...';
-                                                                                    }
                                                                                 } else {
                                                                                     fullTitle = siteName;
                                                                                 }

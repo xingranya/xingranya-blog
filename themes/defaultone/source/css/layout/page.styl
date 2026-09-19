@@ -14,6 +14,20 @@
   height auto
   background var(--background-color)
 
+  &.inner-page
+    background:
+      radial-gradient(circle at 12% 8%, rgba(255, 192, 203, 0.28), transparent 32rem),
+      radial-gradient(circle at 88% 18%, rgba(255, 224, 232, 0.42), transparent 30rem),
+      linear-gradient(180deg, #fff9fb 0%, #fff3f7 52%, #fffafd 100%)
+    background-attachment fixed
+
+  .dark-mode &.inner-page
+    background:
+      radial-gradient(circle at 12% 8%, rgba(255, 192, 203, 0.08), transparent 32rem),
+      radial-gradient(circle at 88% 18%, rgba(181, 118, 138, 0.09), transparent 30rem),
+      linear-gradient(180deg, #211f23 0%, #1c1b1e 55%, #211f23 100%)
+    background-attachment fixed
+
   +redefine-tablet()
     padding-right 0 !important
 

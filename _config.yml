@@ -5,7 +5,7 @@
 # 站点信息
 title: 星苒鸭 · 博客
 subtitle: ''
-description: 星苒鸭 xingranya · 个人博客与作品集
+description: 星苒鸭的技术博客，记录前端开发、运维、AI 与编程实践中的实操教程和故障排查。
 keywords: 星苒鸭, xingranya, 技术博客, 个人博客, Hexo, 前端开发, 运维, AI, 编程实践
 author: xingranya
 language: zh-CN
@@ -86,7 +86,7 @@ meta_generator: true
 date_format: YYYY-MM-DD
 time_format: HH:mm:ss
 ## updated_option supports 'mtime', 'date', 'empty'
-updated_option: 'mtime'
+updated_option: 'date'
 
 # 分页
 ## 将 per_page 设为 0 可禁用分页
@@ -111,8 +111,8 @@ sitemap:
     - sitemap.xml
     - sitemap.txt
   rel: true
-  tags: true
-  categories: true
+  tags: false
+  categories: false
 
 # RSS
 feed:

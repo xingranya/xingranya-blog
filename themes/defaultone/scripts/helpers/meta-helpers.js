@@ -85,21 +85,22 @@ hexo.extend.helper.register('seoImage', function (config, theme, page) {
 
 hexo.extend.helper.register('generateMeta', function (theme, page) {
   const hexo = this;
+  const seo = (theme.global && theme.global.seo) || theme.seo || {};
   let robotsContent = '';
 
   if (page.robots) {
     robotsContent = page.robots;
   } else if (page.current && page.current > 1) {
-    robotsContent = (theme.seo && theme.seo.robots && theme.seo.robots.home_other_pages) || 'noindex,follow';
-  } else if (theme.seo && theme.seo.robots) {
+    robotsContent = (seo.robots && seo.robots.home_other_pages) || 'noindex,follow';
+  } else if (seo.robots) {
     if (hexo.is_home()) {
-      robotsContent = theme.seo.robots.home_first_page || 'index,follow';
+      robotsContent = seo.robots.home_first_page || 'index,follow';
     } else if (hexo.is_archive()) {
-      robotsContent = theme.seo.robots.archive || 'noindex,follow';
+      robotsContent = seo.robots.archive || 'noindex,follow';
     } else if (hexo.is_category()) {
-      robotsContent = theme.seo.robots.category || 'index,follow';
+      robotsContent = seo.robots.category || 'index,follow';
     } else if (hexo.is_tag()) {
-      robotsContent = theme.seo.robots.tag || 'index,follow';
+      robotsContent = seo.robots.tag || 'index,follow';
     }
   }
 
@@ -131,7 +132,7 @@ hexo.extend.helper.register('seoJsonLd', function (config, theme, page) {
   const image = seoImage(config, theme, page);
   const logo = toAbsoluteUrl(config, (theme.defaults && (theme.defaults.logo || theme.defaults.avatar)) || '/images/avatar-0.png');
   const pageUrl = canonicalUrl(config, page);
-  const personId = origin + '/#person';
+  const personId = 'https://xran.uk/#person';
   const websiteId = origin + '/#website';
 
   const graph = [

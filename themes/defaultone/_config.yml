@@ -2,7 +2,7 @@ info:
   # 站点标题
   title: 星苒鸭 · 博客
   # 站点副标题
-  subtitle: xingranya · 个人博客与作品集
+  subtitle:
   # 作者名称
   author: 星苒鸭
   # 站点 URL（博客正式地址）
@@ -87,15 +87,15 @@ global:
   open_graph:
     enable: true
     image: /images/og.png  # 默认 og:image
-    description: 星苒鸭 xingranya · 个人博客与作品集
+    description: 星苒鸭的技术博客，记录前端开发、运维、AI 与编程实践中的实操教程和故障排查。
   # 搜索引擎索引策略
   seo:
     robots:
       home_first_page: index,follow
       home_other_pages: noindex,follow
       archive: noindex,follow
-      category: index,follow
-      tag: index,follow
+      category: noindex,follow
+      tag: noindex,follow
   # Google Analytics 分析
   google_analytics:
     enable: false # 是否启用 GA

@@ -1,7 +1,6 @@
 User-agent: *
 Allow: /
 
-Disallow: /page/
 Disallow: /search.xml
 Disallow: /live2dw/
 

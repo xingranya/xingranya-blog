@@ -42,7 +42,6 @@
     <div class="content mt-8 flex flex-col justify-center items-center transition-fade-down">
         <div class="description flex flex-col justify-center items-center w-screen font-medium text-center backdrop-blur-2xl bg-black/30 dark:bg-white/20 px-6 py-8 rounded-2xl border border-white/20 dark:border-white/10 shadow-2xl text-2xl sm:text-3xl md:text-4xl lg:text-5xl">
             <h1 class="home-banner-title"><%- theme.home_banner.title || theme.style.first_screen.description || config.description %></h1>
-            <p class="home-banner-tagline text-base sm:text-lg md:text-xl font-medium opacity-95">实操教程与折腾笔记</p>
             <%# theme.style.first_screen.description is deprecated %>
             <% if (theme.home_banner.subtitle.length !== 0) { %>
                 <p class="text-base sm:text-lg md:text-xl"><i id="subtitle"></i></p>
