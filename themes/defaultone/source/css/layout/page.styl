@@ -88,6 +88,42 @@
       justify-content center
       padding $spacing-unit 0
 
+      &.home-with-sidebar
+        max-width 1160px
+        margin 0 auto
+        padding-left 18px
+        padding-right 18px
+        align-items flex-start
+        gap 18px
+
+        .home-sidebar-column
+          flex 0 0 214px
+          width 214px
+          min-width 0
+
+        .main-content
+          flex 1 1 0
+          width auto
+          min-width 0
+          max-width 900px
+
+        @media (max-width: 1023px)
+          max-width 936px
+          padding-left 18px
+          padding-right 18px
+          gap 0
+
+          .main-content
+            width 100%
+            max-width 900px
+
+        +redefine-mobile()
+          padding-left 14px
+          padding-right 14px
+
+          .main-content
+            width 100%
+
       +redefine-tablet()
         padding ($spacing-unit * 0.8) 0
 

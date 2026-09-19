@@ -2,23 +2,8 @@
 @require '../common/redefine-theme'
 
 .home-content-container
-  if (hexo-config('home.sidebar.enable') && hexo-config('home.sidebar.position') == 'right')
-    margin-left $spacing-unit
-
-    +redefine-tablet()
-      margin-left 0
-
-    +redefine-mobile()
-      margin-left 0
-
-  if (hexo-config('home.sidebar.enable') && hexo-config('home.sidebar.position') == 'left')
-    margin-right $spacing-unit
-
-    +redefine-tablet()
-      margin-right 0
-
-    +redefine-mobile()
-      margin-right 0
+  width 100%
+  min-width 0
 
   .seo-reader-text
     border 0
@@ -87,7 +72,7 @@
         min-height 190px
         max-height 230px
         border-radius $redefine-border-radius-large 0 0 $redefine-border-radius-large
-        background var(--third-background-color)
+        background linear-gradient(135deg, rgba(255, 192, 203, 0.16), rgba(54, 125, 247, 0.12)), var(--third-background-color)
         
         +redefine-tablet()
           min-height 175px

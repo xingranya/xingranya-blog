@@ -16,9 +16,9 @@
 			<%- partial('components/header/navbar') %>
 		</div>
 
-		<div class="main-content-body transition-fade-up">
+		<div class="main-content-body transition-fade-up <%= is_home() && theme.home.sidebar.enable === true ? 'home-with-sidebar' : '' %>">
 			<% if (is_home() && theme.home.sidebar.enable === true && theme.home.sidebar.position === "left") { %>
-            <div class="hidden md:block">
+            <div class="home-sidebar-column hidden lg:block">
 			    <%- partial('pages/home/home-sidebar') %>
             </div>
 			<% } %>
@@ -28,7 +28,7 @@
 			</div>
 
 			<% if (is_home() && theme.home.sidebar.enable === true && theme.home.sidebar.position === "right") { %>
-            <div class="hidden md:block">
+            <div class="home-sidebar-column hidden lg:block">
 			    <%- partial('pages/home/home-sidebar') %>
             </div>
 			<% } %>
