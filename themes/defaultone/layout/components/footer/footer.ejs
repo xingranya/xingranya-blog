@@ -10,6 +10,15 @@
             ·
             <a href="<%= blogUrl %>"><%- __('copyright.blog') %></a>
         </div>
+        <div style="line-height:1.2; margin-top: 8px;">
+            <a href="https://ipv6test.wcode.net/?q=blog.xran.uk" target="_blank" rel="noopener noreferrer" referrerpolicy="no-referrer" aria-label="查看 blog.xran.uk 的 IPv6 支持状态" title="IPv6 已启用" class="group inline-flex min-h-[44px] items-center">
+                <span class="inline-flex h-6 items-center gap-1.5 rounded-md border border-shadow-color-1 bg-background-color-transparent-80 px-2 text-xs text-second-text-color transition-colors group-hover:text-primary">
+                    <i class="fa-solid fa-network-wired fa-fw" aria-hidden="true"></i>
+                    <span>IPv6</span>
+                    <span class="h-1.5 w-1.5 rounded-full bg-emerald-500 shadow-[0_0_0_2px_rgba(16,185,129,0.12)]" aria-hidden="true"></span>
+                </span>
+            </a>
+        </div>
         <% if (theme.footer.icp && theme.footer.icp.enable) { %>
         <div style="line-height:1.2; margin-top: 8px;">
             <a href="<%= theme.footer.icp.url || 'https://beian.miit.gov.cn/' %>" target="_blank" rel="noopener noreferrer" style="color: inherit; text-decoration: none;">
