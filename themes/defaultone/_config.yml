@@ -408,8 +408,8 @@ footer:
   customize:
   # ICP 备案号：https://beian.miit.gov.cn/
   icp:
-    enable: true # Whether to enable
-    number: 鄂ICP备2026006203号-1 # ICP record number
+    enable: false
+    number: ''
     url: https://beian.miit.gov.cn/ # ICP record url
 # FOOTER <<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<< end
 
