@@ -1,8 +1,9 @@
-<div class="nf-container">
-    <div class="nf-text">
-        <h1>404<br>Page Not Found</h1>
-    </div>
-    <div class="nf-button">
-        <a href="/" class="button large center"><i class="fa-regular fa-house"></i> <%= __("go-back-home") %></a>
-    </div>
-</div>
+<section class="nf-container" aria-labelledby="notfound-title">
+  <p class="nf-code" aria-hidden="true">404</p>
+  <h1 id="notfound-title">这页没有找到</h1>
+  <p class="nf-description">链接可能已变更，也可能是地址输错了。从首页或文章归档继续浏览吧。</p>
+  <div class="nf-actions">
+    <a href="<%- url_for('/') %>"><i class="fa-solid fa-house" aria-hidden="true"></i>返回首页</a>
+    <a href="<%- url_for('/archives/') %>">浏览文章归档<i class="fa-solid fa-arrow-right" aria-hidden="true"></i></a>
+  </div>
+</section>

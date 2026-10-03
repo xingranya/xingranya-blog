@@ -3,6 +3,7 @@ name: "星苒鸭 · 博客"
 description: "暗色优先的技术笔记站：壳层半透明毛玻璃，正文保持安静。"
 colors:
   primary-blush: "#FFC0CB"
+  primary-light-ink: "#b43d60"
   navbar-warm: "#f78736"
   navbar-cool: "#367df7"
   dark-bg: "#202124"
@@ -32,15 +33,15 @@ typography:
     letterSpacing: "0"
   title:
     fontFamily: "'Geist Variable', 'Noto Sans SC', sans-serif"
-    fontSize: "3.2rem"
+    fontSize: "clamp(1.75rem, 3.5vw, 2.75rem)"
     fontWeight: 600
-    lineHeight: 1.2
+    lineHeight: 1.3
     letterSpacing: "0"
   body:
     fontFamily: "'Geist Variable', 'Noto Sans SC', -apple-system, BlinkMacSystemFont, sans-serif"
-    fontSize: "16px"
+    fontSize: "1.025rem"
     fontWeight: 400
-    lineHeight: 1.5
+    lineHeight: 1.85
     letterSpacing: "0"
   label:
     fontFamily: "'Geist Variable', 'Noto Sans SC', sans-serif"

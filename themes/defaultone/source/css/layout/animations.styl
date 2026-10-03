@@ -40,3 +40,13 @@ html.is-animating
   .transition-fade-down
     transform translateY(-20px)
     opacity 0
+
+@media (prefers-reduced-motion: reduce)
+  .transition-fade, .transition-fade-up, .transition-fade-down
+    transition opacity 140ms ease
+
+  html.is-changing, html.is-animating
+    .transition-fade-up, .transition-fade-down, .main-content-body
+      transform none !important
+      transition-property opacity !important
+      transition-duration 140ms !important

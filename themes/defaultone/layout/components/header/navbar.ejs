@@ -86,7 +86,7 @@
     </div>
 
     <!-- Mobile sheet -->
-    <div id="site-mobile-nav" class="navbar-drawer h-dvh w-full absolute top-0 left-0 bg-background-color flex flex-col justify-between">
+    <div id="site-mobile-nav" class="navbar-drawer h-dvh w-full absolute top-0 left-0 bg-background-color flex flex-col justify-between" inert aria-hidden="true">
         <ul class="drawer-navbar-list flex flex-col px-4 justify-center items-start">
             <% for (let i in theme.navbar.links) { %>
                 <% if (theme.navbar.links[i].path !== 'none') { %>

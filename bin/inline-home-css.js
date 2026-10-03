@@ -7,6 +7,9 @@ const publicDir = path.join(process.cwd(), 'public');
 const homePath = path.join(publicDir, 'index.html');
 const styleCss = fs.readFileSync(path.join(publicDir, 'css/style.css'), 'utf8');
 const tailwindCss = fs.readFileSync(path.join(publicDir, 'css/build/tailwind.css'), 'utf8');
+if (!styleCss.includes('.navbar-container') || !styleCss.includes('.markdown-body') || !tailwindCss.trim()) {
+  throw new Error('博客样式生成不完整，请检查 Hexo 样式编译错误后重新构建。');
+}
 let html = fs.readFileSync(homePath, 'utf8');
 
 const styleLink = /\s*<link rel="stylesheet" href="\/css\/style\.css">\s*/;

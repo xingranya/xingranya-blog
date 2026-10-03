@@ -41,10 +41,16 @@ export function initTOC(signal) {
 
       document.querySelectorAll(".post-toc .active").forEach((element) => {
         element.classList.remove("active", "active-current");
+        element.removeAttribute('aria-current');
       });
       target.classList.add("active", "active-current");
+      target.setAttribute('aria-current', 'location');
       // Scroll to the active TOC item
       const tocElement = document.querySelector(".toc-content-container");
+      if (!tocElement || !tocElement.getClientRects().length) return;
+      const targetRect = target.getBoundingClientRect();
+      const tocRect = tocElement.getBoundingClientRect();
+      if (targetRect.top >= tocRect.top + 24 && targetRect.bottom <= tocRect.bottom - 24) return;
       const tocTop = tocElement.getBoundingClientRect().top;
       const scrollTopOffset =
         tocElement.offsetHeight > window.innerHeight
@@ -64,7 +70,7 @@ export function initTOC(signal) {
 
       tocElement.scrollTo({
         top: scrollTop,
-        behavior: "smooth", // Smooth scroll
+        behavior: matchMedia('(prefers-reduced-motion: reduce)').matches ? 'auto' : 'smooth',
       });
     },
 

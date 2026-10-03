@@ -8,6 +8,7 @@
         var saved = JSON.parse(localStorage.getItem('REDEFINE-THEME-STATUS') || '{}');
         if (typeof saved.isDark === 'boolean') dark = saved.isDark;
       } catch (error) {}
+      document.documentElement.classList.remove('dark', 'light');
       document.documentElement.classList.add(dark ? 'dark' : 'light');
       window.__redefineIsDark = dark;
       <% if (theme.home_banner.enable && is_home()) { %>

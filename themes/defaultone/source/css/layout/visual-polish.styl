@@ -1,0 +1,532 @@
+// 全站的排版与动效收在同一层，正文、目录和图库共享阅读节奏。
+:root
+  --blog-ease cubic-bezier(0.16, 1, 0.3, 1)
+
+.page-template-container,
+.archive-container,
+.article-content-container
+  border 1px solid var(--border-color)
+  box-shadow 0 8px 32px rgba(0, 0, 0, 0.035)
+
+.page-template-container,
+.archive-container
+  padding clamp(20px, 4vw, 40px)
+
+.page-template-container .page-template-content > h1:first-child,
+.page-title-header,
+.friends-link-container > h1
+  font-size clamp(1.9rem, 4vw, 2.6rem)
+  line-height 1.25
+  letter-spacing -0.025em
+  margin 0 0 28px
+  text-wrap balance
+
+.post-page-container .article-title h1
+  font-size clamp(1.75rem, 3.5vw, 2.75rem)
+  line-height 1.3
+  text-wrap balance
+  overflow-wrap anywhere
+
+.post-page-container .article-header,
+.post-page-container .article-header-meta-info
+  transform none
+
+.markdown-body
+  font-size 1.025rem
+  line-height 1.85
+
+  p, li
+    line-height 1.85
+
+  h1, h2, h3, h4
+    scroll-margin-top 100px
+    text-wrap balance
+    overflow-wrap anywhere
+
+  h1
+    font-size clamp(1.65rem, 3vw, 2.25rem)
+    line-height 1.3
+
+  h2
+    font-size clamp(1.4rem, 2.5vw, 1.85rem)
+    line-height 1.4
+    margin-top 2.3rem
+    margin-bottom 1rem
+    border-bottom 1px solid var(--border-color)
+    padding-bottom 0.55rem
+
+  h3
+    font-size clamp(1.15rem, 2vw, 1.4rem)
+    line-height 1.45
+
+  a
+    text-underline-offset 4px
+    text-decoration-thickness 1px
+
+    &:focus-visible
+      outline 2px solid var(--primary-color)
+      outline-offset 3px
+
+  blockquote
+    border 1px solid var(--border-color)
+    border-radius 12px
+    padding 16px 20px
+    background var(--background-color-transparent-40)
+
+    > :last-child
+      margin-bottom 0
+
+  table
+    font-size 0.94rem
+
+    th, td
+      padding 12px 16px
+
+.archive-list-container
+  .article-item
+    padding-top 34px
+    padding-bottom 12px
+
+    > a
+      padding 5px 0
+      max-width 100%
+      font-size 1.06rem
+      line-height 1.6
+      transition color 180ms ease, transform 240ms var(--blog-ease)
+
+      &:hover, &:focus-visible
+        transform translateX(4px)
+        color var(--primary-color)
+
+    &::after
+      width 9px
+      height 9px
+      left -5px
+      transition background-color 180ms ease, border-color 180ms ease
+
+    &:hover::after, &:focus-within::after
+      background var(--primary-color)
+      border-color var(--primary-color)
+
+    .article-title::after
+      display none
+
+.category-list-content .all-category-list
+  padding 0
+  justify-content flex-start
+  gap 16px
+
+  > .all-category-list-item
+    width calc(50% - 8px)
+    padding 22px
+    font-size 1.2rem
+    border 1px solid var(--border-color)
+    background var(--background-color-transparent-40)
+    box-shadow none
+    transition transform 350ms var(--blog-ease), border-color 200ms ease
+
+    &:hover, &:focus-within
+      transform translateY(-2px)
+      border-color var(--primary-color)
+
+  .all-category-list-count
+    font-size 0.8rem
+    font-variant-numeric tabular-nums
+
+  .all-category-list-item:focus-within > .all-category-list-child
+    max-height 1000px
+
+.tagcloud-content
+  text-align left
+
+  .tag-list
+    justify-content flex-start
+    gap 10px
+
+  a, .tag-list a
+    filter none !important
+    line-height 1.5
+    padding 9px 14px
+    border 1px solid var(--border-color)
+    border-radius 9px
+    background var(--background-color-transparent-40)
+    transition color 180ms ease, transform 300ms var(--blog-ease), background-color 180ms ease
+
+    &:hover, &:focus-visible
+      color var(--primary-color)
+      transform translateY(-2px)
+      background var(--background-color-transparent-80)
+
+  .tag-list[data-show-value] a::after
+    font-size 0.78rem
+    min-width 0
+    padding 2px 6px
+
+.search-footer
+  flex-wrap wrap
+
+.home-article-item:focus-within
+  border-color var(--primary-color)
+
+.home-article-title a
+  transition color 180ms ease
+  text-decoration-color transparent
+  text-underline-offset 5px
+  text-decoration-thickness 1px
+
+.home-article-item:hover .home-article-title a,
+.home-article-item:focus-within .home-article-title a
+  text-decoration underline
+  text-decoration-color var(--primary-color)
+
+.home-article-read-more i
+  transition transform 350ms var(--blog-ease)
+
+.home-article-read-more:hover i,
+.home-article-read-more:focus-visible i
+  transform translateX(4px)
+
+.home-article-item:focus-within .home-article-thumbnail img
+  transform scale(1.025)
+
+.home-banner-container
+  min-height 100svh
+  will-change auto
+
+  .content
+    min-height 90svh
+
+  .description
+    transition transform 480ms var(--blog-ease), border-color 240ms ease
+
+  .home-banner-tagline
+    line-height 1.55
+    font-size clamp(0.98rem, 2vw, 1.2rem)
+
+.home-scroll-trigger
+  animation blog-scroll-cue 2.6s ease-in-out infinite
+
+@keyframes blog-scroll-cue
+  0%, 75%, 100%
+    transform translateY(0)
+  35%
+    transform translateY(5px)
+
+.post-toc-wrap .post-toc
+  .nav-item
+    white-space normal
+    line-height 1.55
+    margin 5px 0
+
+  .nav-item > a
+    display block
+    position relative
+    border-radius 6px
+    padding 4px 7px
+    transition background-color 200ms ease
+
+  .nav-item > a.active-current
+    background var(--background-color-transparent-80)
+    color var(--primary-color)
+
+    &::before
+      content ''
+      position absolute
+      width 2px
+      top 8px
+      bottom 8px
+      left 0
+      border-radius 2px
+      background var(--primary-color)
+      animation toc-mark-enter 250ms var(--blog-ease) both
+
+@keyframes toc-mark-enter
+  from
+    transform scaleY(0.4)
+    opacity 0.4
+  to
+    transform scaleY(1)
+    opacity 1
+
+html.light, body.light-mode
+  --primary-color #b43d60
+
+.friends-link-container
+  > ul
+    grid-template-columns unquote('repeat(auto-fill, minmax(min(100%, 250px), 1fr))')
+
+  li > a
+    display block
+    height 100%
+    border-radius 12px
+    transition transform 300ms var(--blog-ease)
+
+    &:hover, &:focus-visible
+      transform translateY(-3px)
+
+  .thumbnail img
+    transition transform 650ms var(--blog-ease)
+
+  li:hover .thumbnail img
+    transform scale(1.045)
+
+  .avatar, .avainfo > div:first-child
+    flex-shrink 0
+
+  .ellipsis
+    white-space normal
+    line-height 1.6
+    padding-right 8px
+
+.page-template-container .image-container
+  overflow hidden
+  border-radius 14px
+
+  img
+    transition transform 650ms var(--blog-ease)
+
+  &:hover img, &:focus-within img
+    transform scale(1.025)
+
+.collection-header
+  display flex
+  align-items center
+  justify-content space-between
+  flex-wrap wrap
+  gap 16px 24px
+  margin-bottom 32px
+  padding-bottom 24px
+  border-bottom 1px solid var(--border-color)
+
+  .collection-title
+    display flex
+    align-items baseline
+    gap 12px
+    margin 0 0 10px
+    color var(--first-text-color)
+    font-size clamp(1.65rem, 3.5vw, 2.5rem)
+    font-weight 600
+    line-height 1.3
+    overflow-wrap anywhere
+
+    i
+      flex-shrink 0
+      color var(--second-text-color)
+      font-size 0.65em
+
+  .collection-meta
+    margin 0
+    color var(--second-text-color)
+    font-size 0.9rem
+    font-variant-numeric tabular-nums
+
+  .collection-back
+    display inline-flex
+    align-items center
+    gap 8px
+    min-height 40px
+    color var(--second-text-color)
+    font-size 0.88rem
+    transition color 180ms
+
+    &:hover
+      color var(--primary-color)
+
+    &:focus-visible
+      outline 2px solid var(--primary-color)
+      outline-offset 4px
+
+.about-profile
+  display flex
+  align-items center
+  gap 28px
+  padding 18px 0 30px
+
+  > img
+    flex-shrink 0
+    width 100px
+    height 100px
+    object-fit cover
+    border-radius 50%
+    border 3px solid var(--border-color)
+    margin 0
+    transition transform 600ms var(--blog-ease)
+
+  &:hover > img
+    transform rotate(-4deg) scale(1.035)
+
+  h2
+    margin 0 0 12px !important
+    padding 0
+    border 0
+
+  p
+    margin-bottom 12px
+
+.page-template-container
+  .loading-placeholder[hidden]
+    display none
+
+  #masonry-container.is-ready
+    display block
+    opacity 1
+    columns 3
+    column-gap 16px
+
+    .masonry-item
+      position static
+      break-inside avoid
+      margin-bottom 16px
+
+    .image-container
+      min-height 120px
+      background var(--third-background-color)
+
+      &:not(.image-ready) img
+        aspect-ratio auto 3 / 4
+
+    .gallery-image-loader
+      position absolute
+      inset 0
+      display flex
+      align-items center
+      justify-content center
+      overflow hidden
+      pointer-events none
+      color var(--third-text-color)
+      background var(--background-color-transparent-80)
+
+      i
+        font-size 1.5rem
+        opacity 0.35
+        animation gallery-loader-breathe 1.8s ease-in-out infinite
+
+      &::after
+        content ''
+        position absolute
+        inset 0
+        background linear-gradient(110deg, transparent 30%, rgba(255, 192, 203, 0.12) 50%, transparent 70%)
+        transform translateX(-100%)
+        animation gallery-loader-flow 1.8s ease-in-out infinite
+
+    .image-ready img
+      animation gallery-image-reveal 750ms var(--blog-ease) var(--gallery-delay, 0ms) both
+
+    img[hidden]
+      display none
+
+  .gallery-image-error
+    display flex
+    align-items center
+    justify-content center
+    min-height 180px
+    padding 20px
+    font-size 0.9rem
+
+@keyframes gallery-image-reveal
+  from
+    opacity 0.3
+    clip-path inset(3% 0 0 0)
+    filter blur(5px)
+  to
+    opacity 1
+    clip-path inset(0)
+    filter blur(0)
+
+@keyframes gallery-loader-flow
+  to
+    transform translateX(100%)
+
+@keyframes gallery-loader-breathe
+  0%, 100%
+    opacity 0.25
+  50%
+    opacity 0.5
+
+@media (max-width: 900px)
+  .page-template-container #masonry-container.is-ready
+    columns 2
+
+.about-profile-links
+  display flex
+  flex-wrap wrap
+  gap 16px
+  font-size 0.92rem
+
+.page-template-container .project-page .project-intro,
+.page-template-container .project-page .project-card,
+.page-template-container .project-page .project-note
+  box-shadow none
+  background var(--background-color-transparent-40)
+
+.page-template-container .project-page .project-card,
+.page-template-container .project-page .project-pr-item,
+.page-template-container .project-page .project-repo-item
+  transition border-color 200ms ease, transform 350ms var(--blog-ease), background-color 200ms ease
+
+  &:hover, &:focus-within
+    transform translateY(-2px)
+
+@media (max-width: 639px)
+  .page-template-container, .archive-container
+    padding 20px 16px
+
+  .about-profile
+    align-items flex-start
+    gap 16px
+
+    > img
+      width 64px
+      height 64px
+
+  .home-banner-container .description
+    min-width 0
+    width calc(100vw - 40px)
+    max-width 380px
+    padding 24px 20px
+
+  .page-template-container .image-title
+    opacity 1
+    transform none
+
+  .page-template-container #masonry-container.is-ready
+    columns 1
+
+  .category-list-content .all-category-list > .all-category-list-item
+    width 100%
+
+@media (prefers-reduced-motion: reduce)
+  .home-scroll-trigger
+    animation none
+
+  .page-template-container #masonry-container.is-ready .image-ready img
+    animation none
+
+  .page-template-container #masonry-container.is-ready .gallery-image-loader i,
+  .page-template-container #masonry-container.is-ready .gallery-image-loader::after
+    animation none
+
+  .tagcloud-content a, .tagcloud-content .tag-list a,
+  .category-list-content .all-category-list > .all-category-list-item,
+  .navbar-container .navbar-drawer, .navbar-container .navbar-bar-middle::before, .navbar-container .navbar-bar-middle::after
+    transition none
+
+  .tagcloud-content a, .category-list-content .all-category-list > .all-category-list-item
+    transform none !important
+
+  .home-banner-container .description,
+  .archive-list-container .article-item > a,
+  .about-profile > img,
+  .friends-link-container li > a,
+  .friends-link-container .thumbnail img,
+  .page-template-container .image-container img,
+  .home-article-read-more i,
+  .home-article-item .home-article-thumbnail img,
+  .page-template-container .project-card,
+  .page-template-container .project-pr-item,
+  .page-template-container .project-repo-item
+    transition none
+    transform none !important
+
+  .post-toc-wrap .post-toc .nav-item > a.active-current::before
+    animation none

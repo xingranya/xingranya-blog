@@ -59,7 +59,8 @@
           });
         }
 
-        await loadScript(<%- JSON.stringify(url_for('/js/build/main.js?v=blur25')) %>, 'redefine-main', true);
+        // 入口与内部导入使用同一 URL，避免模块重复初始化和按钮重复绑定。
+        await loadScript(<%- JSON.stringify(url_for('/js/build/main.js')) %>, 'redefine-main', true);
 
         window.__redefineCoreReady = true;
         document.dispatchEvent(new CustomEvent('redefine:core-ready'));
@@ -166,7 +167,6 @@
 
     async function enhanceCurrentPage() {
       if (document.getElementById('masonry-container')) {
-        await loadScript(root + 'js/build/libs/minimasonry.min.js', 'redefine-minimasonry');
         var masonry = await import(root + 'js/build/plugins/masonry.js');
         masonry.initMasonry();
       }

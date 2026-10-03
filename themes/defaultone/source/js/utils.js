@@ -58,7 +58,8 @@ export default function initUtils(signal) {
         const visibility = percent === 0 ? "hidden" : "visible";
 
         this.scrollProgressBar_dom.style.visibility = visibility;
-        this.scrollProgressBar_dom.style.width = `${progressPercent}%`;
+        this.scrollProgressBar_dom.style.width = '100%';
+        this.scrollProgressBar_dom.style.transform = `scaleX(${Number(progressPercent) / 100})`;
       }
     },
 

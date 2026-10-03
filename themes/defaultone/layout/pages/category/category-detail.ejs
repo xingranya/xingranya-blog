@@ -1,6 +1,10 @@
-<div class="category-name">
-    <i class="fa-solid fa-folder"></i>&nbsp;<%= page.category %>
-</div>
+<header class="collection-header">
+  <div>
+    <h1 class="collection-title"><i class="fa-regular fa-folder" aria-hidden="true"></i><%= page.category %></h1>
+    <p class="collection-meta"><%= page.total > 1 ? '本页' : '共' %> <%= page.posts.length %> 篇文章</p>
+  </div>
+  <a class="collection-back" href="<%- url_for('/categories/') %>"><i class="fa-solid fa-arrow-left" aria-hidden="true"></i>全部分类</a>
+</header>
 <div class="category-post-list">
     <%- partial('utils/posts-list', {posts: page.posts}) %>
 </div>

@@ -1,5 +1,5 @@
 /* main function */
-import initUtils from "./utils.js?v=blur25";
+import initUtils from './utils.js';
 import initTyped from "./plugins/typed.js";
 import initModeToggle from "./tools/lightDarkSwitch.js";
 import initLazyLoad from "./layouts/lazyload.js";
@@ -8,6 +8,7 @@ import initLocalSearch from "./tools/localSearch.js";
 import initCopyCode from "./tools/codeBlock.js";
 import initBookmarkNav from "./layouts/bookmarkNav.js";
 import initCategoryList from "./layouts/categoryList.js";
+import initPageMotion from './layouts/pageMotion.js';
 
 function syncPageSeo() {
   const dataElement = document.querySelector(".page-seo-data");
@@ -97,6 +98,7 @@ export const main = {
     initScrollTopBottom(signal);
     initBookmarkNav(signal);
     initCategoryList(signal);
+    initPageMotion(signal);
 
     if (
       theme.home_banner.subtitle.text.length !== 0 &&

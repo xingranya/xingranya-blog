@@ -28,62 +28,42 @@ export const navbarShrink = {
   },
 
   togglenavbarDrawerShow(signal) {
-    const updateDrawerButtonState = () => {
-      const menuButton = document.querySelector(".navbar-bar");
-      if (menuButton) {
-        const isOpen = document.body.classList.contains("navbar-drawer-show");
-        menuButton.setAttribute("aria-expanded", String(isOpen));
-        menuButton.setAttribute("aria-label", isOpen ? "关闭菜单" : "打开菜单");
-      }
+    const drawer = document.querySelector('.navbar-drawer');
+    const button = document.querySelector('.navbar-bar');
+    if (!drawer || !button) return;
+    const setOpen = (open, restoreFocus = false) => {
+      document.body.classList.toggle('navbar-drawer-show', open);
+      drawer.inert = !open;
+      drawer.setAttribute('aria-hidden', String(!open));
+      button.setAttribute('aria-expanded', String(open));
+      button.setAttribute('aria-label', open ? '关闭菜单' : '打开菜单');
+      if (restoreFocus) button.focus({ preventScroll: true });
     };
-
-    const domList = [
-      document.querySelector(".window-mask"),
-      document.querySelector(".navbar-bar"),
-    ];
-
-    if (document.querySelector(".navbar-drawer")) {
-      domList.push(
-        ...document.querySelectorAll(
-          ".navbar-drawer .drawer-navbar-list .drawer-navbar-item",
-        ),
-        ...document.querySelectorAll(".navbar-drawer .tag-count-item"),
-      );
-    }
-
-    domList.forEach((v) => {
-      if (!v) return;
-      if (!v.dataset.navbarInitialized) {
-        v.dataset.navbarInitialized = 1;
-        v.addEventListener("click", () => {
-          document.body.classList.toggle("navbar-drawer-show");
-          updateDrawerButtonState();
-        }, { signal });
+    setOpen(false);
+    button.addEventListener('click', () => setOpen(drawer.inert), { signal });
+    document.querySelector('.window-mask')?.addEventListener('click', () => setOpen(false, true), { signal });
+    drawer.addEventListener('click', (event) => { if (event.target.closest('a[href]')) setOpen(false); }, { signal });
+    window.addEventListener('keydown', (event) => {
+      if (drawer.inert) return;
+      if (event.key === 'Escape') { event.preventDefault(); setOpen(false, true); }
+      if (event.key === 'Tab') {
+        const controls = [button, ...drawer.querySelectorAll('a[href], button')].filter((node) => node.getClientRects().length);
+        const first = controls[0];
+        const last = controls[controls.length - 1];
+        if (event.shiftKey && document.activeElement === first) { event.preventDefault(); last.focus(); }
+        else if (!event.shiftKey && document.activeElement === last) { event.preventDefault(); first.focus(); }
       }
-    });
-
-    const logoTitleDom = document.querySelector(
-      ".navbar-container .navbar-content .logo-title",
-    );
-    if (logoTitleDom && !logoTitleDom.dataset.navbarInitialized) {
-      logoTitleDom.dataset.navbarInitialized = 1;
-      logoTitleDom.addEventListener("click", () => {
-        document.body.classList.remove("navbar-drawer-show");
-        updateDrawerButtonState();
-      }, { signal });
-    }
-
-    updateDrawerButtonState();
+    }, { signal });
+    signal.addEventListener('abort', () => setOpen(false), { once: true });
   },
 
   toggleSubmenu(signal) {
     const toggleElements = document.querySelectorAll("[navbar-data-toggle]");
 
     toggleElements.forEach((toggle) => {
-      if (!toggle.dataset.eventListenerAdded) {
-        toggle.dataset.eventListenerAdded = "true";
+      {
         toggle.addEventListener("click", function () {
-          // console.log("click");
+
           const target = document.querySelector(
             '[data-target="' + this.getAttribute("navbar-data-toggle") + '"]',
           );
@@ -98,6 +78,12 @@ export const navbarShrink = {
             icon.classList.toggle("icon-rotated", !isVisible);
           }
 
+          anime.remove(submenuItems);
+          if (matchMedia('(prefers-reduced-motion: reduce)').matches) {
+            target.classList.toggle('hidden', isVisible);
+            [...submenuItems].forEach((item) => { item.style.opacity = ''; item.style.transform = ''; });
+            return;
+          }
           if (isVisible) {
             // Animate to hide (reverse stagger effect)
             anime({

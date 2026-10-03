@@ -3,30 +3,18 @@ title: 关于我
 date: 2026-06-27 12:53:46
 description: 星苒鸭（xingranya）的个人简介、获奖经历、项目作品和联系方式。
 ---
-<div align="center">
-  <img src="https://capsule-render.vercel.app/api?type=waving&height=260&color=gradient&customColorList=12,20,27,30&text=%E6%98%9F%E8%8B%92%E9%B8%AD%20%7C%20xingranya&fontSize=48&fontColor=ffffff&fontAlignY=38&desc=%E7%83%AD%E7%88%B1%E4%BB%A3%E7%A0%81%20%E2%80%A2%20%E6%8C%81%E7%BB%AD%E6%8A%98%E8%85%BE%20%E2%80%A2%20%E4%BA%AB%E5%8F%97%E5%88%9B%E9%80%A0&descSize=16&descAlignY=58&animation=fadeIn" width="100%" />
-
-<!-- 打字机效果 -->
-
-<a href="https://git.io/typing-svg">
-    <img src="https://readme-typing-svg.demolab.com?font=JetBrains+Mono&size=22&duration=3000&pause=1000&color=667EEA&center=true&vCenter=true&random=false&width=720&lines=%E4%BD%A0%E5%A5%BD%EF%BC%8C%E6%88%91%E6%98%AF%E6%98%9F%E8%8B%92%E9%B8%AD+%F0%9F%91%8B;Java+%7C+Spring+Boot+%7C+Vue3+%7C+Node.js+%F0%9F%9A%80;%E6%8A%8A%E5%A4%8D%E6%9D%82%E9%97%AE%E9%A2%98%E6%8B%86%E7%AE%80%E5%8D%95%EF%BC%8C%E6%8A%8A%E7%AE%80%E5%8D%95%E6%96%B9%E6%A1%88%E5%81%9A%E6%89%8E%E5%AE%9E+%E2%9C%A8" alt="Typing SVG" />
-  </a>
-
-<!-- 滚动文字 - 技能跑马灯 -->
-
-<img src="https://readme-typing-svg.demolab.com?font=JetBrains+Mono&size=14&duration=2200&pause=500&color=F093FB&center=true&vCenter=true&width=900&lines=%E2%9A%A1+Java+%7C+Spring+Boot+%7C+Vue3+%7C+Node.js+%7C+Kotlin+%7C+MySQL+%7C+Redis+%7C+MyBatis+%7C+Git+%7C+Maven+%7C+Gradle+%E2%9A%A1" alt="Tech Stack Marquee" />
-
-<h1>👋 你好，我是 <b>星苒鸭</b>（xingranya）</h1>
-  <p>🎓 计算机科学与技术本科生 · 💻 全栈开发爱好者</p>
-
-<p>
-    <a href="https://xran.uk" target="_blank"><img src="https://img.shields.io/badge/🌐%20Homepage-xran.uk-0A66C2?style=for-the-badge&logo=google-chrome&logoColor=white" alt="Homepage" /></a>
-    <a href="https://blog.xran.uk" target="_blank"><img src="https://img.shields.io/badge/📝%20Blog-blog.xran.uk-FF6B8B?style=for-the-badge&logo=hexo&logoColor=white" alt="Blog" /></a>
-    <a href="mailto:xingranya@outlook.jp"><img src="https://img.shields.io/badge/📮%20Email-xingranya@outlook.jp-EA4335?style=for-the-badge&logo=microsoft-outlook&logoColor=white" alt="Email" /></a>
-    <a href="https://github.com/xingranya?tab=followers"><img src="https://img.shields.io/github/followers/xingranya?label=👥%20Followers&style=for-the-badge" alt="Followers" /></a>
-    <img src="https://komarev.com/ghpvc/?username=xingranya&style=for-the-badge&label=👀%20Profile+Views" alt="Profile Views" />
-  </p>
-</div>
+<section class="about-profile">
+  <img src="/images/avatar-0.png" alt="星苒鸭的头像" width="100" height="100" decoding="async" />
+  <div>
+    <h2>你好，我是 <b>星苒鸭</b>（xingranya）</h2>
+    <p>计算机科学与技术本科生 · 全栈开发爱好者</p>
+    <nav class="about-profile-links" aria-label="作者相关链接">
+      <a href="https://xran.uk" target="_blank" rel="noopener">个人主页</a>
+      <a href="https://github.com/xingranya" target="_blank" rel="noopener">GitHub</a>
+      <a href="mailto:xingranya@outlook.jp">发邮件</a>
+    </nav>
+  </div>
+</section>
 
 ---
 

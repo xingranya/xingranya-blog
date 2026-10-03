@@ -16,12 +16,11 @@ const images = theme.masonry;
 </div>
 
 <div id="masonry-container">
-	<% images.forEach(function(image) { %>
+	<% images.forEach(function(image, index) { %>
 	<div class="masonry-item">
 		<div class="image-container">
-			<img src="<%- image.image %>" alt="<%- image.title %>">
-			<div class="image-title"><%- image.title %></div>
-			<div class="image-description"><%- image.description %></div>
+			<div class="gallery-image-loader" aria-hidden="true"><i class="fa-regular fa-image"></i></div>
+			<img src="<%= image.image %>" alt="相册图片 <%= index + 1 %>" loading="lazy" decoding="async" tabindex="0" role="button" aria-label="预览第 <%= index + 1 %> 张图片">
 		</div>
 	</div>
 	<% }); %>

@@ -1,5 +1,9 @@
 const { spawnSync } = require('child_process');
 
+const jsonOutput = process.argv.includes('--json');
+const checkOnly = process.argv.includes('--check');
+const commandOutput = [];
+
 const publishPaths = [
   'source/_posts',
   'source/images',
@@ -14,15 +18,17 @@ const publishPaths = [
 ];
 
 function run(command, args, options = {}) {
-  console.log(`$ ${[command, ...args].join(' ')}`);
+  if (!jsonOutput) console.log(`$ ${[command, ...args].join(' ')}`);
   const result = spawnSync(command, args, {
     cwd: process.cwd(),
     encoding: 'utf8',
     ...options
   });
 
-  if (result.stdout) process.stdout.write(result.stdout);
-  if (result.stderr) process.stderr.write(result.stderr);
+  if (result.stdout) commandOutput.push(result.stdout);
+  if (result.stderr) commandOutput.push(result.stderr);
+  if (!jsonOutput && result.stdout) process.stdout.write(result.stdout);
+  if (!jsonOutput && result.stderr) process.stderr.write(result.stderr);
 
   if (result.error) {
     throw result.error;
@@ -59,16 +65,29 @@ function ensureMainBranch() {
 function normalizeMessage(message) {
   const trimmed = message.trim();
   if (trimmed) return trimmed;
-  return `更新博客内容 ${new Date().toISOString().slice(0, 10)}`;
+  return `chore(content): 更新博客内容\n\n保存后台确认的内容源文件，触发站点构建。`;
 }
 
 function main() {
-  const message = normalizeMessage(process.argv.slice(2).join(' '));
+  const message = normalizeMessage(process.argv.slice(2).filter((arg) => !arg.startsWith('--')).join(' '));
 
-  ensureMainBranch();
-  ensureCleanIndex();
+  if (!checkOnly) { ensureMainBranch(); ensureCleanIndex(); }
   run('npm', ['run', 'post:check']);
   run('npm', ['run', 'build']);
+
+  if (checkOnly) {
+    const result = {
+      success: true,
+      mode: 'check',
+      branch: run('git', ['branch', '--show-current']),
+      status: run('git', ['status', '--short']),
+      output: commandOutput.join('').slice(-20000)
+    };
+    if (jsonOutput) console.log(JSON.stringify(result));
+    else console.log('博客预检完成，未提交或推送。');
+    return result;
+  }
+
   run('git', ['add', '--', ...publishPaths]);
 
   if (!hasChanges(['diff', '--cached', '--quiet', '--', ...publishPaths])) {
@@ -77,14 +96,18 @@ function main() {
 
   run('git', ['commit', '-m', message]);
   run('git', ['push', 'origin', 'main']);
-  console.log('发布完成：GitHub 已更新，EdgeOne Pages 将自动部署。');
+  const result = { success: true, mode: 'publish', branch: 'main', output: commandOutput.join('').slice(-20000) };
+  if (jsonOutput) console.log(JSON.stringify(result));
+  else console.log('GitHub 已更新，线上部署结果请在 EdgeOne Pages 确认。');
+  return result;
 }
 
 if (typeof hexo === 'undefined') {
   try {
     main();
   } catch (error) {
-    console.error(error.message || error);
+    if (jsonOutput) console.log(JSON.stringify({ success: false, error: error.message || String(error), output: commandOutput.join('').slice(-20000) }));
+    else console.error(error.message || error);
     process.exit(1);
   }
 }

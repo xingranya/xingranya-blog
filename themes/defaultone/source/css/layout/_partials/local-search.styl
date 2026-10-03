@@ -32,10 +32,10 @@ $icon-size = 1.2rem
     -webkit-backdrop-filter blur(22px) saturate(1.12)
     border-radius 14px
     border 1px solid var(--border-color)
-    height 80%
-    width 70%
+    height unquote('min(72vh, 680px)')
+    width unquote('min(760px, calc(100% - 32px))')
     margin auto
-    transform scale(0)
+    transform translateY(14px) scale(0.98)
     z-index $z-index-6
     transition-t('transform', '0', '0.3', 'ease')
 
@@ -103,9 +103,34 @@ $icon-size = 1.2rem
 
     #search-result
       display flex
-      height calc(100% - 55px)
+      height calc(100% - 106px)
       overflow auto
       padding 5px 25px
+
+    .search-footer
+      min-height 42px
+      display flex
+      align-items center
+      justify-content space-between
+      gap 12px
+      padding 0 20px
+      border-top 1px solid var(--border-color)
+      color var(--third-text-color)
+      font-size 0.78rem
+
+    #no-result
+      width 100%
+      align-self center
+      text-align center
+      color var(--third-text-color)
+
+      p
+        margin 18px 0 8px
+        color var(--first-text-color)
+        font-size 1.05rem
+
+      span
+        font-size 0.9rem
 
       .search-result-list
         width 100%

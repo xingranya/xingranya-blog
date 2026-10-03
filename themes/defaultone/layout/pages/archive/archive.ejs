@@ -1,3 +1,4 @@
 <div class="archive-container shadow-none hover:shadow-none sm:shadow-redefine sm:hover:shadow-redefine-hover">
+	<h1 class="page-title-header"><%= page.year ? `${page.year} 年文章归档` : '文章归档' %></h1>
 	<%- partial('utils/posts-list', {posts: site.posts}) %>
 </div>

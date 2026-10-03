@@ -1,56 +1,28 @@
 export function initMasonry() {
-  var loadingPlaceholder = document.querySelector(".loading-placeholder");
-  var masonryContainer = document.querySelector("#masonry-container");
-  if (!loadingPlaceholder || !masonryContainer) return;
-
-  loadingPlaceholder.style.display = "block";
-  masonryContainer.style.display = "none";
-
-  var images = document.querySelectorAll(
-    "#masonry-container .masonry-item img",
-  );
-  var loadedCount = 0;
-
-  function onImageLoad() {
-    loadedCount++;
-    if (loadedCount === images.length) {
-      initializeMasonryLayout();
-    }
-  }
-
-  for (var i = 0; i < images.length; i++) {
-    var img = images[i];
-    if (img.complete) {
-      onImageLoad();
-    } else {
-      img.addEventListener("load", onImageLoad);
-    }
-  }
-
-  if (loadedCount === images.length) {
-    initializeMasonryLayout();
-  }
-  function initializeMasonryLayout() {
-    loadingPlaceholder.style.opacity = 0;
-    setTimeout(() => {
-      loadingPlaceholder.style.display = "none";
-      masonryContainer.style.display = "block";
-      var screenWidth = window.innerWidth;
-      var baseWidth;
-      if (screenWidth >= 768) {
-        baseWidth = 255;
-      } else {
-        baseWidth = 150;
-      }
-      var masonry = new MiniMasonry({
-        baseWidth: baseWidth,
-        container: masonryContainer,
-        gutterX: 10,
-        gutterY: 10,
-        surroundingGutter: false,
-      });
-      masonry.layout();
-      masonryContainer.style.opacity = 1;
-    }, 100);
-  }
+  const container = document.querySelector('#masonry-container');
+  if (!container || container.dataset.masonryReady) return;
+  container.dataset.masonryReady = 'true';
+  const placeholder = document.querySelector('.loading-placeholder');
+  if (placeholder) placeholder.hidden = true;
+  container.classList.add('is-ready');
+  container.querySelectorAll('img').forEach((image, index) => {
+    image.parentElement.style.setProperty('--gallery-delay', `${Math.min(index % 3, 2) * 70}ms`);
+    const reveal = () => {
+      image.parentElement.classList.add('image-ready');
+      image.parentElement.querySelector('.gallery-image-loader')?.remove();
+    };
+    const failed = () => {
+      image.hidden = true;
+      const link = document.createElement('a');
+      link.className = 'gallery-image-error';
+      link.textContent = '图片暂时无法加载，打开原图';
+      link.href = image.src;
+      link.target = '_blank';
+      link.rel = 'noopener';
+      image.parentElement.appendChild(link);
+      reveal();
+    };
+    if (image.complete) { if (image.naturalWidth) reveal(); else failed(); }
+    else { image.addEventListener('load', reveal, { once: true }); image.addEventListener('error', failed, { once: true }); }
+  });
 }

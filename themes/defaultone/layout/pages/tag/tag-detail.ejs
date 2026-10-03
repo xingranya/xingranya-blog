@@ -1,6 +1,10 @@
-<div class="tag-name">
-    <i class="fa-solid fa-tag"></i>&nbsp;<%= page.tag %>
-</div>
+<header class="collection-header">
+  <div>
+    <h1 class="collection-title"><i class="fa-solid fa-tag" aria-hidden="true"></i><%= page.tag %></h1>
+    <p class="collection-meta"><%= page.total > 1 ? '本页' : '共' %> <%= page.posts.length %> 篇文章</p>
+  </div>
+  <a class="collection-back" href="<%- url_for('/tags/') %>"><i class="fa-solid fa-arrow-left" aria-hidden="true"></i>全部标签</a>
+</header>
 <div class="tag-post-list">
     <%- partial('utils/posts-list', {posts: page.posts}) %>
 </div>

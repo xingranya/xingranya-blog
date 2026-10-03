@@ -48,6 +48,14 @@
 
 ## 常用命令
 
+博客本地后台的发布脚本支持机器可读预检：
+
+```bash
+node scripts/admin-publish.js --check --json
+```
+
+该命令只执行分支、文章校验和构建，不提交或推送；正常发布仍使用 `npm run publish "更新说明"`。
+
 ### 安装依赖
 
 ```bash

@@ -1,5 +1,15 @@
 <div class="home-content-container">
+    <% if (page.prev) { %>
+    <header class="collection-header">
+      <div>
+        <h1 class="collection-title">文章</h1>
+        <p class="collection-meta">第 <%= page.current %> 页，共 <%= page.total %> 页 · 本页 <%= page.posts.length %> 篇</p>
+      </div>
+      <a class="collection-back" href="<%- url_for('/') %>"><i class="fa-solid fa-arrow-left" aria-hidden="true"></i>返回首页</a>
+    </header>
+    <% } else { %>
     <h2 class="home-latest-heading"><%= __('recent_posts') %></h2>
+    <% } %>
     <ul class="home-article-list">
         <% page.posts.forEach(post => { %>
             <li class="home-article-item <%= post.thumbnail !== false && (post.thumbnail || post.cover || post.banner) ? 'has-thumbnail' : 'without-thumbnail' %>">

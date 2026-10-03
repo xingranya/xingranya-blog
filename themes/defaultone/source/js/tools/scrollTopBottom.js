@@ -7,7 +7,7 @@ const initScrollTopBottom = (signal) => {
   const backToTop = () => {
     window.scrollTo({
       top: 0, // scrolls to the top of the page
-      behavior: "smooth",
+      behavior: matchMedia('(prefers-reduced-motion: reduce)').matches ? 'auto' : 'smooth',
     });
   };
 
@@ -15,7 +15,7 @@ const initScrollTopBottom = (signal) => {
     const docHeight = document.body.scrollHeight;
     window.scrollTo({
       top: docHeight, // scrolls to the bottom of the page
-      behavior: "smooth",
+      behavior: matchMedia('(prefers-reduced-motion: reduce)').matches ? 'auto' : 'smooth',
     });
   };
 

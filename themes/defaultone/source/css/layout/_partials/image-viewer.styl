@@ -1,37 +1,142 @@
 .image-viewer-container
   position fixed
-  left 0
-  top 0
-  width 100%
-  height 100%
+  inset 0
   display flex
   align-items center
   justify-content center
-  background rgba(0, 0, 0, 0)
   visibility hidden
   z-index $z-index-8
-  padding 6%
+  padding 76px 6%
   box-sizing border-box
-  backdrop-filter blur(0px)
-  -webkit-backdrop-filter blur(0px)
-  transition-t('visibility, background,backdrop-filter', '0, 0,0', '0.3, 0.3,0.3', 'ease, ease,ease')
+  color #f5f5f5
+  background rgba(12, 14, 20, 0)
+  backdrop-filter blur(0)
+  transition background 240ms, backdrop-filter 240ms
 
   &.active
-    background rgba(0, 0, 0, 0.3)
-    backdrop-filter blur(10px)
-    -webkit-backdrop-filter blur(10px)
     visibility visible
+    background rgba(12, 14, 20, 0.82)
+    backdrop-filter blur(12px)
 
-    img
-      cursor grab
-      transform scale(1)
-      opacity 1
-      padding 2px
-      background var(--background-color)
+  .image-viewer-stage
+    display flex
+    align-items center
+    justify-content center
+    width 100%
+    height 100%
+    min-height 0
 
   img
+    display block
     max-width 100%
     max-height 100%
-    transform scale(0.5)
+    object-fit contain
+    border-radius 6px
     opacity 0
-    transition-t('transform, opacity', '0,0', '0.3,0.3', 'ease')
+    touch-action none
+    cursor grab
+    box-shadow 0 20px 60px rgba(0, 0, 0, 0.25)
+    transition opacity 240ms, transform 180ms
+
+    &.is-dragging
+      cursor grabbing
+      transition none
+
+  &[data-ready='true'] img
+    opacity 1
+
+  .image-viewer-status
+    position absolute
+    top 50%
+    left 24px
+    right 24px
+    margin 0
+    text-align center
+    pointer-events none
+    font-size 0.95rem
+    color rgba(255, 255, 255, 0.75)
+
+  .image-viewer-toolbar, .image-viewer-footer
+    position absolute
+    left 24px
+    right 24px
+    display flex
+    align-items center
+    justify-content space-between
+    gap 12px
+
+  .image-viewer-toolbar
+    top 16px
+
+  .image-viewer-counter
+    font-size 0.9rem
+    font-variant-numeric tabular-nums
+
+  .image-viewer-actions
+    display flex
+    gap 4px
+    padding 4px
+    border-radius 12px
+    background rgba(255, 255, 255, 0.06)
+    border 1px solid rgba(255, 255, 255, 0.1)
+
+    button
+      display grid
+      place-items center
+      min-width 38px
+      height 38px
+      padding 0 8px
+      border 0
+      border-radius 8px
+      background transparent
+      color inherit
+      font-size 0.8rem
+      cursor pointer
+      transition background 160ms
+
+      &:hover
+        background rgba(255, 255, 255, 0.12)
+
+      &:focus-visible
+        outline 2px solid #ffc0cb
+        outline-offset 2px
+
+      &:disabled
+        opacity 0.35
+        cursor default
+
+  .image-viewer-footer
+    bottom 24px
+    font-size 0.8rem
+    color rgba(255, 255, 255, 0.65)
+
+    a
+      color inherit
+      white-space nowrap
+
+      &:hover, &:focus-visible
+        color #fff
+
+  .image-viewer-mobile-help
+    display none
+
+  +redefine-mobile()
+    padding 80px 16px 64px
+
+    .image-viewer-toolbar, .image-viewer-footer
+      left 12px
+      right 12px
+
+    .image-viewer-actions button
+      min-width 32px
+      padding 0 6px
+
+    .image-viewer-desktop-help
+      display none
+
+    .image-viewer-mobile-help
+      display inline
+
+@media (prefers-reduced-motion: reduce)
+  .image-viewer-container, .image-viewer-container img
+    transition none

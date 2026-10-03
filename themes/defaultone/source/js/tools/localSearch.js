@@ -214,10 +214,10 @@ export default function initLocalSearch(signal) {
     }
     if (keywords.length === 1 && keywords[0] === "") {
       resultContent.innerHTML =
-        '<div id="no-result"><i class="fa-solid fa-magnifying-glass fa-5x"></i></div>';
+        '<div id="no-result"><i class="fa-solid fa-magnifying-glass fa-2x" aria-hidden="true"></i><p>想读点什么？</p><span>输入关键词，查找文章标题与正文。</span></div>';
     } else if (resultItems.length === 0) {
       resultContent.innerHTML =
-        '<div id="no-result"><i class="fa-solid fa-box-open fa-5x"></i></div>';
+        '<div id="no-result"><i class="fa-solid fa-box-open fa-2x" aria-hidden="true"></i><p>没有找到相关文章</p><span>换个关键词，或缩短搜索内容试试。</span></div>';
     } else {
       resultItems.sort((resultLeft, resultRight) => {
         if (resultLeft.searchTextCount !== resultRight.searchTextCount) {
@@ -240,7 +240,7 @@ export default function initLocalSearch(signal) {
   const fetchData = () => {
     if (fetchPromise) return fetchPromise;
     fetchPromise = fetch(config.root + searchPath)
-      .then((response) => response.text())
+      .then((response) => { if (!response.ok) throw new Error('搜索索引暂时无法加载。'); return response.text(); })
       .then((res) => {
         // Get the contents from search data
         isfetched = true;
@@ -269,13 +269,7 @@ export default function initLocalSearch(signal) {
             return data;
           });
         // Remove loading animation
-        const noResultDom = document.querySelector("#no-result");
-        noResultDom &&
-          (noResultDom.innerHTML =
-            '<i class="fa-solid fa-magnifying-glass fa-5x"></i>');
-        if (searchInputDom.value.trim()) {
-          inputEventFunction();
-        }
+        inputEventFunction();
       })
       .catch((error) => {
         fetchPromise = null;
@@ -293,20 +287,32 @@ export default function initLocalSearch(signal) {
     searchInputDom.addEventListener("input", inputEventFunction, { signal });
   }
 
-  // Handle and trigger popup window
+  let returnFocus;
+  let previousOverflow = '';
+  const openPopup = (trigger) => {
+    if (overlay.classList.contains('active') || document.querySelector('.image-viewer-container.active')) return;
+    returnFocus = trigger instanceof HTMLElement ? trigger : document.activeElement;
+    previousOverflow = document.body.style.overflow;
+    document.body.style.overflow = 'hidden';
+    overlay.inert = false;
+    overlay.classList.add('active');
+    searchInputDom.focus({ preventScroll: true });
+    if (!isfetched) fetchData();
+    else inputEventFunction();
+  };
+
+  // 打开、关闭与键盘操作共享同一条路径。
   document.querySelectorAll(".search-popup-trigger").forEach((element) => {
-    element.addEventListener("click", () => {
-      document.body.style.overflow = "hidden";
-      overlay.classList.add("active");
-      setTimeout(() => searchInputDom.focus(), 500);
-      if (!isfetched) fetchData();
-    }, { signal });
+    element.addEventListener('click', () => openPopup(element), { signal });
   });
 
   // Monitor main search box
   const onPopupClose = () => {
-    document.body.style.overflow = "";
+    if (!overlay.classList.contains('active')) return;
+    document.body.style.overflow = previousOverflow;
     overlay.classList.remove("active");
+    overlay.inert = true;
+    if (returnFocus?.isConnected) returnFocus.focus({ preventScroll: true });
   };
 
   overlay.addEventListener("click", (event) => {
@@ -325,9 +331,24 @@ export default function initLocalSearch(signal) {
     .querySelector(".popup-btn-close")
     .addEventListener("click", onPopupClose, { signal });
 
-  window.addEventListener("keyup", (event) => {
-    if (event.key === "Escape") {
-      onPopupClose();
+  resultContent.addEventListener('click', (event) => { if (event.target.closest('a')) onPopupClose(); }, { signal });
+  window.addEventListener('keydown', (event) => {
+    if (event.isComposing || event.keyCode === 229) return;
+    if ((event.metaKey || event.ctrlKey) && event.key.toLowerCase() === 'k') {
+      event.preventDefault();
+      if (overlay.classList.contains('active')) onPopupClose(); else openPopup();
+      return;
     }
+    if (!overlay.classList.contains('active')) return;
+    if (event.key === 'Escape') { event.preventDefault(); onPopupClose(); }
+    if (event.key === 'Tab') {
+      const controls = [...overlay.querySelectorAll('button, input, a[href]')];
+      const first = controls[0];
+      const last = controls[controls.length - 1];
+      if (event.shiftKey && document.activeElement === first) { event.preventDefault(); last.focus(); }
+      else if (!event.shiftKey && document.activeElement === last) { event.preventDefault(); first.focus(); }
+    }
+    if (event.key === 'Enter' && document.activeElement === searchInputDom) resultContent.querySelector('a')?.click();
   }, { signal });
+  signal.addEventListener('abort', onPopupClose, { once: true });
 }

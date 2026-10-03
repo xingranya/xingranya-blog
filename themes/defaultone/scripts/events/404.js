@@ -8,7 +8,8 @@ hexo.extend.generator.register('404', function(locals){
     path: '404.html',
     layout: '404',
     data: {
-      title: 'Page Not Found',
+      title: '页面未找到',
+      type: '404',
       page: locals.pages.findOne({path: '404.html'})
     }
   }
