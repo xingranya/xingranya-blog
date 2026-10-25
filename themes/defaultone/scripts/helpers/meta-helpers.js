@@ -138,7 +138,7 @@ function seoGraph(hexo, config, theme, page) {
       image: logo,
       sameAs: [
         'https://github.com/xingranya',
-        'https://x.com/xingranya',
+        'https://www.coolapk.com/u/3626233',
         'https://t.me/xingranya',
         'https://space.bilibili.com/357220647',
         origin + '/'

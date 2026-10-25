@@ -58,13 +58,20 @@
                     <% for (const key in theme.home_banner.social_links.links) { %>
                         <% const socialLink = theme.home_banner.social_links.links[key]; %>
                         <% if(socialLink) { %>
-                            <% const socialLabels = { github: 'GitHub', google: 'Gmail', telegram: 'Telegram', bilibili: '哔哩哔哩', twitter: 'X', email: '邮箱' }; %>
+                            <% const socialLabels = { github: 'GitHub', google: 'Gmail', telegram: 'Telegram', bilibili: '哔哩哔哩', coolapk: '酷安', email: '邮箱' }; %>
                             <% const socialLabel = socialLabels[key] || key; %>
                             <% if(key === 'email') { %>
                                 <span class="social-contact-item <%= key %> ">
                                     <a href="<%- /^mailto:/i.test(socialLink) ? socialLink : 'mailto:' + socialLink %>" aria-label="复制邮箱地址" title="<%= socialLabel %>">
                                         <i class="fa-solid fa-fw fa-at" aria-hidden="true"></i>
                                         <span class="social-contact-label sr-only"><%= socialLabel %></span>
+                                    </a>
+                                </span>
+                            <% } else if(key === 'coolapk') { %>
+                                <span class="social-contact-item coolapk">
+                                    <a target="_blank" rel="noopener noreferrer" href="<%- socialLink %>" aria-label="打开酷安" title="酷安">
+                                        <img src="<%= url_for('/images/social/coolapk.png') %>" width="18" height="18" alt="" aria-hidden="true">
+                                        <span class="social-contact-label sr-only">酷安</span>
                                     </a>
                                 </span>
                             <% } else if(key.includes("fa-")) { %>
